@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class WelcomePage extends StatelessWidget {
+  const WelcomePage({super.key});
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,11 +25,21 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     "Zoom",
-                    style: TextStyle(fontSize: 50, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 45,
+                      color: Colors.white,
+                      fontFamily: "Kaleko",
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                   Text(
                     "Workplace",
-                    style: TextStyle(fontSize: 50, color: Colors.white),
+                    style: TextStyle(
+                      fontSize: 50,
+                      fontFamily: "Lato",
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ],
               ),
