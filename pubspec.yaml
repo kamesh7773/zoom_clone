@@ -42,6 +42,7 @@ dependencies:
   colored_print: ^1.0.0
   device_info_plus: ^11.1.1
   universal_html: ^2.2.4
+  font_awesome_flutter: ^10.8.0
   
 dev_dependencies:
   flutter_test:
