@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,10 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
   Color joinButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
   String? modelName;
   String? deviceBrand;
+  bool isAudioOn = false;
+  bool isVideoOn = false;
 
-  // key's declartion
+  // key's declaration
   final GlobalKey _formKey = GlobalKey<FormState>();
 
   // textediting controllar's
@@ -180,6 +183,49 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                   style: const TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
+              //! Privacy Policy & Term of Services Section.
+              const Padding(
+                padding: EdgeInsets.only(left: 14.0, top: 6.0),
+                child: Wrap(
+                  children: [
+                    Text(
+                      "By clicking 'Join',you agree to our",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 136, 135, 135),
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      " Terms of Service",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      " and",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 136, 135, 135),
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      " Privacy",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      "Statement",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: 18),
               //! Continue Button.
               Center(
@@ -202,7 +248,105 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                   ),
                 ),
               ),
-              Text("")
+              const Padding(
+                padding: EdgeInsets.only(left: 18.0, top: 10.0, right: 8.0),
+                child: Text(
+                  "Please enter your Meeting ID and join the meeting",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 136, 135, 135),
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 60),
+              //! Audio & Video Button Option's.
+              const Padding(
+                padding: EdgeInsets.only(left: 18.0),
+                child: Text(
+                  "Join options",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 136, 135, 135),
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 41, 41, 41),
+                  border: Border(
+                    top: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
+                    bottom: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
+                  ),
+                ),
+                padding: const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Don't connect to audio",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    CupertinoSwitch(
+                      value: isAudioOn,
+                      onChanged: (value) {
+                        setState(() {
+                          isAudioOn = !isAudioOn;
+                        });
+                      },
+                      activeColor: const Color.fromARGB(255, 44, 255, 51),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 41, 41, 41),
+                  border: Border(
+                    top: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
+                    bottom: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
+                  ),
+                ),
+                padding: const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Turn off my video",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    CupertinoSwitch(
+                      value: isVideoOn,
+                      onChanged: (value) {
+                        setState(() {
+                          isVideoOn = !isVideoOn;
+                        });
+                      },
+                      activeColor: const Color.fromARGB(255, 44, 255, 51),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

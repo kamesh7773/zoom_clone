@@ -3,7 +3,7 @@ allprojects {
         google()
         mavenCentral()
     }
-
+    // Added for device info package
       subprojects {
         afterEvaluate { project ->
             if (project.hasProperty('android')) {
@@ -15,6 +15,7 @@ allprojects {
             }
         }
     }
+    // Added for device info package
 }
 
 rootProject.buildDir = "../build"
