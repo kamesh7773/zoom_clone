@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:zoom_clone/pages/settings_page.dart';
+import 'package:zoom_clone/pages/home_page.dart';
 import 'package:zoom_clone/services/firebase_options.dart';
 
 void main() async {
@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Zoom Clone',
-      home: SettingsPage(),
+      home: HomePage(),
     );
   }
 }
