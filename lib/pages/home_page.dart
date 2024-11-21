@@ -206,6 +206,7 @@ class HomePageState extends State<HomePage> {
               ),
               label: "Chat",
             ),
+
             //! Contancts
             BottomNavigationBarItem(
               icon: Icon(
@@ -214,6 +215,7 @@ class HomePageState extends State<HomePage> {
               ),
               label: "Contact",
             ),
+
             //! Settings.
             BottomNavigationBarItem(
               icon: Icon(
