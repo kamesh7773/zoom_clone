@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoom_clone/routes/route_names.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -57,7 +58,9 @@ class _SignInPageState extends State<SignInPage> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(RoutesNames.welcomePage);
+          },
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Color.fromRGBO(46, 119, 255, 1),

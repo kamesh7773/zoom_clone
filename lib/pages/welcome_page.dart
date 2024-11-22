@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoom_clone/routes/route_names.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -6,12 +7,18 @@ class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromRGBO(8, 92, 253, 1),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(8, 92, 253, 1),
-        leading: const Icon(
-          Icons.settings_outlined,
-          color: Colors.white,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.settings_outlined,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushNamed(RoutesNames.settingsPage);
+          },
         ),
       ),
       body: Center(
@@ -74,7 +81,14 @@ class WelcomePage extends StatelessWidget {
                       backgroundColor: const Color.fromRGBO(26, 129, 255, 1),
                       foregroundColor: Colors.white,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.joinMeetingPage,
+                        arguments: {
+                          "title": "C O N T A C T S   P A G E",
+                        },
+                      );
+                    },
                     child: const Text(
                       "Join a meeting",
                       style: TextStyle(fontSize: 17),
@@ -88,7 +102,14 @@ class WelcomePage extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 68, 68, 68),
                       foregroundColor: Colors.white,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.signUpPage,
+                        arguments: {
+                          "title": "C O N T A C T S   P A G E",
+                        },
+                      );
+                    },
                     child: const Text(
                       "Sign up",
                       style: TextStyle(fontSize: 17),
@@ -102,7 +123,14 @@ class WelcomePage extends StatelessWidget {
                       backgroundColor: const Color.fromARGB(255, 68, 68, 68),
                       foregroundColor: Colors.white,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.signInPage,
+                        arguments: {
+                          "title": "C O N T A C T S   P A G E",
+                        },
+                      );
+                    },
                     child: const Text(
                       "Sign in",
                       style: TextStyle(fontSize: 17),

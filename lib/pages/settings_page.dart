@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:zoom_clone/routes/route_names.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -25,7 +26,9 @@ class _SettingsPageState extends State<SettingsPage> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(RoutesNames.welcomePage);
+          },
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Color.fromRGBO(46, 119, 255, 1),

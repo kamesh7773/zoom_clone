@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:zoom_clone/routes/route_names.dart';
 
 class JoinMeetingPage extends StatefulWidget {
   const JoinMeetingPage({super.key});
@@ -95,7 +96,9 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed(RoutesNames.welcomePage);
+          },
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Color.fromRGBO(46, 119, 255, 1),

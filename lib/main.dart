@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:zoom_clone/pages/home_page.dart';
+import 'package:zoom_clone/pages/auth%20pages/email_otp_verification_page.dart';
+import 'package:zoom_clone/routes/route_names.dart';
 import 'package:zoom_clone/services/firebase_options.dart';
 
 void main() async {
@@ -17,7 +18,9 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Zoom Clone',
-      home: HomePage(),
+      initialRoute: RoutesNames.welcomePage,
+      // onGenerateRoute: Routes.genrateRoute,
+      home: EmailOtpVerificationPage(),
     );
   }
 }
