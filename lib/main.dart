@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:zoom_clone/pages/auth%20pages/email_otp_verification_page.dart';
+import 'package:zoom_clone/pages/auth%20pages/create_account.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 import 'package:zoom_clone/services/firebase_options.dart';
 
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Zoom Clone',
       initialRoute: RoutesNames.welcomePage,
       // onGenerateRoute: Routes.genrateRoute,
-      home: EmailOtpVerificationPage(),
+      home: CreateAccount(),
     );
   }
 }

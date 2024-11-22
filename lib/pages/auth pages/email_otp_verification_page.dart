@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
 
 class EmailOtpVerificationPage extends StatefulWidget {
@@ -9,6 +10,9 @@ class EmailOtpVerificationPage extends StatefulWidget {
 }
 
 class _EmailOtpVerificationPageState extends State<EmailOtpVerificationPage> {
+  // varible declaration.
+  Color resentButton = const Color.fromRGBO(46, 119, 255, 1);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,11 +37,11 @@ class _EmailOtpVerificationPageState extends State<EmailOtpVerificationPage> {
           ),
         ),
       ),
-      body: const Center(
+      body: Center(
         child: Column(
           children: [
-            SizedBox(height: 52),
-            Text(
+            const SizedBox(height: 52),
+            const Text(
               "Check your email for a code",
               style: TextStyle(
                 color: Colors.white,
@@ -45,7 +49,7 @@ class _EmailOtpVerificationPageState extends State<EmailOtpVerificationPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
                 "Please enter the verification code send to your email address kameshsinghaaa64@gmail.com",
@@ -56,30 +60,84 @@ class _EmailOtpVerificationPageState extends State<EmailOtpVerificationPage> {
                 ),
               ),
             ),
+            const SizedBox(height: 26),
             //! Pinput Widget.
             Pinput(
               length: 6,
-              
               keyboardType: TextInputType.number,
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly,
+              ],
+              defaultPinTheme: const PinTheme(
+                width: 30,
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 36, 36, 36),
+                  backgroundBlendMode: BlendMode.color,
+                  border: Border(
+                    bottom: BorderSide(color: Colors.white),
+                  ),
+                ),
+                textStyle: TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                ),
+              ),
+              focusedPinTheme: const PinTheme(
+                width: 30,
+                margin: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 36, 36, 36),
+                  backgroundBlendMode: BlendMode.color,
+                  border: Border(
+                    bottom: BorderSide(color: Colors.white),
+                  ),
+                ),
+                textStyle: TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                ),
+              ),
             ),
-            Text(
-              "09:53",
+            const SizedBox(height: 40),
+            const Text(
+              "00:00",
               style: TextStyle(
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 14),
+            const SizedBox(height: 14),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Did not get the code?",
                   style: TextStyle(
                     color: Colors.white,
                   ),
                 ),
-                Text(
-                  "Resend code",
+                GestureDetector(
+                  onTapDown: (_) {
+                    setState(() {
+                      resentButton = Colors.white;
+                    });
+                  },
+                  onTapUp: (_) {
+                    setState(() {
+                      resentButton = const Color.fromRGBO(46, 119, 255, 1);
+                    });
+                  },
+                  onTapCancel: () {
+                    setState(() {
+                      resentButton = const Color.fromRGBO(46, 119, 255, 1);
+                    });
+                  },
+                  child: Text(
+                    " Resend code",
+                    style: TextStyle(
+                      color: resentButton,
+                    ),
+                  ),
                 )
               ],
             )
