@@ -44,9 +44,7 @@ dependencies:
   universal_html: ^2.2.4
   font_awesome_flutter: ^10.8.0
   pinput: ^5.0.0
-  flutter_pw_validator: ^1.6.0
-  password_field_validator: ^0.0.1
-  
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

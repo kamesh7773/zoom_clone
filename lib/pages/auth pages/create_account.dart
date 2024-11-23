@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pw_validator/flutter_pw_validator.dart';
-import 'package:password_field_validator/password_field_validator.dart';
+import 'package:zoom_clone/utils/password_validator.dart';
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
@@ -24,7 +23,7 @@ class _CreateAccountState extends State<CreateAccount> {
   // called every time when textediting controllar begin used.
   // Here we also validate the birth year textediting controllar for accepting the right birty year.
   listenPasswordTextEditingControllar() {
-    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(passwordControllar.value.text) && passwordControllar.value.text.isNotEmpty) {
+    if (!RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text) && passwordControllar.value.text.isNotEmpty) {
       setState(() {
         createAccountButtonColor = const Color.fromARGB(255, 41, 116, 255);
         createAccountButtonTextColor = const Color.fromARGB(255, 255, 255, 255);
@@ -174,31 +173,94 @@ class _CreateAccountState extends State<CreateAccount> {
                 ),
               ),
               const SizedBox(height: 20),
-              //! Password validation warnings.
-              const Padding(
-                padding: EdgeInsets.only(left: 6, top: 10),
-                child: Padding(
-                  padding: EdgeInsets.all(6),
-                  child: Text(
-                    "Password must inclued at least:",
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white,
+              // if password feild is empty then return this under widget.
+              passwordControllar.value.text.isEmpty
+                  ? const Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //! Password validation warnings.
+                        Padding(
+                          padding: EdgeInsets.only(left: 25, top: 10),
+                          child: Text(
+                            "Password must inclued at least:",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "·   8 characters",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 166, 163, 163),
+                                  fontSize: 13,
+                                ),
+                              ),
+                              Text(
+                                "·   1 number",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 166, 163, 163),
+                                  fontSize: 13,
+                                ),
+                              ),
+                              Text(
+                                "·   1 lowercase letter",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 166, 163, 163),
+                                  fontSize: 13,
+                                ),
+                              ),
+                              Text(
+                                "·   1 uppercase",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 166, 163, 163),
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 25, top: 14),
+                          child: Text(
+                            "Password must not include:",
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+
+                        Padding(
+                          padding: EdgeInsets.only(left: 30),
+                          child: Text(
+                            '·   4 or more consecutive or repeted characters\n    (Examples :"1234", "abcd", "1111" or "qwert")',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 166, 163, 163),
+                              fontSize: 13,
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+
+                  // if password feild is not empty then return the PasswordFeildValidator.
+                  : PasswordFieldValidator(
+                      minLength: 8,
+                      uppercaseCharCount: 1,
+                      lowercaseCharCount: 1,
+                      numericCharCount: 1,
+                      defaultColor: Colors.white,
+                      successColor: Colors.green,
+                      failureColor: Colors.red,
+                      controller: passwordControllar,
                     ),
-                  ),
-                ),
-              ),
-              PasswordFieldValidator(
-                minLength: 8,
-                uppercaseCharCount: 1,
-                lowercaseCharCount: 1,
-                numericCharCount: 1,
-                specialCharCount: 1,
-                defaultColor: Colors.white,
-                successColor: Colors.green,
-                failureColor: Colors.red,
-                controller: passwordControllar,
-              ),
               const SizedBox(height: 40),
               //! Sing In Button.
               Center(
