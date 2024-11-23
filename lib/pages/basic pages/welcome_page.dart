@@ -37,6 +37,7 @@ class WelcomePage extends StatelessWidget {
                       color: Colors.white,
                       fontFamily: "Kaleko",
                       fontWeight: FontWeight.normal,
+                      height: 0.5,
                     ),
                   ),
                   Text(
@@ -84,9 +85,6 @@ class WelcomePage extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pushNamed(
                         RoutesNames.joinMeetingPage,
-                        arguments: {
-                          "title": "C O N T A C T S   P A G E",
-                        },
                       );
                     },
                     child: const Text(
@@ -104,7 +102,7 @@ class WelcomePage extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.of(context).pushNamed(
-                        RoutesNames.signUpPage,
+                        RoutesNames.signUpPage_1,
                         arguments: {
                           "title": "C O N T A C T S   P A G E",
                         },

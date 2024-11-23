@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:zoom_clone/pages/auth%20pages/create_account.dart';
 import 'package:zoom_clone/pages/auth%20pages/forgot_password_page.dart';
-import 'package:zoom_clone/pages/home_page.dart';
-import 'package:zoom_clone/pages/join_meeting_page.dart';
-import 'package:zoom_clone/pages/settings_page.dart';
+import 'package:zoom_clone/pages/auth%20pages/sign_up_page_2.dart';
+import 'package:zoom_clone/pages/basic%20pages/home_page.dart';
+import 'package:zoom_clone/pages/basic%20pages/join_meeting_page.dart';
+import 'package:zoom_clone/pages/basic%20pages/settings_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_in_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_up_page_1.dart';
-import 'package:zoom_clone/pages/welcome_page.dart';
+import 'package:zoom_clone/pages/basic%20pages/welcome_page.dart';
 
 import 'route_names.dart';
 
@@ -24,10 +26,22 @@ class Routes {
           builder: (context) => const SignInPage(),
         );
 
-      //! SignUp Page.
-      case RoutesNames.signUpPage:
+      //! SignUp Page 1.
+      case RoutesNames.signUpPage_1:
         return MaterialPageRoute(
-          builder: (context) => const SignUpPage(),
+          builder: (context) => const SignUpPage1(),
+        );
+
+      //! SignUp Page 2.
+      case RoutesNames.signUpPage_2:
+        return MaterialPageRoute(
+          builder: (context) => const SignUpPage2(),
+        );
+
+      //! create account page.
+      case RoutesNames.createAccount:
+        return MaterialPageRoute(
+          builder: (context) => const CreateAccount(),
         );
 
       //! Forgot Password Page.

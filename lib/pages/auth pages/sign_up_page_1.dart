@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class SignUpPage1 extends StatefulWidget {
+  const SignUpPage1({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignUpPage1> createState() => _SignUpPageState1();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState1 extends State<SignUpPage1> {
   // variable declaration
   final GlobalKey _formKey = GlobalKey<FormState>();
   Color continueButtonColor = const Color.fromARGB(255, 53, 52, 52);
@@ -136,8 +136,12 @@ class _SignUpPageState extends State<SignUpPage> {
                     backgroundColor: continueButtonColor,
                   ),
                   onPressed: () {
-                    if (continueControllar.value.text.isEmpty) {
-                    } else {}
+                    if (!RegExp(r'^(19[0-9]{2}|20[0-9]{2}|21[0-9]{2})$').hasMatch(continueControllar.value.text) && continueControllar.value.text.isEmpty) {
+                    } else {
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.signUpPage_2,
+                      );
+                    }
                   },
                   child: Text(
                     "Continue",

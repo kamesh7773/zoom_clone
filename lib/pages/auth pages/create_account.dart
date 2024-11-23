@@ -27,9 +27,8 @@ class _CreateAccountState extends State<CreateAccount> {
   TextEditingController lastNameControllar = TextEditingController();
   TextEditingController passwordControllar = TextEditingController();
 
-  // called every time when textediting controllar begin used.
-  // Here we also validate the birth year textediting controllar for accepting the right birty year.
-  listenPasswordTextEditingControllar() {
+  // called every time when textediting controllar begin used and validate the entered password by user.
+  void passwordValidator() {
     // if password texteding controllar is empty or validation for checking Consecutive/repeted Words are being used or not.
     if (passwordControllar.value.text.isNotEmpty && RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text)) {
       setState(() {
@@ -140,7 +139,7 @@ class _CreateAccountState extends State<CreateAccount> {
   void initState() {
     super.initState();
     // method that listen the Textediting Controllar.
-    passwordControllar.addListener(listenPasswordTextEditingControllar);
+    passwordControllar.addListener(passwordValidator);
   }
 
   @override
@@ -481,7 +480,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         ),
 
                         Padding(
-                          padding: const EdgeInsets.only(left: 30),
+                          padding: const EdgeInsets.only(left: 25),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:zoom_clone/pages/auth%20pages/create_account.dart';
 import 'package:zoom_clone/routes/route_names.dart';
+import 'package:zoom_clone/routes/routes.dart';
 import 'package:zoom_clone/services/firebase_options.dart';
 
 void main() async {
@@ -19,8 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Zoom Clone',
       initialRoute: RoutesNames.welcomePage,
-      // onGenerateRoute: Routes.genrateRoute,
-      home: CreateAccount(),
+      onGenerateRoute: Routes.genrateRoute,
     );
   }
 }

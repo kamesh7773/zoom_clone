@@ -1,3 +1,4 @@
+import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 
@@ -121,7 +122,14 @@ class _SignUpPage2State extends State<SignUpPage2> {
                     minimumSize: const Size(370, 46),
                     backgroundColor: signInButtonColor,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    //! If Email address verified.
+                    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailControllar.value.text)) {
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.createAccount,
+                      );
+                    }
+                  },
                   child: Text(
                     "Continue",
                     style: TextStyle(
