@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:zoom_clone/services/firebase_auth_methods.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -36,7 +37,9 @@ class HomePageState extends State<HomePage> {
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              FirebaseAuthMethods.singOut(context: context);
+            },
             icon: const Icon(
               Icons.info_outline,
               color: Colors.white,

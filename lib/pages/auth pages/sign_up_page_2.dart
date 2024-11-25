@@ -51,6 +51,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
           "Sing in",
           style: TextStyle(
             color: Colors.white,
+            fontSize: 18,
             fontFamily: "Lato",
           ),
         ),
@@ -101,6 +102,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
                   ),
                 ),
                 child: TextFormField(
+                  autofocus: true,
                   controller: emailControllar,
                   cursorColor: Colors.lightBlue,
                   style: const TextStyle(color: Colors.white),

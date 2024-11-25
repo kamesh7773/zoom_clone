@@ -56,8 +56,17 @@ class Routes {
 
       //! create account page.
       case RoutesNames.otpVarification:
+        // Retriving BirthYear, Email, Fname, Lname and Password.
+        final args = settings.arguments as Map<String, dynamic>;
+
         return MaterialPageRoute(
-          builder: (context) => const OtpVerificationPage(),
+          builder: (context) => OtpVerificationPage(
+            birthYear: args["birthYear"],
+            email: args["email"],
+            fname: args["Fname"],
+            lname: args["Lname"],
+            password: args["password"],
+          ),
         );
 
       //! Forgot Password Page.

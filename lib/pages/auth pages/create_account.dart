@@ -1,7 +1,6 @@
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/services/firebase_auth_methods.dart';
-import 'package:zoom_clone/utils/diolog_box.dart';
+import 'package:zoom_clone/widgets/diolog_box.dart';
 import 'package:zoom_clone/utils/internet_checker.dart';
 
 class CreateAccount extends StatefulWidget {
@@ -177,6 +176,7 @@ class _CreateAccountState extends State<CreateAccount> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: const Color.fromARGB(255, 36, 36, 36),
       //! AppBar
       appBar: AppBar(
@@ -237,6 +237,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   children: [
                     //! First Name Textediting Controller
                     TextFormField(
+                      autofocus: true,
                       controller: firstNameControllar,
                       cursorColor: Colors.lightBlue,
                       style: const TextStyle(color: Colors.white),

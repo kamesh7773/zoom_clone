@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:zoom_clone/routes/route_names.dart';
-import 'package:zoom_clone/utils/progress_indicator.dart';
-import 'package:zoom_clone/utils/diolog_box.dart';
 
 class SignUpPage1 extends StatefulWidget {
   const SignUpPage1({super.key});
@@ -63,6 +61,7 @@ class _SignUpPageState1 extends State<SignUpPage1> {
           title: const Text(
             "Sign up",
             style: TextStyle(
+              fontSize: 18,
               color: Colors.white,
               fontFamily: "Lato",
             ),
@@ -117,6 +116,7 @@ class _SignUpPageState1 extends State<SignUpPage1> {
                     ),
                   ),
                   child: TextFormField(
+                    autofocus: true,
                     controller: birthYearControllar,
                     keyboardType: TextInputType.number,
                     cursorColor: Colors.lightBlue,

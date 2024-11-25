@@ -7,6 +7,7 @@ class PopUpWidgets {
     required String content,
   }) {
     showDialog(
+      
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -51,6 +52,7 @@ class PopUpWidgets {
                 Navigator.of(context).pop();
               },
               child: const ListTile(
+                minVerticalPadding: 0,
                 contentPadding: EdgeInsets.zero,
                 isThreeLine: false,
                 title: Center(

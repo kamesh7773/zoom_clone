@@ -2,9 +2,22 @@ import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
+import 'package:zoom_clone/services/firebase_auth_methods.dart';
 
 class OtpVerificationPage extends StatefulWidget {
-  const OtpVerificationPage({super.key});
+  final String birthYear;
+  final String email;
+  final String fname;
+  final String lname;
+  final String password;
+  const OtpVerificationPage({
+    super.key,
+    required this.birthYear,
+    required this.email,
+    required this.fname,
+    required this.lname,
+    required this.password,
+  });
 
   @override
   State<OtpVerificationPage> createState() => _OtpVerificationPageState();
@@ -13,6 +26,34 @@ class OtpVerificationPage extends StatefulWidget {
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
   // varible declaration.
   Color resentButton = const Color.fromRGBO(46, 119, 255, 1);
+  TextEditingController pinputControllar = TextEditingController();
+
+  //? ---------------------
+  //? Method for Verify OTP
+  //? ---------------------
+
+  void verifyOTP() {
+    FirebaseAuthMethods.verifyEmailOTP(
+      birthYear: widget.birthYear,
+      email: widget.email,
+      fname: widget.fname,
+      lname: widget.lname,
+      password: widget.password,
+      emailOTP: pinputControllar.value.text,
+      context: context,
+    );
+  }
+
+  //? ---------------------
+  //? Method for Resent OTP
+  //? ---------------------
+
+  void resentOTP() {
+    FirebaseAuthMethods.resentEmailOTP(
+      email: widget.email,
+      context: context,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +107,13 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
             const SizedBox(height: 26),
             //! Pinput Widget.
             Pinput(
+              autofocus: true,
+              controller: pinputControllar,
               length: 6,
               keyboardType: TextInputType.number,
-              onCompleted: (value) {},
+              onCompleted: (value) {
+                verifyOTP();
+              },
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],
@@ -125,6 +170,8 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                     setState(() {
                       resentButton = Colors.white;
                     });
+
+                    resentOTP();
                   },
                   onTapUp: (_) {
                     setState(() {
