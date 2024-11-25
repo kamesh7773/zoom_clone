@@ -1,15 +1,16 @@
+import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
 
-class EmailOtpVerificationPage extends StatefulWidget {
-  const EmailOtpVerificationPage({super.key});
+class OtpVerificationPage extends StatefulWidget {
+  const OtpVerificationPage({super.key});
 
   @override
-  State<EmailOtpVerificationPage> createState() => _EmailOtpVerificationPageState();
+  State<OtpVerificationPage> createState() => _OtpVerificationPageState();
 }
 
-class _EmailOtpVerificationPageState extends State<EmailOtpVerificationPage> {
+class _OtpVerificationPageState extends State<OtpVerificationPage> {
   // varible declaration.
   Color resentButton = const Color.fromRGBO(46, 119, 255, 1);
 
@@ -30,7 +31,9 @@ class _EmailOtpVerificationPageState extends State<EmailOtpVerificationPage> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Color.fromRGBO(46, 119, 255, 1),
@@ -65,6 +68,7 @@ class _EmailOtpVerificationPageState extends State<EmailOtpVerificationPage> {
             Pinput(
               length: 6,
               keyboardType: TextInputType.number,
+              onCompleted: (value) {},
               inputFormatters: [
                 FilteringTextInputFormatter.digitsOnly,
               ],

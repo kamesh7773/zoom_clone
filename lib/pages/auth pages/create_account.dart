@@ -1,8 +1,17 @@
 import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
+import 'package:zoom_clone/services/firebase_auth_methods.dart';
+import 'package:zoom_clone/utils/diolog_box.dart';
+import 'package:zoom_clone/utils/internet_checker.dart';
 
 class CreateAccount extends StatefulWidget {
-  const CreateAccount({super.key});
+  final String birthYear;
+  final String email;
+  const CreateAccount({
+    super.key,
+    required this.email,
+    required this.birthYear,
+  });
 
   @override
   State<CreateAccount> createState() => _CreateAccountState();
@@ -21,18 +30,35 @@ class _CreateAccountState extends State<CreateAccount> {
   bool atLeastOneNumber = false;
   bool atLeastOneLowercase = false;
   bool atLeastOneUppercase = false;
+  bool isPasswordVerified = false;
 
   // textediting controllar's
   TextEditingController firstNameControllar = TextEditingController();
   TextEditingController lastNameControllar = TextEditingController();
   TextEditingController passwordControllar = TextEditingController();
 
+  //? -----------------------
+  //? Method for Email SignUp
+  //? -----------------------
+
+  void signUpMethod() {
+    FirebaseAuthMethods.signUpWithEmail(
+      birthYear: widget.birthYear,
+      email: widget.email,
+      fname: firstNameControllar.value.text.trim(),
+      lname: lastNameControllar.value.text.trim(),
+      password: passwordControllar.value.text.trim(),
+      context: context,
+    );
+  }
+
   // called every time when textediting controllar begin used and validate the entered password by user.
   void passwordValidator() {
     // if password texteding controllar is empty or validation for checking Consecutive/repeted Words are being used or not.
-    if (passwordControllar.value.text.isNotEmpty && RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text)) {
+    if (firstNameControllar.value.text.isEmpty && lastNameControllar.value.text.isEmpty && passwordControllar.value.text.isEmpty && RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text)) {
       setState(() {
         allowConsecutiveWord = false;
+        isPasswordVerified = false;
 
         createAccountButtonColor = const Color.fromARGB(255, 53, 52, 52);
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
@@ -51,6 +77,7 @@ class _CreateAccountState extends State<CreateAccount> {
     if (!RegExp(r'^.{8,}$').hasMatch(passwordControllar.value.text)) {
       setState(() {
         isEightChartors = false;
+        isPasswordVerified = false;
 
         createAccountButtonColor = const Color.fromARGB(255, 53, 52, 52);
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
@@ -69,6 +96,7 @@ class _CreateAccountState extends State<CreateAccount> {
     if (!RegExp(r'.*\d+.*').hasMatch(passwordControllar.value.text)) {
       setState(() {
         atLeastOneNumber = false;
+        isPasswordVerified = false;
 
         createAccountButtonColor = const Color.fromARGB(255, 53, 52, 52);
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
@@ -87,6 +115,7 @@ class _CreateAccountState extends State<CreateAccount> {
     if (!RegExp(r'.*[a-z]+.*').hasMatch(passwordControllar.value.text)) {
       setState(() {
         atLeastOneLowercase = false;
+        isPasswordVerified = false;
 
         createAccountButtonColor = const Color.fromARGB(255, 53, 52, 52);
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
@@ -105,6 +134,7 @@ class _CreateAccountState extends State<CreateAccount> {
     if (!RegExp(r'.*[A-Z]+.*').hasMatch(passwordControllar.value.text)) {
       setState(() {
         atLeastOneUppercase = false;
+        isPasswordVerified = false;
 
         createAccountButtonColor = const Color.fromARGB(255, 53, 52, 52);
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
@@ -120,14 +150,14 @@ class _CreateAccountState extends State<CreateAccount> {
     }
 
     // when all condition where not applied then..
-    if (passwordControllar.value.text.isNotEmpty && !RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text) && RegExp(r'^.{8,}$').hasMatch(passwordControllar.value.text) && RegExp(r'.*\d+.*').hasMatch(passwordControllar.value.text) && RegExp(r'.*[a-z]+.*').hasMatch(passwordControllar.value.text) && RegExp(r'.*[A-Z]+.*').hasMatch(passwordControllar.value.text)) {
-      ColoredPrint.warning("all condition where true");
+    if (firstNameControllar.value.text.isNotEmpty && lastNameControllar.value.text.isNotEmpty && passwordControllar.value.text.isNotEmpty && !RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text) && RegExp(r'^.{8,}$').hasMatch(passwordControllar.value.text) && RegExp(r'.*\d+.*').hasMatch(passwordControllar.value.text) && RegExp(r'.*[a-z]+.*').hasMatch(passwordControllar.value.text) && RegExp(r'.*[A-Z]+.*').hasMatch(passwordControllar.value.text)) {
       setState(() {
         allowConsecutiveWord = true;
         isEightChartors = true;
         atLeastOneNumber = true;
         atLeastOneLowercase = true;
         atLeastOneUppercase = true;
+        isPasswordVerified = true;
 
         createAccountButtonColor = const Color.fromARGB(255, 41, 116, 255);
         createAccountButtonTextColor = const Color.fromARGB(255, 255, 255, 255);
@@ -138,7 +168,9 @@ class _CreateAccountState extends State<CreateAccount> {
   @override
   void initState() {
     super.initState();
-    // method that listen the Textediting Controllar.
+    // method that listen the Textediting Controllar's.
+    firstNameControllar.addListener(passwordValidator);
+    lastNameControllar.addListener(passwordValidator);
     passwordControllar.addListener(passwordValidator);
   }
 
@@ -159,7 +191,9 @@ class _CreateAccountState extends State<CreateAccount> {
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Color.fromRGBO(46, 119, 255, 1),
@@ -523,9 +557,25 @@ class _CreateAccountState extends State<CreateAccount> {
                     minimumSize: const Size(370, 46),
                     backgroundColor: createAccountButtonColor,
                   ),
-                  onPressed: () {
-                    if (passwordControllar.value.text.isEmpty) {
-                    } else {}
+                  onPressed: () async {
+                    // First we check the Validation (if validation approved then..)
+                    if (isPasswordVerified && firstNameControllar.value.text.isNotEmpty && lastNameControllar.value.text.isNotEmpty) {
+                      // Check internet connection before proceeding
+                      bool isInternet = await InternetChecker.checkInternet();
+
+                      // Then we check the If internet is present (if internet is not available then..)
+                      if (isInternet && context.mounted) {
+                        PopUpWidgets.diologbox(
+                          context: context,
+                          title: "Sign up failed",
+                          content: "Connection failed. Please check your network connection and try again.",
+                        );
+                      }
+                      // if internet is present
+                      else {
+                        signUpMethod();
+                      }
+                    }
                   },
                   child: Text(
                     "Create account",

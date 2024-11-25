@@ -1,9 +1,9 @@
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 
 class SignUpPage2 extends StatefulWidget {
-  const SignUpPage2({super.key});
+  final String birthYear;
+  const SignUpPage2({super.key, required this.birthYear});
 
   @override
   State<SignUpPage2> createState() => _SignUpPage2State();
@@ -58,7 +58,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).pushNamed(RoutesNames.signInPage);
+            Navigator.of(context).pop();
           },
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -127,6 +127,10 @@ class _SignUpPage2State extends State<SignUpPage2> {
                     if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailControllar.value.text)) {
                       Navigator.of(context).pushNamed(
                         RoutesNames.createAccount,
+                        arguments: {
+                          "birtyYear": widget.birthYear,
+                          "email": emailControllar.value.text,
+                        },
                       );
                     }
                   },

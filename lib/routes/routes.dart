@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/pages/auth%20pages/create_account.dart';
+import 'package:zoom_clone/pages/auth%20pages/email_otp_verification_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/forgot_password_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_up_page_2.dart';
 import 'package:zoom_clone/pages/basic%20pages/home_page.dart';
@@ -34,14 +35,29 @@ class Routes {
 
       //! SignUp Page 2.
       case RoutesNames.signUpPage_2:
+        // Retriving the BirthYear.
+        final birthyear = settings.arguments as String;
+
         return MaterialPageRoute(
-          builder: (context) => const SignUpPage2(),
+          builder: (context) => SignUpPage2(birthYear: birthyear),
         );
 
       //! create account page.
       case RoutesNames.createAccount:
+        // Retriving BirthYear and Email.
+        final args = settings.arguments as Map<String, dynamic>;
+
         return MaterialPageRoute(
-          builder: (context) => const CreateAccount(),
+          builder: (context) => CreateAccount(
+            birthYear: args["birtyYear"],
+            email: args["email"],
+          ),
+        );
+
+      //! create account page.
+      case RoutesNames.otpVarification:
+        return MaterialPageRoute(
+          builder: (context) => const OtpVerificationPage(),
         );
 
       //! Forgot Password Page.
