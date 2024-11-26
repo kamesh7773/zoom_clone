@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <!-- This file is related to Facebook signIn -->
+   <string name="app_name">Zoom Clone</string>
+   <string name="facebook_app_id">448008428320311</string>
+   <string name="fb_login_protocol_scheme">fb448008428320311</string>
+   <string name="facebook_client_token">67adbb50a12349d9906b6d4d482bfc9b</string>
+</resources>

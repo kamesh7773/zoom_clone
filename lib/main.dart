@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 import 'package:zoom_clone/routes/routes.dart';
 import 'package:zoom_clone/services/firebase_auth_methods.dart';
@@ -7,7 +9,19 @@ import 'package:zoom_clone/services/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Firebase Initlization.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Important code for Facebook sign-in/sign-up for Flutter web apps only
+  if (kIsWeb) {
+    await FacebookAuth.i.webAndDesktopInitialize(
+      appId: "448008428320311",
+      cookie: true,
+      xfbml: true,
+      version: "v13.0",
+    );
+  }
 
   // Checking if the user is already logged in
   bool isUserAuthenticated = await FirebaseAuthMethods.isUserLogin();

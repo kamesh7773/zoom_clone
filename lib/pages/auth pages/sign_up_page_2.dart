@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/routes/route_names.dart';
+import 'package:zoom_clone/services/firebase_auth_methods.dart';
 
 class SignUpPage2 extends StatefulWidget {
   final String birthYear;
@@ -48,7 +49,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
       //! AppBar
       appBar: AppBar(
         title: const Text(
-          "Sing in",
+          "Sign up",
           style: TextStyle(
             color: Colors.white,
             fontSize: 18,
@@ -195,17 +196,19 @@ class _SignUpPage2State extends State<SignUpPage2> {
                   children: [
                     //! continue with google.
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        FirebaseAuthMethods.signInWithGoogle(context: context);
+                      },
                       style: ElevatedButton.styleFrom(
                         side: const BorderSide(
                           color: Color.fromARGB(255, 255, 255, 255),
-                          width: 0.2,
+                          width: 0.12,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                         fixedSize: const Size(370, 52),
-                        backgroundColor: const Color.fromARGB(255, 55, 55, 55),
+                        backgroundColor: const Color.fromARGB(255, 44, 44, 44),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -215,7 +218,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             "Continue with Google",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 17,
                             ),
                           ),
                           const SizedBox()
@@ -225,17 +228,19 @@ class _SignUpPage2State extends State<SignUpPage2> {
                     const SizedBox(height: 10),
                     //! Continue with Facebook.
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        FirebaseAuthMethods.signInwithFacebook(context: context);
+                      },
                       style: ElevatedButton.styleFrom(
                         side: const BorderSide(
                           color: Color.fromARGB(255, 255, 255, 255),
-                          width: 0.2,
+                          width: 0.12,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                         fixedSize: const Size(370, 52),
-                        backgroundColor: const Color.fromARGB(255, 55, 55, 55),
+                        backgroundColor: const Color.fromARGB(255, 44, 44, 44),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -247,7 +252,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             "Continue with Faceboook",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 17,
                             ),
                           ),
                           const SizedBox()
@@ -257,17 +262,19 @@ class _SignUpPage2State extends State<SignUpPage2> {
                     const SizedBox(height: 8),
                     //! Continue with X.
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        FirebaseAuthMethods.singInwithTwitter(context: context);
+                      },
                       style: ElevatedButton.styleFrom(
                         side: const BorderSide(
                           color: Color.fromARGB(255, 255, 255, 255),
-                          width: 0.2,
+                          width: 0.12,
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                         fixedSize: const Size(370, 52),
-                        backgroundColor: const Color.fromARGB(255, 55, 55, 55),
+                        backgroundColor: const Color.fromARGB(255, 44, 44, 44),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,7 +284,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
                             "Continue with X",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 17,
                             ),
                           ),
                           const SizedBox()
