@@ -1,5 +1,7 @@
+import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/routes/route_names.dart';
+import 'package:zoom_clone/services/firebase_auth_methods.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -17,6 +19,18 @@ class _SignInPageState extends State<SignInPage> {
   // textediting controllar's
   TextEditingController emailControllar = TextEditingController();
   TextEditingController passwordControllar = TextEditingController();
+
+  //? ------------------
+  //? Method for Sing IN
+  //? ------------------
+
+  void singIn() {
+    FirebaseAuthMethods.signInWithEmail(
+      email: emailControllar.value.text.trim(),
+      password: passwordControllar.value.text.trim(),
+      context: context,
+    );
+  }
 
   // called every time when textediting controllar begin used.
   // Here we also validate the email & password controllar if they get validated then only the sign in method get run.
@@ -165,7 +179,11 @@ class _SignInPageState extends State<SignInPage> {
                       minimumSize: const Size(370, 46),
                       backgroundColor: signInButtonColor,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailControllar.value.text) && passwordControllar.value.text.isNotEmpty) {
+                        singIn();
+                      }
+                    },
                     child: Text(
                       "Sign in",
                       style: TextStyle(

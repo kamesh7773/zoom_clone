@@ -1,4 +1,5 @@
-import 'package:colored_print/colored_print.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
@@ -25,8 +26,42 @@ class OtpVerificationPage extends StatefulWidget {
 
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
   // varible declaration.
-  Color resentButton = const Color.fromRGBO(46, 119, 255, 1);
+  Color resentButtonColor = const Color.fromRGBO(46, 119, 255, 1);
   TextEditingController pinputControllar = TextEditingController();
+
+  // varibles for OTP Timer.
+  bool resentButton = true;
+  int minutes = 0;
+  int seconds = 0;
+  Duration duration = const Duration(seconds: 5);
+  Timer? timer;
+  int incrementSecond = 0;
+
+  void startTimer() {
+    duration = Duration(seconds: 120 + incrementSecond);
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (duration.inSeconds > 0) {
+        duration -= const Duration(seconds: 1);
+        minutes = duration.inMinutes;
+        seconds = duration.inSeconds % 60;
+        setState(() {});
+      } else {
+        timer.cancel();
+        resentButton = true;
+        incrementSecond += 240;
+        duration = Duration(seconds: 120 + incrementSecond);
+        setState(() {});
+      }
+    });
+  }
+
+  // Method to reset the Timer and Buttons to default when user clicks back button
+  // This handles cases where the user accidentally presses the back button
+  void resetTimerAndBtn() {
+    timer!.cancel();
+    resentButton = false;
+    duration = Duration(seconds: 120 + incrementSecond);
+  }
 
   //? ---------------------
   //? Method for Verify OTP
@@ -49,14 +84,20 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
   //? ---------------------
 
   void resentOTP() {
-    FirebaseAuthMethods.resentEmailOTP(
-      email: widget.email,
-      context: context,
-    );
+    // Restart the timer and disable the OTP resend button
+    startTimer();
+    resentButton = false;
+
+    // FirebaseAuthMethods.resentEmailOTP(
+    //   email: widget.email,
+    //   context: context,
+    // );
   }
 
   @override
   Widget build(BuildContext context) {
+    int initialMintues = incrementSecond ~/ 60;
+    int initialSecond = incrementSecond % 60;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 36, 36, 36),
       //! AppBar
@@ -149,9 +190,9 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               ),
             ),
             const SizedBox(height: 40),
-            const Text(
-              "00:00",
-              style: TextStyle(
+            Text(
+              resentButton ? "${initialMintues.toString().padLeft(2, '0')} : ${initialSecond.toString().padLeft(2, '0')}" : "${minutes.toString().padLeft(2, '0')} : ${seconds.toString().padLeft(2, '0')}",
+              style: const TextStyle(
                 color: Colors.white,
               ),
             ),
@@ -168,25 +209,27 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
                 GestureDetector(
                   onTapDown: (_) {
                     setState(() {
-                      resentButton = Colors.white;
+                      resentButtonColor = Colors.white;
                     });
 
-                    resentOTP();
+                    if (resentButton) {
+                      resentOTP();
+                    }
                   },
                   onTapUp: (_) {
                     setState(() {
-                      resentButton = const Color.fromRGBO(46, 119, 255, 1);
+                      resentButtonColor = const Color.fromRGBO(46, 119, 255, 1);
                     });
                   },
                   onTapCancel: () {
                     setState(() {
-                      resentButton = const Color.fromRGBO(46, 119, 255, 1);
+                      resentButtonColor = const Color.fromRGBO(46, 119, 255, 1);
                     });
                   },
                   child: Text(
                     " Resend code",
                     style: TextStyle(
-                      color: resentButton,
+                      color: resentButtonColor,
                     ),
                   ),
                 )

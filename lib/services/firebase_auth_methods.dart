@@ -284,7 +284,70 @@ class FirebaseAuthMethods {
         if (context.mounted) {
           // poping out the progress indicator
           Navigator.of(context).pop();
+        }
+      }
+    }
+  }
 
+  //! Email & Password Login Method
+  static Future<void> signInWithEmail({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      // showing CircularProgressIndicator
+      ProgressIndicators.showProgressIndicator(context);
+
+      // Method for sing in user with email & password
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      // fetching current userId info from "users" collection.
+      final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+
+      final userData = currentUserInfo.data();
+
+      // creating instace of Shared Preferences.
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      // writing current User info data to SharedPreferences.
+      await prefs.setString("birthYear", userData!["birthYear"]);
+      await prefs.setString("name", userData["name"]);
+      await prefs.setString("email", userData["email"]);
+      await prefs.setString("provider", userData["provider"]);
+      await prefs.setString("userID", userData["userID"]);
+
+      // setting isLogin to "true"
+      await prefs.setBool('isLogin', true);
+
+      // After login successfully redirecting user to HomePage
+      if (context.mounted) {
+        Navigator.pop(context);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          RoutesNames.homePage,
+          (Route<dynamic> route) => false,
+        );
+      }
+    }
+    // Handling Login auth Exceptions
+    on FirebaseAuthException catch (error) {
+      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+        Navigator.pop(context);
+        PopUpWidgets.diologbox(
+          context: context,
+          title: "Sign up failed",
+          content: "Connection failed. Please check your network connection and try again.",
+        );
+      } else if (error.message == "The supplied auth credential is incorrect, malformed or has expired." && context.mounted) {
+        Navigator.pop(context);
+        PopUpWidgets.diologbox(
+          context: context,
+          title: "Invalid credentials",
+          content: "Your entered email and password are Invalid. Please check your email & password and try again.",
+        );
+      } else {
+        if (context.mounted) {
+          Navigator.pop(context);
           PopUpWidgets.diologbox(
             context: context,
             title: "Network Error",
@@ -293,6 +356,88 @@ class FirebaseAuthMethods {
         }
       }
     }
+  }
+
+  //! Email & Password ForgorPassword/Reset Method
+  static Future<bool> forgotEmailPassword({
+    required String email,
+    required BuildContext context,
+  }) async {
+    // variable declartion
+    late bool associatedEmail;
+    try {
+      // showing Progress Indigator
+      ProgressIndicators.showProgressIndicator(context);
+      //* 1st We check if the entered email address is already present & its provider is "Email & Password" in the "users" collection by querying FireStore's "users" Collection.
+      // searching for Email Address & "Email & Password" provider in "users" collection at once
+      QuerySnapshot queryForEmailAndProvider = await _db.collection('users').where("email", isEqualTo: email).where("provider", isEqualTo: "Email & Password").get();
+
+      // if the entered Email address already present in "users" collection and Provider is "Email & Password"
+      // it's means that user is entered corrent email address it's mean we can send that Forgot password link to user Email Address.
+      if (queryForEmailAndProvider.docs.isNotEmpty && context.mounted) {
+        // Method for sending forgot password link to user
+        await _auth.sendPasswordResetEmail(email: email);
+        // Poping of the Progress Indicator
+        if (context.mounted) {
+          Navigator.pop(context);
+        }
+        // Redirect user to ForgotPasswordHoldPage
+        if (context.mounted) {
+          PopUpWidgets.diologbox(
+            context: context,
+            title: "Email Sent",
+            content: "Check your email for the password reset link and follow the steps to reset your password.",
+          );
+        }
+
+        associatedEmail = true;
+      }
+      // if the entered Email address is not present in "users" collection or Entered email Provider is not "Email & Password" is present in "users" collection
+      // that means user entered Email does not have associat account in Firebase realted to "Email & Password" Provider.
+      else {
+        if (context.mounted) {
+          // Poping of the Progress Indicator
+          Navigator.of(context).pop();
+
+          PopUpWidgets.diologbox(
+            context: context,
+            title: "Not found (404)",
+            content: "There is no associated account found with entered Email.",
+          );
+        }
+        associatedEmail = false;
+      }
+    }
+    // Handling forgot password auth Exceptions
+    on FirebaseAuthException catch (error) {
+      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+        Navigator.pop(context);
+        PopUpWidgets.diologbox(
+          context: context,
+          title: "Network failure",
+          content: "Connection failed. Please check your network connection and try again.",
+        );
+      } else if (error.message == "The supplied auth credential is incorrect, malformed or has expired." && context.mounted) {
+        Navigator.pop(context);
+        PopUpWidgets.diologbox(
+          context: context,
+          title: "Invalid email",
+          content: "Your entered email is Invalid. Please check your email and try again.",
+        );
+      } else {
+        if (context.mounted) {
+          Navigator.pop(context);
+          PopUpWidgets.diologbox(
+            context: context,
+            title: "Network Error",
+            content: error.toString(),
+          );
+        }
+      }
+    }
+
+    // returning email value
+    return associatedEmail;
   }
 
   // ------------------------------------
