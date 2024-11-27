@@ -50,6 +50,7 @@ dependencies:
   connectivity_plus: ^6.1.0
   http: ^1.2.2
   shared_preferences: ^2.3.3
+ 
   
 dev_dependencies:
   flutter_test:
@@ -61,6 +62,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_launcher_icons: ^0.13.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -75,6 +77,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/Icon/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
@@ -99,5 +102,12 @@ flutter:
         - asset: assets/fonts/kaleko-205-round-bold.ttf
           weight: 700
   #
-  # For details regarding fonts from package dependencies,
+  # For details regarding fonts from package   dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  adaptive_icon_foreground_inset: 0
+  ios: "AppIcon"
+  image_path: "assets/Icon/Icon.png"
+  min_sdk_android: 21
