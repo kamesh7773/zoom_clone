@@ -8,6 +8,7 @@ import 'package:zoom_clone/pages/basic%20pages/join_meeting_page.dart';
 import 'package:zoom_clone/pages/basic%20pages/settings_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_in_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_up_page_1.dart';
+import 'package:zoom_clone/pages/basic%20pages/splash_page.dart';
 import 'package:zoom_clone/pages/basic%20pages/welcome_page.dart';
 
 import 'route_names.dart';
@@ -15,6 +16,12 @@ import 'route_names.dart';
 class Routes {
   static Route<dynamic> genrateRoute(RouteSettings settings) {
     switch (settings.name) {
+      //! Splash Screen Page.
+      case RoutesNames.splashPage:
+        return MaterialPageRoute(
+          builder: (context) => const SplashPage(),
+        );
+
       //! Welcome Page.
       case RoutesNames.welcomePage:
         return MaterialPageRoute(

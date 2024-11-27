@@ -41,7 +41,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Zoom Clone',
       initialRoute: isUserAuthenticated ? RoutesNames.homePage : RoutesNames.welcomePage,
-      // initialRoute: RoutesNames.homePage,
       onGenerateRoute: Routes.genrateRoute,
     );
   }

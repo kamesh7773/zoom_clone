@@ -50,8 +50,8 @@ dependencies:
   connectivity_plus: ^6.1.0
   http: ^1.2.2
   shared_preferences: ^2.3.3
+  flutter_native_splash: ^2.4.3
  
-  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -106,8 +106,12 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
 flutter_launcher_icons:
-  android: "launcher_icon"
-  adaptive_icon_foreground_inset: 0
-  ios: "AppIcon"
+  android: true
+  ios: true
+  remove_alpha_ios: true
   image_path: "assets/Icon/Icon.png"
+  adaptive_icon_background: "#ffffff" 
+  adaptive_icon_foreground: "assets/Icon/Icon_foreground.png"
   min_sdk_android: 21
+
+
