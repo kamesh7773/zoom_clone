@@ -204,7 +204,7 @@ class HomePageState extends State<HomePage> {
             //! Chat.
             BottomNavigationBarItem(
               icon: Icon(
-                Icons.chat_rounded,
+                Icons.history,
                 size: 24,
               ),
               label: "Chat",
@@ -226,14 +226,6 @@ class HomePageState extends State<HomePage> {
                 size: 29,
               ),
               label: "Settings",
-            ),
-            //! More.
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-                size: 29,
-              ),
-              label: "Chat",
             ),
           ],
         ),
