@@ -1,30 +1,34 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"> <!-- Added tools namespace for jitsi_meet_wrapper package-->
 
-    <!-- Code related to facebook sign in -->
+    
+    <!-- Code related to Facebook sign-in -->
     <queries>
         <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
     </queries>
-    <!-- From now we application can access the Internet -->
-    
+    <!-- Code related to Facebook sign-in -->
+
+    <!-- From now our application can access the Internet -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- From now we application can access the Internet -->
+    <!-- From now our application can access the Internet -->
 
     <application
         android:label="Zoom"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
         
-        <!-- Code related to facebook sign in -->
+        tools:replace="android:label"> <!-- Added tools:replace to handle label conflict jitsi_meet_wrapper package -->
+        
+        <!-- Code related to Facebook sign-in -->
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
         <activity android:name="com.facebook.FacebookActivity"
-        android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-        android:label="@string/app_name" />
+                  android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+                  android:label="@string/app_name" />
         <activity
-        android:name="com.facebook.CustomTabActivity"
-        android:exported="true">
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -32,7 +36,7 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <!-- Code related to facebook sign in -->
+        <!-- Code related to Facebook sign-in -->
 
         <activity
             android:name=".MainActivity"
