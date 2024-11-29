@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:zoom_clone/pages/basic%20pages/chat_page.dart';
+import 'package:zoom_clone/pages/basic%20pages/meeting_histroy.dart';
 import 'package:zoom_clone/pages/basic%20pages/contacts_page.dart';
 import 'package:zoom_clone/pages/basic%20pages/meetings_screen.dart';
 import 'package:zoom_clone/pages/basic%20pages/settings_page.dart';
@@ -19,7 +19,7 @@ class HomePageState extends State<HomePage> {
   // List of Page for bottom Navigator Bar
   List<Widget> pages = [
     const MeetingScreen(),
-    const ChatPage(),
+    const MeetingHistroy(),
     const ContactsPage(),
     const SettingsPage(),
   ];
@@ -69,7 +69,7 @@ class HomePageState extends State<HomePage> {
                 Icons.history,
                 size: 24,
               ),
-              label: "Chat",
+              label: "Meeting History",
             ),
 
             //! Contancts

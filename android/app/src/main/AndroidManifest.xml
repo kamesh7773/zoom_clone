@@ -1,7 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"> <!-- Added tools namespace for jitsi_meet_wrapper package-->
 
-    
     <!-- Code related to Facebook sign-in -->
     <queries>
         <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
