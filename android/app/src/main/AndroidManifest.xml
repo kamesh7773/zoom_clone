@@ -1,11 +1,25 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"> <!-- Added this line for jitsi_meet_wrapper package-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Code related to Facebook sign-in -->
     <queries>
         <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
     </queries>
     <!-- Code related to Facebook sign-in -->
+
+    <!-- added permissons related to zegocloud packge -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"     />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- added permissons related to zegocloud packge -->
 
     <!-- From now our application can access the Internet -->
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -15,9 +29,8 @@
     <application
         android:label="Zoom"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
-        tools:replace="android:label"> <!-- Added this line for jitsi_meet_wrapper package -->
-        
+        android:icon="@mipmap/ic_launcher">
+
         <!-- Code related to Facebook sign-in -->
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>

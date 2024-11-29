@@ -51,7 +51,7 @@ dependencies:
   http: ^1.2.2
   shared_preferences: ^2.3.3
   flutter_native_splash: ^2.4.3
-  jitsi_meet_wrapper: ^0.2.0+1
+  zego_uikit_prebuilt_video_conference: ^2.9.5
  
 dev_dependencies:
   flutter_test:

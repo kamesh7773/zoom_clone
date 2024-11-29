@@ -9,6 +9,7 @@ import 'package:zoom_clone/pages/basic%20pages/settings_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_in_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_up_page_1.dart';
 import 'package:zoom_clone/pages/basic%20pages/splash_page.dart';
+import 'package:zoom_clone/pages/basic%20pages/video_confrence_page.dart';
 import 'package:zoom_clone/pages/basic%20pages/welcome_page.dart';
 
 import 'route_names.dart';
@@ -61,7 +62,7 @@ class Routes {
           ),
         );
 
-      //! create account page.
+      //! Email OTP varification page.
       case RoutesNames.otpVarification:
         // Retriving BirthYear, Email, Fname, Lname and Password.
         final args = settings.arguments as Map<String, dynamic>;
@@ -80,6 +81,12 @@ class Routes {
       case RoutesNames.forgotPasswordPage:
         return MaterialPageRoute(
           builder: (context) => const ForgotPasswordPage(),
+        );
+
+      //! Video Conference Page.
+      case RoutesNames.videoConferencePage:
+        return MaterialPageRoute(
+          builder: (context) => const VideoConferencePage(),
         );
 
       //! Join Meeting Page.

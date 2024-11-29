@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:zoom_clone/routes/route_names.dart';
 import 'package:zoom_clone/services/firebase_auth_methods.dart';
-import 'package:zoom_clone/services/jitsiMeet_methods.dart';
 
 class MeetingScreen extends StatelessWidget {
   const MeetingScreen({super.key});
@@ -44,7 +44,9 @@ class MeetingScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      JitsimeetMethods.createNewMeeting();
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.videoConferencePage,
+                      );
                     },
                     child: Container(
                       width: 58,
