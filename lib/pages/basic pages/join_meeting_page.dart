@@ -1,6 +1,7 @@
 import 'dart:io';
+import 'package:colored_print/colored_print.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:flutter/services.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/routes/route_names.dart';
@@ -30,7 +31,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
   // called every time when textediting controllar begin used.
   // Here we also validate the birth year textediting controllar for accepting the right birty year.
   listenPasswordTextEditingControllar() {
-    if (RegExp(r'^(19[0-9]{2}|20[0-9]{2}|21[0-9]{2})$').hasMatch(meetingIDControllar.value.text) && meetingIDControllar.value.text.isNotEmpty) {
+    if (meetingIDControllar.value.text.length == 14) {
       setState(() {
         joinButtonColor = const Color.fromARGB(255, 41, 116, 255);
         joinButtonTextColor = const Color.fromARGB(255, 255, 255, 255);
@@ -43,33 +44,34 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     }
   }
 
+  void _formatText() {
+    String text = meetingIDControllar.text.replaceAll(' ', ''); // Remove existing spaces
+    String formatted = '';
+    for (int i = 0; i < text.length; i++) {
+      formatted += text[i];
+      if ((i + 1) % 4 == 0 && i + 1 != text.length) {
+        formatted += ' '; // Add a space after every 3 characters
+      }
+    }
+
+    // Update the controller text and move cursor to the correct position
+    if (formatted != meetingIDControllar.text) {
+      meetingIDControllar.value = TextEditingValue(
+        text: formatted,
+        selection: TextSelection.collapsed(offset: formatted.length),
+      );
+    }
+  }
+
   // Method that retrive the current device model name.
   Future<void> deviceModelName() async {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-    final userAgent = html.window.navigator.userAgent;
+
     // Android model detection
     if (Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
       modelName = androidInfo.model;
       deviceBrand = androidInfo.brand;
-    }
-
-    // Browser detection using user agent string
-    if (userAgent.contains("Chrome") && !userAgent.contains("Edge") && !userAgent.contains("OPR")) {
-      final version = userAgent.split("Chrome/")[1].split(" ")[0];
-      modelName = "Google Chrome (Version: $version)";
-    } else if (userAgent.contains("Firefox")) {
-      final version = userAgent.split("Firefox/")[1];
-      modelName = "Mozilla Firefox (Version: $version)";
-    } else if (userAgent.contains("Safari") && !userAgent.contains("Chrome")) {
-      final version = userAgent.split("Version/")[1].split(" ")[0];
-      modelName = "Apple Safari (Version: $version)";
-    } else if (userAgent.contains("Edge")) {
-      final version = userAgent.split("Edg/")[1];
-      modelName = "Microsoft Edge (Version: $version)";
-    } else if (userAgent.contains("OPR")) {
-      final version = userAgent.split("OPR/")[1];
-      modelName = "Opera (Version: $version)";
     }
   }
 
@@ -78,6 +80,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     super.initState();
     // method that listen the Textediting Controllar.
     meetingIDControllar.addListener(listenPasswordTextEditingControllar);
+    meetingIDControllar.addListener(_formatText);
     deviceModelName();
   }
 
@@ -97,11 +100,14 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
         //! AppBar
+
         appBar: AppBar(
           title: const Text(
             "Join",
             style: TextStyle(
+              fontSize: 18,
               color: Colors.white,
+              fontFamily: "Lato",
             ),
           ),
           centerTitle: true,
@@ -126,18 +132,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 12.0),
-                  child: Text(
-                    "Verify your age",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 168, 168, 168),
-                      fontSize: 14,
-                      fontFamily: "Lato",
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 14),
                 //! Meeting ID Textediting Controller
                 Container(
                   decoration: const BoxDecoration(
@@ -166,6 +161,10 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                       enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
                       focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
                     ),
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly, // Allow only numbers
+                      LengthLimitingTextInputFormatter(12),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 18),
@@ -254,7 +253,8 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                       backgroundColor: joinButtonColor,
                     ),
                     onPressed: () {
-                      if (meetingIDControllar.value.text.isEmpty) {
+                      if (meetingIDControllar.value.text.length == 14) {
+                        ColoredPrint.warning(meetingIDControllar.value.text.replaceAll(' ', ''));
                       } else {}
                     },
                     child: Text(
