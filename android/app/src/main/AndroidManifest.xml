@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"> <!-- Added tools namespace for jitsi_meet_wrapper package-->
+          xmlns:tools="http://schemas.android.com/tools"> <!-- Added this line for jitsi_meet_wrapper package-->
 
     <!-- Code related to Facebook sign-in -->
     <queries>
@@ -16,8 +16,7 @@
         android:label="Zoom"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        
-        tools:replace="android:label"> <!-- Added tools:replace to handle label conflict jitsi_meet_wrapper package -->
+        tools:replace="android:label"> <!-- Added this line for jitsi_meet_wrapper package -->
         
         <!-- Code related to Facebook sign-in -->
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
