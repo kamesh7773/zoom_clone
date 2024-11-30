@@ -21,6 +21,7 @@ class VideoConferencePage extends StatelessWidget {
           turnOnMicrophoneWhenJoining: true,
         )
               ..layout = ZegoLayout.gallery(
+                addBorderRadiusAndSpacingBetweenView: true,
                 showScreenSharingFullscreenModeToggleButtonRules: ZegoShowFullscreenModeToggleButtonRules.alwaysShow,
                 showNewScreenSharingViewInFullscreenMode: false,
               ) // Set the layout to gallery mode. and configure the [showNewScreenSharingViewInFullscreenMode] and [showScreenSharingFullscreenModeToggleButtonRules].

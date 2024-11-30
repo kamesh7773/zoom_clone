@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
   final bool isUserAuthenticated;
   const MyApp({super.key, required this.isUserAuthenticated});
 
-  @override
+  @override  
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
