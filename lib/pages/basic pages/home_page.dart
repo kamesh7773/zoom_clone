@@ -34,6 +34,7 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: pages[_page],
       //! Bottem Navigation Bar.
       bottomNavigationBar: Theme(

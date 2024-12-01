@@ -45,7 +45,7 @@ class MeetingScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).pushNamed(
-                        RoutesNames.videoConferencePage,
+                        RoutesNames.startMeetingPage,
                       );
                     },
                     child: Container(
@@ -77,18 +77,25 @@ class MeetingScreen extends StatelessWidget {
               //! Join Button.
               Column(
                 children: [
-                  Container(
-                    width: 58,
-                    height: 58,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(61, 132, 255, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: const Center(
-                      child: Icon(
-                        Icons.add_box_rounded,
-                        color: Colors.white,
-                        size: 35,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.joinMeetingPage,
+                      );
+                    },
+                    child: Container(
+                      width: 58,
+                      height: 58,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(61, 132, 255, 1),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: const Center(
+                        child: Icon(
+                          Icons.add_box_rounded,
+                          color: Colors.white,
+                          size: 35,
+                        ),
                       ),
                     ),
                   ),

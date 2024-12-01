@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoom_clone/routes/route_names.dart';
+import 'package:zoom_clone/services/firebase_auth_methods.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -10,6 +11,19 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  // Checking if the user is already logged in
+  bool isUserAuthenticated = false;
+
+  Future<void> isUserAuthenticate() async {
+    isUserAuthenticated = await FirebaseAuthMethods.isUserLogin();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    isUserAuthenticate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -18,7 +32,7 @@ class _SettingsPageState extends State<SettingsPage> {
         if (!value) {
           //! On press redirect user to Welcome Page.
           Navigator.of(context).pushNamedAndRemoveUntil(
-            RoutesNames.welcomePage,
+            isUserAuthenticated ? RoutesNames.homePage : RoutesNames.welcomePage,
             (Route<dynamic> route) => false,
           );
         }
@@ -39,8 +53,9 @@ class _SettingsPageState extends State<SettingsPage> {
           leading: IconButton(
             onPressed: () {
               //! On press redirect user to Welcome Page.
+
               Navigator.of(context).pushNamedAndRemoveUntil(
-                RoutesNames.welcomePage,
+                isUserAuthenticated ? RoutesNames.homePage : RoutesNames.welcomePage,
                 (Route<dynamic> route) => false,
               );
             },

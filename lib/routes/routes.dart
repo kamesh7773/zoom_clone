@@ -5,10 +5,12 @@ import 'package:zoom_clone/pages/auth%20pages/forgot_password_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_up_page_2.dart';
 import 'package:zoom_clone/pages/basic%20pages/home_page.dart';
 import 'package:zoom_clone/pages/basic%20pages/join_meeting_page.dart';
+import 'package:zoom_clone/pages/basic%20pages/meetings_screen.dart';
 import 'package:zoom_clone/pages/basic%20pages/settings_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_in_page.dart';
 import 'package:zoom_clone/pages/auth%20pages/sign_up_page_1.dart';
 import 'package:zoom_clone/pages/basic%20pages/splash_page.dart';
+import 'package:zoom_clone/pages/basic%20pages/start_meeting_page.dart';
 import 'package:zoom_clone/pages/basic%20pages/video_confrence_page.dart';
 import 'package:zoom_clone/pages/basic%20pages/welcome_page.dart';
 
@@ -27,6 +29,12 @@ class Routes {
       case RoutesNames.welcomePage:
         return MaterialPageRoute(
           builder: (context) => const WelcomePage(),
+        );
+
+      //! Join Meeting Page.
+      case RoutesNames.joinMeetingPage:
+        return MaterialPageRoute(
+          builder: (context) => const JoinMeetingPage(),
         );
 
       //! SignIn Page.
@@ -89,10 +97,10 @@ class Routes {
           builder: (context) => const VideoConferencePage(),
         );
 
-      //! Join Meeting Page.
-      case RoutesNames.joinMeetingPage:
+      //! Start Meeting Page.
+      case RoutesNames.startMeetingPage:
         return MaterialPageRoute(
-          builder: (context) => const JoinMeetingPage(),
+          builder: (context) => const StartMeetingPage(),
         );
 
       //! Home Page.
@@ -101,6 +109,11 @@ class Routes {
           builder: (context) => const HomePage(),
         );
 
+      //! MeetingScreen Page.
+      case RoutesNames.meetingScreen:
+        return MaterialPageRoute(
+          builder: (context) => const MeetingScreen(),
+        );
       //! Settings Page.
       case RoutesNames.settingsPage:
         return MaterialPageRoute(

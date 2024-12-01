@@ -52,6 +52,7 @@ dependencies:
   shared_preferences: ^2.3.3
   flutter_native_splash: ^2.4.3
   zego_uikit_prebuilt_video_conference: ^2.9.5
+  share_plus: ^10.1.2
  
 dev_dependencies:
   flutter_test:

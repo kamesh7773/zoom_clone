@@ -8,7 +8,9 @@ class RoutesNames {
   static const String otpVarification = "OtpVarification";
   static const String forgotPasswordPage = "ForgotPasswordPage";
   static const String videoConferencePage = "VideoConferencePage";
+  static const String startMeetingPage = "StartMeetingPage";
   static const String joinMeetingPage = "JoinMeetingPage";
   static const String homePage = "HomePage";
+  static const String meetingScreen = "MeetingScreen";
   static const String settingsPage = "SettingsPage";
 }

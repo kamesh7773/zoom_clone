@@ -86,287 +86,270 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (value, result) {
-        if (!value) {
-          //! On press redirect user to Welcome Page.
-          Navigator.of(context).pushNamedAndRemoveUntil(
-            RoutesNames.welcomePage,
-            (Route<dynamic> route) => false,
-          );
-        }
-      },
-      child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 36, 36, 36),
-        //! AppBar
-
-        appBar: AppBar(
-          title: const Text(
-            "Join",
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-              fontFamily: "Lato",
-            ),
-          ),
-          centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 36, 36, 36),
-          leading: IconButton(
-            onPressed: () {
-              //! On press redirect user to Welcome Page.
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                RoutesNames.welcomePage,
-                (Route<dynamic> route) => false,
-              );
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Color.fromRGBO(46, 119, 255, 1),
-            ),
+    return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 36, 36, 36),
+      //! AppBar
+      appBar: AppBar(
+        title: const Text(
+          "Join",
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
+            fontFamily: "Lato",
           ),
         ),
-        body: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 14),
-                //! Meeting ID Textediting Controller
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 41, 41, 41),
-                    border: Border(
-                      top: BorderSide(
-                        width: 0.5,
-                        color: Color.fromARGB(255, 85, 85, 85),
-                      ),
-                      bottom: BorderSide(
-                        width: 0.5,
-                        color: Color.fromARGB(255, 85, 85, 85),
-                      ),
+        centerTitle: true,
+        backgroundColor: const Color.fromARGB(255, 36, 36, 36),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Color.fromRGBO(46, 119, 255, 1),
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 14),
+              //! Meeting ID Textediting Controller
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 41, 41, 41),
+                  border: Border(
+                    top: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
                     ),
-                  ),
-                  child: TextFormField(
-                    autofocus: true,
-                    controller: meetingIDControllar,
-                    keyboardType: TextInputType.number,
-                    cursorColor: Colors.lightBlue,
-                    style: const TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
-                    decoration: const InputDecoration(
-                      hintText: "Meeting ID",
-                      hintStyle: TextStyle(color: Color.fromARGB(255, 102, 102, 102)),
-                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
-                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
-                    ),
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly, // Allow only numbers
-                      LengthLimitingTextInputFormatter(12),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 18),
-                const Center(
-                  child: Text(
-                    "Current device name",
-                    style: TextStyle(
-                      fontSize: 13.5,
-                      color: Color.fromRGBO(46, 119, 255, 1),
+                    bottom: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
                     ),
                   ),
                 ),
-                //! Current Device Model & Brand Name.
-                const SizedBox(height: 18),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 41, 41, 41),
-                    border: Border(
-                      top: BorderSide(
-                        width: 0.5,
-                        color: Color.fromARGB(255, 85, 85, 85),
-                      ),
-                      bottom: BorderSide(
-                        width: 0.5,
-                        color: Color.fromARGB(255, 85, 85, 85),
-                      ),
-                    ),
+                child: TextFormField(
+                  autofocus: true,
+                  controller: meetingIDControllar,
+                  keyboardType: TextInputType.number,
+                  cursorColor: Colors.lightBlue,
+                  style: const TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                  decoration: const InputDecoration(
+                    hintText: "Meeting ID",
+                    hintStyle: TextStyle(color: Color.fromARGB(255, 102, 102, 102)),
+                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide.none),
+                    focusedBorder: UnderlineInputBorder(borderSide: BorderSide.none),
                   ),
-                  padding: const EdgeInsets.all(13),
-                  alignment: Alignment.center,
-                  child: Text(
-                    "$deviceBrand $modelName",
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly, // Allow only numbers
+                    LengthLimitingTextInputFormatter(12),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 18),
+              const Center(
+                child: Text(
+                  "Current device name",
+                  style: TextStyle(
+                    fontSize: 13.5,
+                    color: Color.fromRGBO(46, 119, 255, 1),
                   ),
                 ),
-                //! Privacy Policy & Term of Services Section.
-                const Padding(
-                  padding: EdgeInsets.only(left: 14.0, top: 6.0),
-                  child: Wrap(
-                    children: [
-                      Text(
-                        "By clicking 'Join',you agree to our",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 136, 135, 135),
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        " Terms of Service",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        " and",
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 136, 135, 135),
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        " Privacy",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 13,
-                        ),
-                      ),
-                      Text(
-                        "Statement",
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 13,
-                        ),
-                      ),
-                    ],
+              ),
+              //! Current Device Model & Brand Name.
+              const SizedBox(height: 18),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 41, 41, 41),
+                  border: Border(
+                    top: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
+                    bottom: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 18),
-                //! Continue Button.
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      minimumSize: const Size(370, 46),
-                      backgroundColor: joinButtonColor,
-                    ),
-                    onPressed: () {
-                      if (meetingIDControllar.value.text.length == 14) {
-                        ColoredPrint.warning(meetingIDControllar.value.text.replaceAll(' ', ''));
-                      } else {}
-                    },
-                    child: Text(
-                      "Join",
+                padding: const EdgeInsets.all(13),
+                alignment: Alignment.center,
+                child: Text(
+                  "$deviceBrand $modelName",
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+              ),
+              //! Privacy Policy & Term of Services Section.
+              const Padding(
+                padding: EdgeInsets.only(left: 14.0, top: 6.0),
+                child: Wrap(
+                  children: [
+                    Text(
+                      "By clicking 'Join',you agree to our",
                       style: TextStyle(
+                        color: Color.fromARGB(255, 136, 135, 135),
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      " Terms of Service",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      " and",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 136, 135, 135),
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      " Privacy",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 13,
+                      ),
+                    ),
+                    Text(
+                      "Statement",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 18),
+              //! Continue Button.
+              Center(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    minimumSize: const Size(370, 46),
+                    backgroundColor: joinButtonColor,
+                  ),
+                  onPressed: () {
+                    if (meetingIDControllar.value.text.length == 14) {
+                      ColoredPrint.warning(meetingIDControllar.value.text.replaceAll(' ', ''));
+                    } else {}
+                  },
+                  child: Text(
+                    "Join",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: joinButtonTextColor,
+                    ),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(left: 18.0, top: 10.0, right: 8.0),
+                child: Text(
+                  "Please enter your Meeting ID and join the meeting",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 136, 135, 135),
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 60),
+              //! Audio & Video Button Option's.
+              const Padding(
+                padding: EdgeInsets.only(left: 18.0),
+                child: Text(
+                  "Join options",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 136, 135, 135),
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 4),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 41, 41, 41),
+                  border: Border(
+                    top: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
+                    bottom: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
+                  ),
+                ),
+                padding: const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Don't connect to audio",
+                      style: TextStyle(
+                        color: Colors.white,
                         fontSize: 16,
-                        color: joinButtonTextColor,
                       ),
+                    ),
+                    CupertinoSwitch(
+                      value: isAudioOn,
+                      onChanged: (value) {
+                        setState(() {
+                          isAudioOn = !isAudioOn;
+                        });
+                      },
+                      activeColor: const Color.fromARGB(255, 44, 255, 51),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 41, 41, 41),
+                  border: Border(
+                    top: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
+                    ),
+                    bottom: BorderSide(
+                      width: 0.5,
+                      color: Color.fromARGB(255, 85, 85, 85),
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 18.0, top: 10.0, right: 8.0),
-                  child: Text(
-                    "Please enter your Meeting ID and join the meeting",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 136, 135, 135),
-                      fontSize: 13,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 60),
-                //! Audio & Video Button Option's.
-                const Padding(
-                  padding: EdgeInsets.only(left: 18.0),
-                  child: Text(
-                    "Join options",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 136, 135, 135),
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 41, 41, 41),
-                    border: Border(
-                      top: BorderSide(
-                        width: 0.5,
-                        color: Color.fromARGB(255, 85, 85, 85),
-                      ),
-                      bottom: BorderSide(
-                        width: 0.5,
-                        color: Color.fromARGB(255, 85, 85, 85),
+                padding: const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
+                alignment: Alignment.center,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      "Turn off my video",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
                       ),
                     ),
-                  ),
-                  padding: const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Don't connect to audio",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                      CupertinoSwitch(
-                        value: isAudioOn,
-                        onChanged: (value) {
-                          setState(() {
-                            isAudioOn = !isAudioOn;
-                          });
-                        },
-                        activeColor: const Color.fromARGB(255, 44, 255, 51),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(255, 41, 41, 41),
-                    border: Border(
-                      top: BorderSide(
-                        width: 0.5,
-                        color: Color.fromARGB(255, 85, 85, 85),
-                      ),
-                      bottom: BorderSide(
-                        width: 0.5,
-                        color: Color.fromARGB(255, 85, 85, 85),
-                      ),
+                    CupertinoSwitch(
+                      value: isVideoOn,
+                      onChanged: (value) {
+                        setState(() {
+                          isVideoOn = !isVideoOn;
+                        });
+                      },
+                      activeColor: const Color.fromARGB(255, 44, 255, 51),
                     ),
-                  ),
-                  padding: const EdgeInsets.only(left: 12, right: 12, top: 8, bottom: 8),
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Turn off my video",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
-                      ),
-                      CupertinoSwitch(
-                        value: isVideoOn,
-                        onChanged: (value) {
-                          setState(() {
-                            isVideoOn = !isVideoOn;
-                          });
-                        },
-                        activeColor: const Color.fromARGB(255, 44, 255, 51),
-                      ),
-                    ],
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
