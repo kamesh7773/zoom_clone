@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 
 class StartMeetingPage extends StatefulWidget {
@@ -11,9 +12,28 @@ class StartMeetingPage extends StatefulWidget {
 
 class _StartMeetingPageState extends State<StartMeetingPage> {
   // variable declaration
+  late final String name;
+  late final String userID;
+  late final String imageUrl;
 
   bool isVideoOn = true;
   bool usePersonalID = false;
+
+  // Method for fetching current Provider user Data
+  Future<void> getUserData() async {
+    // creating instace of Shared Preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    name = prefs.getString('name') ?? "";
+    userID = prefs.getString('userID') ?? "";
+    imageUrl = prefs.getString('imageUrl') ?? "";
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +179,12 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
                 onPressed: () {
                   Navigator.of(context).pushNamed(
                     RoutesNames.videoConferencePage,
+                    arguments: {
+                      "name": name,
+                      "userID": userID,
+                      "imageUrl": imageUrl,
+                      "conferenceID": "25802580",
+                    },
                   );
                 },
                 child: const Text(

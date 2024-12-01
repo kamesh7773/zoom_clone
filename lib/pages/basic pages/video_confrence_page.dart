@@ -1,49 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
 
 class VideoConferencePage extends StatefulWidget {
-  // final String conferenceID;
-
-  const VideoConferencePage({super.key});
+  final String name;
+  final String userID;
+  final String imageUrl;
+  final String conferenceID;
+  const VideoConferencePage({
+    super.key,
+    required this.name,
+    required this.userID,
+    required this.imageUrl,
+    required this.conferenceID,
+  });
 
   @override
   State<VideoConferencePage> createState() => _VideoConferencePageState();
 }
 
 class _VideoConferencePageState extends State<VideoConferencePage> {
-  late final String name;
-  late final String email;
-  late final String userID;
-  late final String imageUrl;
-
-  // Method for fetching current Provider user Data
-  Future<void> getUserData() async {
-    // creating instace of Shared Preferences.
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    name = prefs.getString('name') ?? "";
-    email = prefs.getString('email') ?? "";
-    imageUrl = prefs.getString('imageUrl') ?? "";
-    userID = prefs.getString('userID') ?? "";
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getUserData();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: ZegoUIKitPrebuiltVideoConference(
         appID: 1472862173,
         appSign: "c7ae8f533225bd27922a858b08014e0aa8868c569ed35433638f821d07c1c3db",
-        userID: userID,
-        userName: name,
-        conferenceID: "25802580",
+        userID: widget.userID,
+        userName: widget.name,
+        conferenceID: widget.conferenceID,
         config: (ZegoUIKitPrebuiltVideoConferenceConfig(
           turnOnCameraWhenJoining: true,
           turnOnMicrophoneWhenJoining: true,
@@ -55,7 +40,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                        image: NetworkImage(imageUrl),
+                        image: NetworkImage(widget.imageUrl),
                       ),
                     ),
                   )

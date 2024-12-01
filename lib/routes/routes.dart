@@ -92,9 +92,18 @@ class Routes {
         );
 
       //! Video Conference Page.
+
       case RoutesNames.videoConferencePage:
+        // Retriving BirthYear, Email, Fname, Lname and Password.
+        final args = settings.arguments as Map<String, dynamic>;
+
         return MaterialPageRoute(
-          builder: (context) => const VideoConferencePage(),
+          builder: (context) => VideoConferencePage(
+            name: args["name"],
+            userID: args["userID"],
+            imageUrl: args["imageUrl"],
+            conferenceID: args["conferenceID"],
+          ),
         );
 
       //! Start Meeting Page.
