@@ -1,3 +1,4 @@
+import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
@@ -22,8 +23,14 @@ class VideoConferencePage extends StatefulWidget {
 }
 
 class _VideoConferencePageState extends State<VideoConferencePage> {
+  // Method for formating the Personal Meeting ID.
+  String formatString(String input) {
+    return input.replaceAllMapped(RegExp(r'.{1,4}'), (match) => '${match.group(0)} ').trim();
+  }
+
   @override
   Widget build(BuildContext context) {
+    ColoredPrint.warning(widget.conferenceID);
     return SafeArea(
       child: ZegoUIKitPrebuiltVideoConference(
         appID: 1472862173,
@@ -85,7 +92,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
                   IconButton(
                     onPressed: () async {
                       await Share.share(
-                        "Share conference ID",
+                        formatString(widget.conferenceID),
                         subject: "Hi i want to share this link",
                       );
                     },

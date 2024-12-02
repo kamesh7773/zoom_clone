@@ -606,7 +606,7 @@ class FirebaseAuthMethods {
               // Checking weather user is already SignUp or not
               var signUpStatus = await FirebaseAuthMethods.isSignUpforFirstTime();
 
-              // if user is contining with Google Sign then only we create personalMeetingID (Sign UP Condiation)
+              // if user is contining with Google Sign up then only we create personalMeetingID (Sign UP Condiation)
               if (signUpStatus.signUpWithGoogle) {
                 // creating "users" collection so we can store user specific user data
                 await _db.collection("users").doc(_auth.currentUser!.uid).set({
@@ -621,9 +621,45 @@ class FirebaseAuthMethods {
                 }).catchError((error) {
                   debugPrint("User data not saved!");
                 });
+
+                // fetching current userId info from "users" collection.
+                final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+
+                final userData = currentUserInfo.data();
+
+                // creating instace of Shared Preferences.
+                final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                //* 6th writing current User info data to SharedPreferences.
+                await prefs.setString("name", userData!["name"]);
+                await prefs.setString("email", userData["email"]);
+                await prefs.setString("imageUrl", userData["imageUrl"]);
+                await prefs.setString("provider", userData["provider"]);
+                await prefs.setString("userID", userData["userID"]);
+                await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+
+                //* 7th setting isLogin to "true"
+                await prefs.setBool('isLogin', true);
+
+                //* 8th After succresfully SignIn/SignUp we set the isSignUpforFirstTime shared prefernce value to true.
+                await prefs.setBool('signUpWithGoogle', false);
+
+                //* 9th After succresfully SignIn/SignUp redirecting user to HomePage
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    RoutesNames.homePage,
+                    (Route<dynamic> route) => false,
+                  );
+                }
               }
               // if user is sign in Google then we will not create personalMeetingID (Sign In Condition)
               else {
+                // fetching current userId info from "users" collection.
+                final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+
+                final userData = currentUserInfo.data();
+
                 // creating "users" collection so we can store user specific user data
                 await _db.collection("users").doc(_auth.currentUser!.uid).set({
                   "name": userCredential.additionalUserInfo!.profile!["name"],
@@ -631,32 +667,36 @@ class FirebaseAuthMethods {
                   "imageUrl": userCredential.additionalUserInfo!.profile!["picture"],
                   "provider": "Google",
                   "userID": _auth.currentUser!.uid,
+                  "personalMeetingID": userData!["personalMeetingID"],
                 }).then((value) {
                   debugPrint("User data saved in Firestore users collection");
                 }).catchError((error) {
                   debugPrint("User data not saved!");
                 });
+
+                // creating instace of Shared Preferences.
+                final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                //* 6th writing current User info data to SharedPreferences.
+                await prefs.setString("name", userData["name"]);
+                await prefs.setString("email", userData["email"]);
+                await prefs.setString("imageUrl", userData["imageUrl"]);
+                await prefs.setString("provider", userData["provider"]);
+                await prefs.setString("userID", userData["userID"]);
+                await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+
+                //* 7th setting isLogin to "true"
+                await prefs.setBool('isLogin', true);
+
+                //* 9th After succresfully SignIn/SignUp redirecting user to HomePage
+                if (context.mounted) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    RoutesNames.homePage,
+                    (Route<dynamic> route) => false,
+                  );
+                }
               }
-
-              // fetching current userId info from "users" collection.
-              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
-
-              final userData = currentUserInfo.data();
-
-              // creating instace of Shared Preferences.
-              final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-              //* 6th writing current User info data to SharedPreferences.
-
-              await prefs.setString("name", userData!["name"]);
-              await prefs.setString("email", userData["email"]);
-              await prefs.setString("imageUrl", userData["imageUrl"]);
-              await prefs.setString("provider", userData["provider"]);
-              await prefs.setString("userID", userData["userID"]);
-              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
-
-              //* 7th setting isLogin to "true"
-              await prefs.setBool('isLogin', true);
             }
 
             //? Handling Excetion for Storing user info at FireStore DB.
@@ -676,17 +716,6 @@ class FirebaseAuthMethods {
                   );
                 }
               }
-            }
-
-            //* 8th After succresfully SignIn/SignUp we set the isSignUpforFirstTime shared prefernce value to false.
-
-            //* 9th After succresfully SignIn/SignUp redirecting user to HomePage
-            if (context.mounted) {
-              Navigator.of(context).pop();
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                RoutesNames.homePage,
-                (Route<dynamic> route) => false,
-              );
             }
 
             //? if "userCredential.additionalUserInfo!.isNewUser" is "isNewUser" it's mean user account is not presented on our firebase signin
@@ -777,9 +806,45 @@ class FirebaseAuthMethods {
               }).catchError((error) {
                 debugPrint("User data not saved!");
               });
+
+              // fetching current userId info from "users" collection.
+              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+
+              final userData = currentUserInfo.data();
+
+              // creating instace of Shared Preferences.
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+              //* 5th writing current User info data to SharedPreferences.
+              await prefs.setString("name", userData!["name"]);
+              await prefs.setString("email", userData["email"]);
+              await prefs.setString("imageUrl", userData["imageUrl"]);
+              await prefs.setString("provider", userData["provider"]);
+              await prefs.setString("userID", userData["userID"]);
+              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+
+              //* 6th setting isLogin to "true"
+              await prefs.setBool('isLogin', true);
+
+              //* 7th After succresfully SignIn/SignUp we set the isSignUpforFirstTime shared prefernce value to true.
+              await prefs.setBool('signUpWithFacebook', false);
+
+              //* 8th After succresfully SingIn redirecting user to HomePage
+              if (context.mounted) {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RoutesNames.homePage,
+                  (Route<dynamic> route) => false,
+                );
+              }
             }
             // if user is sign in Google then we will not create personalMeetingID (Sign In Condition)
             else {
+              // fetching current userId info from "users" collection.
+              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+
+              final userData = currentUserInfo.data();
+
               // creating "users" collection so we can store user specific user data
               await _db.collection("users").doc(_auth.currentUser!.uid).set({
                 "name": userCredentail.additionalUserInfo!.profile!["name"],
@@ -787,31 +852,36 @@ class FirebaseAuthMethods {
                 "imageUrl": userCredentail.additionalUserInfo!.profile!["picture"]["data"]["url"],
                 "provider": "Facebook",
                 "userID": _auth.currentUser!.uid,
+                "personalMeetingID": userData!["personalMeetingID"],
               }).then((value) {
                 debugPrint("User data saved in Firestore users collection");
               }).catchError((error) {
                 debugPrint("User data not saved!");
               });
+
+              // creating instace of Shared Preferences.
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+              //* 6th writing current User info data to SharedPreferences.
+              await prefs.setString("name", userData["name"]);
+              await prefs.setString("email", userData["email"]);
+              await prefs.setString("imageUrl", userData["imageUrl"]);
+              await prefs.setString("provider", userData["provider"]);
+              await prefs.setString("userID", userData["userID"]);
+              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+
+              //* 7th setting isLogin to "true"
+              await prefs.setBool('isLogin', true);
+
+              //* 8th After succresfully SignIn/SignUp redirecting user to HomePage
+              if (context.mounted) {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RoutesNames.homePage,
+                  (Route<dynamic> route) => false,
+                );
+              }
             }
-
-            // fetching current userId info from "users" collection.
-            final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
-
-            final userData = currentUserInfo.data();
-
-            // creating instace of Shared Preferences.
-            final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-            //* 5th writing current User info data to SharedPreferences.
-            await prefs.setString("name", userData!["name"]);
-            await prefs.setString("email", userData["email"]);
-            await prefs.setString("imageUrl", userData["imageUrl"]);
-            await prefs.setString("provider", userData["provider"]);
-            await prefs.setString("userID", userData["userID"]);
-            await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
-
-            //* 6th setting isLogin to "true"
-            await prefs.setBool('isLogin', true);
           }
 
           //? Handling Excetion for Storing user info at FireStore DB.
@@ -831,15 +901,6 @@ class FirebaseAuthMethods {
                 );
               }
             }
-          }
-
-          //* 7th After succresfully SingIn redirecting user to HomePage
-          if (context.mounted) {
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              RoutesNames.homePage,
-              (Route<dynamic> route) => false,
-            );
           }
         }
       }
@@ -1000,9 +1061,45 @@ class FirebaseAuthMethods {
               }).catchError((error) {
                 debugPrint("User data not saved!");
               });
+
+              // fetching current userId info from "users" collection.
+              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+
+              final userData = currentUserInfo.data();
+
+              // creating instace of Shared Preferences.
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+              //* 4th writing current User info data to SharedPreferences.
+              await prefs.setString("name", userData!["name"]);
+              await prefs.setString("email", userData["email"]);
+              await prefs.setString("imageUrl", userData["imageUrl"]);
+              await prefs.setString("provider", userData["provider"]);
+              await prefs.setString("userID", userData["userID"]);
+              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+
+              //* 5th setting isLogin to "true"
+              await prefs.setBool('isLogin', true);
+
+              //* 6th After succresfully SignIn/SignUp we set the isSignUpforFirstTime shared prefernce value to true.
+              await prefs.setBool('signUpWithTwitter', false);
+
+              //* 7th After succresfully SingIn redirecting user to HomePage
+              if (context.mounted) {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RoutesNames.homePage,
+                  (Route<dynamic> route) => false,
+                );
+              }
             }
             // if user is sign in Google then we will not create personalMeetingID (Sign In Condition)
             else {
+              // fetching current userId info from "users" collection.
+              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+
+              final userData = currentUserInfo.data();
+
               // creating "users" collection so we can store user specific user data
               await _db.collection("users").doc(_auth.currentUser!.uid).set({
                 "name": userCredential.additionalUserInfo!.profile!["name"],
@@ -1010,31 +1107,36 @@ class FirebaseAuthMethods {
                 "imageUrl": userCredential.additionalUserInfo!.profile!["profile_image_url_https"],
                 "provider": "Twitter",
                 "userID": _auth.currentUser!.uid,
+                "personalMeetingID": userData!["personalMeetingID"],
               }).then((value) {
                 debugPrint("User data saved in Firestore users collection");
               }).catchError((error) {
                 debugPrint("User data not saved!");
               });
+
+              // creating instace of Shared Preferences.
+              final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+              //* 4th writing current User info data to SharedPreferences.
+              await prefs.setString("name", userData["name"]);
+              await prefs.setString("email", userData["email"]);
+              await prefs.setString("imageUrl", userData["imageUrl"]);
+              await prefs.setString("provider", userData["provider"]);
+              await prefs.setString("userID", userData["userID"]);
+              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+
+              //* 5th setting isLogin to "true"
+              await prefs.setBool('isLogin', true);
+
+              //* 6th After succresfully SingIn redirecting user to HomePage
+              if (context.mounted) {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  RoutesNames.homePage,
+                  (Route<dynamic> route) => false,
+                );
+              }
             }
-
-            // fetching current userId info from "users" collection.
-            final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
-
-            final userData = currentUserInfo.data();
-
-            // creating instace of Shared Preferences.
-            final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-            //* 4th writing current User info data to SharedPreferences.
-            await prefs.setString("name", userData!["name"]);
-            await prefs.setString("email", userData["email"]);
-            await prefs.setString("imageUrl", userData["imageUrl"]);
-            await prefs.setString("provider", userData["provider"]);
-            await prefs.setString("userID", userData["userID"]);
-            await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
-
-            //* 5th setting isLogin to "true"
-            await prefs.setBool('isLogin', true);
           }
 
           //? Handling Excetion for Storing user info at FireStore DB.
@@ -1054,15 +1156,6 @@ class FirebaseAuthMethods {
                 );
               }
             }
-          }
-
-          //* 6th After succresfully SingIn redirecting user to HomePage
-          if (context.mounted) {
-            Navigator.of(context).pop();
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              RoutesNames.homePage,
-              (Route<dynamic> route) => false,
-            );
           }
         }
       }
@@ -1150,32 +1243,14 @@ class FirebaseAuthMethods {
   // Methods for checking app is open for first time
   // -----------------------------------------------
 
-  //! if user SignUP with Google Provider then we set the value to true.
-  static Future<void> signUpWithGoogle() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('signUpWithGoogle', true);
-  }
-
-  //! if user SignUP with Facebook Provider then we set the value to true.
-  static Future<void> signUpWithFackbook() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('signUpWithFacebook', true);
-  }
-
-  //! if user SignUP with Twitter Provider then we set the value to true.
-  static Future<void> signUpWithTwitter() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('signUpWithTwitter', true);
-  }
-
   //! Here we retrieve the details whether the application is opened for the first time or not.
   static Future<({bool signUpWithGoogle, bool signUpWithFacebook, bool signUpWithTwitter})> isSignUpforFirstTime() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // Retrieve values from SharedPreferences
-    bool signUpWithGoogle = prefs.getBool('signUpWithGoogle') ?? false;
-    bool signUpWithFacebook = prefs.getBool('signUpWithFacebook') ?? false;
-    bool signUpWithTwitter = prefs.getBool('signUpWithTwitter') ?? false;
+    bool signUpWithGoogle = prefs.getBool('signUpWithGoogle') ?? true;
+    bool signUpWithFacebook = prefs.getBool('signUpWithFacebook') ?? true;
+    bool signUpWithTwitter = prefs.getBool('signUpWithTwitter') ?? true;
 
     // Return a record with the retrieved values
     return (signUpWithGoogle: signUpWithGoogle, signUpWithFacebook: signUpWithFacebook, signUpWithTwitter: signUpWithTwitter);

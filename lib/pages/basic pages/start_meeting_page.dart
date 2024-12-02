@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 
 class StartMeetingPage extends StatefulWidget {
-  const StartMeetingPage({super.key});
+  final String personalMeetingID;
+
+  const StartMeetingPage({super.key, required this.personalMeetingID});
 
   @override
   State<StartMeetingPage> createState() => _StartMeetingPageState();
@@ -19,6 +23,18 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
   bool isVideoOn = true;
   bool usePersonalID = false;
 
+  // This method genrate random Meeting ID if user does not use there personal ID.
+  static String generate12DigitNumber() {
+    Random random = Random();
+    String number = '';
+
+    for (int i = 0; i < 12; i++) {
+      number += random.nextInt(10).toString(); // Random digit from 0-9
+    }
+
+    return number;
+  }
+
   // Method for fetching current Provider user Data
   Future<void> getUserData() async {
     // creating instace of Shared Preferences.
@@ -27,6 +43,11 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
     name = prefs.getString('name') ?? "";
     userID = prefs.getString('userID') ?? "";
     imageUrl = prefs.getString('imageUrl') ?? "";
+  }
+
+  // Method for formating the Personal Meeting ID.
+  String formatString(String input) {
+    return input.replaceAllMapped(RegExp(r'.{1,4}'), (match) => '${match.group(0)} ').trim();
   }
 
   @override
@@ -136,10 +157,10 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Column(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                      const Text(
                         "Use personal meeting ID (PMI)",
                         style: TextStyle(
                           color: Colors.white,
@@ -147,8 +168,8 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
                         ),
                       ),
                       Text(
-                        "2545 6485 2079",
-                        style: TextStyle(
+                        formatString(widget.personalMeetingID),
+                        style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 15,
                         ),
@@ -168,7 +189,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
               ),
             ),
             const SizedBox(height: 25),
-            //! Continue Button.
+            //! Start a meeting Button.
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -177,16 +198,32 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
                   backgroundColor: const Color.fromARGB(255, 41, 116, 255),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pushNamed(
-                    RoutesNames.videoConferencePage,
-                    arguments: {
-                      "name": name,
-                      "userID": userID,
-                      "imageUrl": imageUrl,
-                      "conferenceID": "25802580",
-                      "isVideoOn": isVideoOn,
-                    },
-                  );
+                  //! If user select the personal Meeting ID then we pass the FireStore DB Personol ID to Meeting.
+                  if (usePersonalID) {
+                    Navigator.of(context).pushNamed(
+                      RoutesNames.videoConferencePage,
+                      arguments: {
+                        "name": name,
+                        "userID": userID,
+                        "imageUrl": imageUrl,
+                        "conferenceID": widget.personalMeetingID,
+                        "isVideoOn": isVideoOn,
+                      },
+                    );
+                  }
+                  //! Else we genrate Random Meeeting ID.
+                  else {
+                    Navigator.of(context).pushNamed(
+                      RoutesNames.videoConferencePage,
+                      arguments: {
+                        "name": name,
+                        "userID": userID,
+                        "imageUrl": imageUrl,
+                        "conferenceID": generate12DigitNumber(),
+                        "isVideoOn": isVideoOn,
+                      },
+                    );
+                  }
                 },
                 child: const Text(
                   "Start a meeting",

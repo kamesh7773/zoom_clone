@@ -109,8 +109,13 @@ class Routes {
 
       //! Start Meeting Page.
       case RoutesNames.startMeetingPage:
+        // Retriving the personalMeetingID.
+        final args = settings.arguments as Map<String, dynamic>;
+
         return MaterialPageRoute(
-          builder: (context) => const StartMeetingPage(),
+          builder: (context) => StartMeetingPage(
+            personalMeetingID: args["personalMeetingID"],
+          ),
         );
 
       //! Home Page.

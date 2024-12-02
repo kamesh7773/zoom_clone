@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 import 'package:zoom_clone/services/firebase_auth_methods.dart';
+import 'package:zoom_clone/widgets/diolog_box.dart';
 
 class MeetingScreen extends StatefulWidget {
   const MeetingScreen({super.key});
@@ -11,6 +14,48 @@ class MeetingScreen extends StatefulWidget {
 }
 
 class _MeetingScreenState extends State<MeetingScreen> {
+  // Variables related to Firebase instances
+  static final FirebaseAuth _auth = FirebaseAuth.instance;
+  static final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  // variable declaration
+  late final String personalMeetingID;
+
+  // Method for fetching personal Meeting ID from FireStore.
+  Future<void> getUserPersonalMeetingID() async {
+    try {
+      // fetching current userId info from "users" collection.
+      final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+      final userData = currentUserInfo.data();
+
+      personalMeetingID = userData!["personalMeetingID"];
+    } on FirebaseException catch (error) {
+      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && mounted) {
+        Navigator.pop(context);
+        PopUpWidgets.diologbox(
+          context: context,
+          title: "Network failure",
+          content: "Connection failed. Please check your network connection and try again.",
+        );
+      } else {
+        if (mounted) {
+          Navigator.pop(context);
+          PopUpWidgets.diologbox(
+            context: context,
+            title: "Network Error",
+            content: error.toString(),
+          );
+        }
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserPersonalMeetingID();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +96,9 @@ class _MeetingScreenState extends State<MeetingScreen> {
                     onTap: () {
                       Navigator.of(context).pushNamed(
                         RoutesNames.startMeetingPage,
+                        arguments: {
+                          "personalMeetingID": personalMeetingID,
+                        },
                       );
                     },
                     child: Container(
@@ -117,18 +165,21 @@ class _MeetingScreenState extends State<MeetingScreen> {
               //! Schedule Button.
               Column(
                 children: [
-                  Container(
-                    width: 58,
-                    height: 58,
-                    decoration: const BoxDecoration(
-                      color: Color.fromRGBO(61, 132, 255, 1),
-                      borderRadius: BorderRadius.all(Radius.circular(20)),
-                    ),
-                    child: const Center(
-                      child: FaIcon(
-                        FontAwesomeIcons.calendarCheck,
-                        size: 26,
-                        color: Colors.white,
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      width: 58,
+                      height: 58,
+                      decoration: const BoxDecoration(
+                        color: Color.fromRGBO(61, 132, 255, 1),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: const Center(
+                        child: FaIcon(
+                          FontAwesomeIcons.calendarCheck,
+                          size: 26,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
