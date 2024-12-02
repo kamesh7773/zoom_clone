@@ -103,6 +103,7 @@ class Routes {
             userID: args["userID"],
             imageUrl: args["imageUrl"],
             conferenceID: args["conferenceID"],
+            isVideoOn: args["isVideoOn"],
           ),
         );
 

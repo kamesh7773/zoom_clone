@@ -7,12 +7,14 @@ class VideoConferencePage extends StatefulWidget {
   final String userID;
   final String imageUrl;
   final String conferenceID;
+  final bool isVideoOn;
   const VideoConferencePage({
     super.key,
     required this.name,
     required this.userID,
     required this.imageUrl,
     required this.conferenceID,
+    required this.isVideoOn,
   });
 
   @override
@@ -30,7 +32,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
         userName: widget.name,
         conferenceID: widget.conferenceID,
         config: (ZegoUIKitPrebuiltVideoConferenceConfig(
-          turnOnCameraWhenJoining: true,
+          turnOnCameraWhenJoining: widget.isVideoOn,
           turnOnMicrophoneWhenJoining: true,
           useFrontFacingCamera: true,
           //! This is Avatar image of User Profile.
@@ -49,27 +51,23 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
           notificationViewConfig: ZegoInRoomNotificationViewConfig(
             notifyUserLeave: true,
           ),
+          //! Modify your custom configurations here.
+          leaveConfirmDialogInfo: ZegoLeaveConfirmDialogInfo(
+            title: "Leave the conference",
+            message: "Are you sure to leave the conference?",
+            cancelButtonName: "Cancel",
+            confirmButtonName: "Confirm",
+          ),
           //! Top Appbar UI custmization.
           topMenuBarConfig: ZegoTopMenuBarConfig(
-            extendButtons: [
-              IconButton(
-                onPressed: () async {
-                  await Share.share(
-                    "Share conference ID",
-                    subject: "Hi i want to share this link",
-                  );
-                },
-                color: Colors.white,
-                icon: const Icon(Icons.share),
-              ),
-            ],
-            title: "Host by : ",
-            isVisible: true,
+            title: "Meeting",
+            hideByClick: true,
             hideAutomatically: false,
-            hideByClick: false,
+            isVisible: true,
             buttons: [
               ZegoMenuBarButtonName.showMemberListButton,
               ZegoMenuBarButtonName.toggleScreenSharingButton,
+              ZegoMenuBarButtonName.switchCameraButton,
             ],
           ),
         )
@@ -80,13 +78,27 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
                 showNewScreenSharingViewInFullscreenMode: true,
               ) // Set the layout to gallery mode. and configure the [showNewScreenSharingViewInFullscreenMode] and [showScreenSharingFullscreenModeToggleButtonRules].
               ..bottomMenuBarConfig = ZegoBottomMenuBarConfig(
+                hideByClick: true,
                 hideAutomatically: false,
-                hideByClick: false,
+                maxCount: 5,
+                extendButtons: [
+                  IconButton(
+                    onPressed: () async {
+                      await Share.share(
+                        "Share conference ID",
+                        subject: "Hi i want to share this link",
+                      );
+                    },
+                    color: Colors.white,
+                    icon: const Icon(Icons.share),
+                  ),
+                ],
                 buttons: [
-                  ZegoMenuBarButtonName.chatButton,
-                  ZegoMenuBarButtonName.switchCameraButton,
                   ZegoMenuBarButtonName.toggleMicrophoneButton,
+                  ZegoMenuBarButtonName.toggleCameraButton,
                   ZegoMenuBarButtonName.leaveButton,
+                  ZegoMenuBarButtonName.chatButton,
+                  ZegoMenuBarButtonName.switchAudioOutputButton,
                 ],
               ) // Add a screen sharing toggle button.
             ),

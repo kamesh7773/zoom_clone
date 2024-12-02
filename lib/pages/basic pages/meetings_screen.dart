@@ -3,9 +3,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 import 'package:zoom_clone/services/firebase_auth_methods.dart';
 
-class MeetingScreen extends StatelessWidget {
+class MeetingScreen extends StatefulWidget {
   const MeetingScreen({super.key});
 
+  @override
+  State<MeetingScreen> createState() => _MeetingScreenState();
+}
+
+class _MeetingScreenState extends State<MeetingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

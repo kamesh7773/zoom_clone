@@ -147,10 +147,10 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
                         ),
                       ),
                       Text(
-                        "254 648 2079",
+                        "2545 6485 2079",
                         style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 16,
+                          fontSize: 15,
                         ),
                       ),
                     ],
@@ -184,6 +184,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
                       "userID": userID,
                       "imageUrl": imageUrl,
                       "conferenceID": "25802580",
+                      "isVideoOn": isVideoOn,
                     },
                   );
                 },

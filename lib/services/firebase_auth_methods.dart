@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -15,6 +17,20 @@ class FirebaseAuthMethods {
   // Variables related to Firebase instances
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
+
+  // This method genrate personal Meeting ID for user when they signUp for our application.
+  // This personal meeting id only genrated for first time when appliation is used by user
+  // if user clear the data of application then the application will be genrated au
+  static String generate12DigitNumber() {
+    Random random = Random();
+    String number = '';
+
+    for (int i = 0; i < 12; i++) {
+      number += random.nextInt(10).toString(); // Random digit from 0-9
+    }
+
+    return number;
+  }
 
   // --------------------
   // Email Authentication
@@ -166,6 +182,7 @@ class FirebaseAuthMethods {
             "email": email,
             "provider": "Email & Password",
             "userID": _auth.currentUser!.uid,
+            "personalMeetingID": generate12DigitNumber(),
           });
 
           // Fetch current user info from Firestore
@@ -179,6 +196,7 @@ class FirebaseAuthMethods {
           await prefs.setString("email", userData["email"]);
           await prefs.setString("provider", userData["provider"]);
           await prefs.setString("userID", userData["userID"]);
+          await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
 
           // Set login status
           await prefs.setBool('isLogin', true);
@@ -483,6 +501,7 @@ class FirebaseAuthMethods {
             "imageUrl": userCredential.additionalUserInfo!.profile!["picture"],
             "provider": "Google",
             "userID": _auth.currentUser!.uid,
+            "personalMeetingID": generate12DigitNumber(),
           }).then((value) {
             debugPrint("User data saved in Firestore users collection");
           }).catchError((error) {
@@ -501,6 +520,7 @@ class FirebaseAuthMethods {
           await prefs.setString("imageUrl", userData["imageUrl"]);
           await prefs.setString("provider", userData["provider"]);
           await prefs.setString("userID", userData["userID"]);
+          await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
 
           //* 6th setting isLogin to "true"
           await prefs.setBool('isLogin', true);
@@ -583,18 +603,40 @@ class FirebaseAuthMethods {
             //* 5th stroing user info inside the FireStore "users" collection.
             // ? Try & catch block for storing user info at Firestore in "users" collections
             try {
-              // creating "users" collection so we can store user specific user data
-              await _db.collection("users").doc(_auth.currentUser!.uid).set({
-                "name": userCredential.additionalUserInfo!.profile!["name"],
-                "email": userCredential.additionalUserInfo!.profile!["email"],
-                "imageUrl": userCredential.additionalUserInfo!.profile!["picture"],
-                "provider": "Google",
-                "userID": _auth.currentUser!.uid,
-              }).then((value) {
-                debugPrint("User data saved in Firestore users collection");
-              }).catchError((error) {
-                debugPrint("User data not saved!");
-              });
+              // Checking weather user is already SignUp or not
+              var signUpStatus = await FirebaseAuthMethods.isSignUpforFirstTime();
+
+              // if user is contining with Google Sign then only we create personalMeetingID (Sign UP Condiation)
+              if (signUpStatus.signUpWithGoogle) {
+                // creating "users" collection so we can store user specific user data
+                await _db.collection("users").doc(_auth.currentUser!.uid).set({
+                  "name": userCredential.additionalUserInfo!.profile!["name"],
+                  "email": userCredential.additionalUserInfo!.profile!["email"],
+                  "imageUrl": userCredential.additionalUserInfo!.profile!["picture"],
+                  "provider": "Google",
+                  "userID": _auth.currentUser!.uid,
+                  "personalMeetingID": generate12DigitNumber(),
+                }).then((value) {
+                  debugPrint("User data saved in Firestore users collection");
+                }).catchError((error) {
+                  debugPrint("User data not saved!");
+                });
+              }
+              // if user is sign in Google then we will not create personalMeetingID (Sign In Condition)
+              else {
+                // creating "users" collection so we can store user specific user data
+                await _db.collection("users").doc(_auth.currentUser!.uid).set({
+                  "name": userCredential.additionalUserInfo!.profile!["name"],
+                  "email": userCredential.additionalUserInfo!.profile!["email"],
+                  "imageUrl": userCredential.additionalUserInfo!.profile!["picture"],
+                  "provider": "Google",
+                  "userID": _auth.currentUser!.uid,
+                }).then((value) {
+                  debugPrint("User data saved in Firestore users collection");
+                }).catchError((error) {
+                  debugPrint("User data not saved!");
+                });
+              }
 
               // fetching current userId info from "users" collection.
               final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
@@ -605,11 +647,13 @@ class FirebaseAuthMethods {
               final SharedPreferences prefs = await SharedPreferences.getInstance();
 
               //* 6th writing current User info data to SharedPreferences.
+
               await prefs.setString("name", userData!["name"]);
               await prefs.setString("email", userData["email"]);
               await prefs.setString("imageUrl", userData["imageUrl"]);
               await prefs.setString("provider", userData["provider"]);
               await prefs.setString("userID", userData["userID"]);
+              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
 
               //* 7th setting isLogin to "true"
               await prefs.setBool('isLogin', true);
@@ -634,7 +678,9 @@ class FirebaseAuthMethods {
               }
             }
 
-            //* 8th After succresfully SingIn redirecting user to HomePage
+            //* 8th After succresfully SignIn/SignUp we set the isSignUpforFirstTime shared prefernce value to false.
+
+            //* 9th After succresfully SignIn/SignUp redirecting user to HomePage
             if (context.mounted) {
               Navigator.of(context).pop();
               Navigator.of(context).pushNamedAndRemoveUntil(
@@ -713,18 +759,40 @@ class FirebaseAuthMethods {
           //* 4th stroing user info inside the FireStore "users" collection.
           // ? Try & catch block for storing user info at Firestore in "users" collections
           try {
-            // creating "users" collection so we can store user specific user data
-            await _db.collection("users").doc(_auth.currentUser!.uid).set({
-              "name": userCredentail.additionalUserInfo!.profile!["name"],
-              "email": userCredentail.additionalUserInfo!.profile!["email"],
-              "imageUrl": userCredentail.additionalUserInfo!.profile!["picture"]["data"]["url"],
-              "provider": "Facebook",
-              "userID": _auth.currentUser!.uid,
-            }).then((value) {
-              debugPrint("User data saved in Firestore users collection");
-            }).catchError((error) {
-              debugPrint("User data not saved!");
-            });
+            // Checking weather user is already SignUp or not
+            var signUpStatus = await FirebaseAuthMethods.isSignUpforFirstTime();
+
+            // if user is contining with Faceboook Sign then only we create personalMeetingID (Sign UP Condiation)
+            if (signUpStatus.signUpWithFacebook) {
+              // creating "users" collection so we can store user specific user data
+              await _db.collection("users").doc(_auth.currentUser!.uid).set({
+                "name": userCredentail.additionalUserInfo!.profile!["name"],
+                "email": userCredentail.additionalUserInfo!.profile!["email"],
+                "imageUrl": userCredentail.additionalUserInfo!.profile!["picture"]["data"]["url"],
+                "provider": "Facebook",
+                "userID": _auth.currentUser!.uid,
+                "personalMeetingID": generate12DigitNumber(),
+              }).then((value) {
+                debugPrint("User data saved in Firestore users collection");
+              }).catchError((error) {
+                debugPrint("User data not saved!");
+              });
+            }
+            // if user is sign in Google then we will not create personalMeetingID (Sign In Condition)
+            else {
+              // creating "users" collection so we can store user specific user data
+              await _db.collection("users").doc(_auth.currentUser!.uid).set({
+                "name": userCredentail.additionalUserInfo!.profile!["name"],
+                "email": userCredentail.additionalUserInfo!.profile!["email"],
+                "imageUrl": userCredentail.additionalUserInfo!.profile!["picture"]["data"]["url"],
+                "provider": "Facebook",
+                "userID": _auth.currentUser!.uid,
+              }).then((value) {
+                debugPrint("User data saved in Firestore users collection");
+              }).catchError((error) {
+                debugPrint("User data not saved!");
+              });
+            }
 
             // fetching current userId info from "users" collection.
             final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
@@ -740,6 +808,7 @@ class FirebaseAuthMethods {
             await prefs.setString("imageUrl", userData["imageUrl"]);
             await prefs.setString("provider", userData["provider"]);
             await prefs.setString("userID", userData["userID"]);
+            await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
 
             //* 6th setting isLogin to "true"
             await prefs.setBool('isLogin', true);
@@ -833,6 +902,7 @@ class FirebaseAuthMethods {
             "imageUrl": userCredential.additionalUserInfo!.profile!["profile_image_url_https"],
             "provider": "Twitter",
             "userID": _auth.currentUser!.uid,
+            "personalMeetingID": generate12DigitNumber(),
           }).then((value) {
             debugPrint("User data saved in Firestore users collection");
           }).catchError((error) {
@@ -853,6 +923,7 @@ class FirebaseAuthMethods {
           await prefs.setString("imageUrl", userData["imageUrl"]);
           await prefs.setString("provider", userData["provider"]);
           await prefs.setString("userID", userData["userID"]);
+          await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
 
           //* 5th setting isLogin to "true"
           await prefs.setBool('isLogin', true);
@@ -912,18 +983,39 @@ class FirebaseAuthMethods {
           //* 3rd stroing user info inside the FireStore "users" collection.
           // ? Try & catch block for storing user info at Firestore in "users" collections
           try {
-            // creating "users" collection so we can store user specific user data
-            await _db.collection("users").doc(_auth.currentUser!.uid).set({
-              "name": userCredential.additionalUserInfo!.profile!["name"],
-              "email": userCredential.additionalUserInfo!.profile!["email"],
-              "imageUrl": userCredential.additionalUserInfo!.profile!["profile_image_url_https"],
-              "provider": "Twitter",
-              "userID": _auth.currentUser!.uid,
-            }).then((value) {
-              debugPrint("User data saved in Firestore users collection");
-            }).catchError((error) {
-              debugPrint("User data not saved!");
-            });
+            // Checking weather user is already SignUp or not
+            var signUpStatus = await FirebaseAuthMethods.isSignUpforFirstTime();
+
+            if (signUpStatus.signUpWithTwitter) {
+              // creating "users" collection so we can store user specific user data
+              await _db.collection("users").doc(_auth.currentUser!.uid).set({
+                "name": userCredential.additionalUserInfo!.profile!["name"],
+                "email": userCredential.additionalUserInfo!.profile!["email"],
+                "imageUrl": userCredential.additionalUserInfo!.profile!["profile_image_url_https"],
+                "provider": "Twitter",
+                "userID": _auth.currentUser!.uid,
+                "personalMeetingID": generate12DigitNumber(),
+              }).then((value) {
+                debugPrint("User data saved in Firestore users collection");
+              }).catchError((error) {
+                debugPrint("User data not saved!");
+              });
+            }
+            // if user is sign in Google then we will not create personalMeetingID (Sign In Condition)
+            else {
+              // creating "users" collection so we can store user specific user data
+              await _db.collection("users").doc(_auth.currentUser!.uid).set({
+                "name": userCredential.additionalUserInfo!.profile!["name"],
+                "email": userCredential.additionalUserInfo!.profile!["email"],
+                "imageUrl": userCredential.additionalUserInfo!.profile!["profile_image_url_https"],
+                "provider": "Twitter",
+                "userID": _auth.currentUser!.uid,
+              }).then((value) {
+                debugPrint("User data saved in Firestore users collection");
+              }).catchError((error) {
+                debugPrint("User data not saved!");
+              });
+            }
 
             // fetching current userId info from "users" collection.
             final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
@@ -939,6 +1031,7 @@ class FirebaseAuthMethods {
             await prefs.setString("imageUrl", userData["imageUrl"]);
             await prefs.setString("provider", userData["provider"]);
             await prefs.setString("userID", userData["userID"]);
+            await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
 
             //* 5th setting isLogin to "true"
             await prefs.setBool('isLogin', true);
@@ -1051,6 +1144,41 @@ class FirebaseAuthMethods {
         }
       }
     }
+  }
+
+  // -----------------------------------------------
+  // Methods for checking app is open for first time
+  // -----------------------------------------------
+
+  //! if user SignUP with Google Provider then we set the value to true.
+  static Future<void> signUpWithGoogle() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('signUpWithGoogle', true);
+  }
+
+  //! if user SignUP with Facebook Provider then we set the value to true.
+  static Future<void> signUpWithFackbook() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('signUpWithFacebook', true);
+  }
+
+  //! if user SignUP with Twitter Provider then we set the value to true.
+  static Future<void> signUpWithTwitter() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('signUpWithTwitter', true);
+  }
+
+  //! Here we retrieve the details whether the application is opened for the first time or not.
+  static Future<({bool signUpWithGoogle, bool signUpWithFacebook, bool signUpWithTwitter})> isSignUpforFirstTime() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Retrieve values from SharedPreferences
+    bool signUpWithGoogle = prefs.getBool('signUpWithGoogle') ?? false;
+    bool signUpWithFacebook = prefs.getBool('signUpWithFacebook') ?? false;
+    bool signUpWithTwitter = prefs.getBool('signUpWithTwitter') ?? false;
+
+    // Return a record with the retrieved values
+    return (signUpWithGoogle: signUpWithGoogle, signUpWithFacebook: signUpWithFacebook, signUpWithTwitter: signUpWithTwitter);
   }
 
   // -----------------------------------------
