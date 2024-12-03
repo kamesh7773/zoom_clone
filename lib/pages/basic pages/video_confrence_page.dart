@@ -9,6 +9,7 @@ class VideoConferencePage extends StatefulWidget {
   final String imageUrl;
   final String conferenceID;
   final bool isVideoOn;
+  final bool? isAudioOn;
   const VideoConferencePage({
     super.key,
     required this.name,
@@ -16,6 +17,7 @@ class VideoConferencePage extends StatefulWidget {
     required this.imageUrl,
     required this.conferenceID,
     required this.isVideoOn,
+    this.isAudioOn,
   });
 
   @override
@@ -40,7 +42,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
         conferenceID: widget.conferenceID,
         config: (ZegoUIKitPrebuiltVideoConferenceConfig(
           turnOnCameraWhenJoining: widget.isVideoOn,
-          turnOnMicrophoneWhenJoining: true,
+          turnOnMicrophoneWhenJoining: widget.isAudioOn == null ? true : widget.isAudioOn!,
           useFrontFacingCamera: true,
           //! This is Avatar image of User Profile.
           avatarBuilder: (BuildContext context, Size size, ZegoUIKitUser? user, Map extraInfo) {
@@ -92,8 +94,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
                   IconButton(
                     onPressed: () async {
                       await Share.share(
-                        "Hi,\nI’ve scheduled a meeting and would love for you to join! Here are the details:\n\tMeeting ID: [Your Meeting ID]\n\tJoin Link: [Your Meeting URL, if available]\nSimply enter the Meeting ID in the app to join. Looking forward to seeing you there!",
-                        // formatString(widget.conferenceID),
+                        "Hi,\nI’ve scheduled a meeting and would love for you to join! Here are the details:\n\nMeeting ID: ${formatString(widget.conferenceID)}\nJoin Link: [Your Meeting URL, if available]\n\nSimply enter the Meeting ID in the app to join. Looking forward to seeing you there!",
                         subject: "Hi i want to share this link",
                       );
                     },

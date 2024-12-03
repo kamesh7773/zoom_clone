@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:colored_print/colored_print.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -1163,6 +1164,14 @@ class FirebaseAuthMethods {
     //? Handling Error Related Google SignIn/SignUp.
     on FirebaseAuthException catch (error) {
       if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+        Navigator.of(context).pop();
+        PopUpWidgets.diologbox(
+          context: context,
+          title: "Network failure",
+          content: "Connection failed. Please check your network connection and try again.",
+        );
+      }
+      if (error.message == "An internal error has occurred." && context.mounted) {
         Navigator.of(context).pop();
         PopUpWidgets.diologbox(
           context: context,

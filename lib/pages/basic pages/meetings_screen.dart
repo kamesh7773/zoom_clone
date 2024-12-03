@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
 import 'package:zoom_clone/routes/route_names.dart';
 import 'package:zoom_clone/services/firebase_auth_methods.dart';
 import 'package:zoom_clone/widgets/diolog_box.dart';
@@ -19,7 +20,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   // variable declaration
-  late final String personalMeetingID;
+  String? personalMeetingID;
 
   // Method for fetching personal Meeting ID from FireStore.
   Future<void> getUserPersonalMeetingID() async {
@@ -28,7 +29,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
       final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
       final userData = currentUserInfo.data();
 
-      personalMeetingID = userData!["personalMeetingID"];
+      personalMeetingID = userData?["personalMeetingID"];
     } on FirebaseException catch (error) {
       if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && mounted) {
         Navigator.pop(context);
@@ -53,7 +54,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
   @override
   void initState() {
     super.initState();
-    getUserPersonalMeetingID();
+    // getUserPersonalMeetingID();
   }
 
   @override
@@ -93,13 +94,16 @@ class _MeetingScreenState extends State<MeetingScreen> {
               Column(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed(
-                        RoutesNames.startMeetingPage,
-                        arguments: {
-                          "personalMeetingID": personalMeetingID,
-                        },
-                      );
+                    onTap: () async {
+                      await getUserPersonalMeetingID();
+                      if (context.mounted && personalMeetingID != null) {
+                        Navigator.of(context).pushNamed(
+                          RoutesNames.startMeetingPage,
+                          arguments: {
+                            "personalMeetingID": personalMeetingID,
+                          },
+                        );
+                      }
                     },
                     child: Container(
                       width: 58,

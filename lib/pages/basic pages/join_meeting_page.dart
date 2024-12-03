@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
+import 'package:zoom_clone/routes/route_names.dart';
 
 class JoinMeetingPage extends StatefulWidget {
   const JoinMeetingPage({super.key});
@@ -21,16 +24,21 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
   bool isAudioOn = false;
   bool isVideoOn = false;
 
+  // varible for user details
+  late final String name;
+  late final String userID;
+  late final String imageUrl;
+
   // key's declaration
   final GlobalKey _formKey = GlobalKey<FormState>();
 
   // textediting controllar's
-  TextEditingController meetingIDControllar = TextEditingController();
+  TextEditingController conferenceIDControllar = TextEditingController();
 
   // called every time when textediting controllar begin used.
   // Here we also validate the birth year textediting controllar for accepting the right birty year.
   listenPasswordTextEditingControllar() {
-    if (meetingIDControllar.value.text.length == 14) {
+    if (conferenceIDControllar.value.text.length == 14) {
       setState(() {
         joinButtonColor = const Color.fromARGB(255, 41, 116, 255);
         joinButtonTextColor = const Color.fromARGB(255, 255, 255, 255);
@@ -43,8 +51,11 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     }
   }
 
+  // -----------------------------------
+  // Method for formatting conference ID
+  // -----------------------------------
   void _formatText() {
-    String text = meetingIDControllar.text.replaceAll(' ', ''); // Remove existing spaces
+    String text = conferenceIDControllar.text.replaceAll(' ', ''); // Remove existing spaces
     String formatted = '';
     for (int i = 0; i < text.length; i++) {
       formatted += text[i];
@@ -54,15 +65,17 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     }
 
     // Update the controller text and move cursor to the correct position
-    if (formatted != meetingIDControllar.text) {
-      meetingIDControllar.value = TextEditingValue(
+    if (formatted != conferenceIDControllar.text) {
+      conferenceIDControllar.value = TextEditingValue(
         text: formatted,
         selection: TextSelection.collapsed(offset: formatted.length),
       );
     }
   }
 
-  // Method that retrive the current device model name.
+  // -------------------------------------------------
+  // Method that retrive the current device model name
+  // -------------------------------------------------
   Future<void> deviceModelName() async {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
@@ -74,13 +87,30 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     }
   }
 
+  // ----------------------------------------------
+  // Method for fetching current Provider user Data
+  // ----------------------------------------------
+  Future<void> getUserData() async {
+    // creating instace of Shared Preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    name = prefs.getString('name') ?? "";
+    userID = prefs.getString('userID') ?? "";
+    imageUrl = prefs.getString('imageUrl') ?? "";
+  }
+
   @override
   void initState() {
     super.initState();
     // method that listen the Textediting Controllar.
-    meetingIDControllar.addListener(listenPasswordTextEditingControllar);
-    meetingIDControllar.addListener(_formatText);
+    conferenceIDControllar.addListener(listenPasswordTextEditingControllar);
+    conferenceIDControllar.addListener(_formatText);
     deviceModelName();
+    getUserData();
+
+    ZegoUIKit().getUserJoinStream().listen((userData) {
+      ColoredPrint.warning(userData);
+    });
   }
 
   @override
@@ -133,7 +163,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                 ),
                 child: TextFormField(
                   autofocus: true,
-                  controller: meetingIDControllar,
+                  controller: conferenceIDControllar,
                   keyboardType: TextInputType.number,
                   cursorColor: Colors.lightBlue,
                   style: const TextStyle(color: Colors.white),
@@ -227,7 +257,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                 ),
               ),
               const SizedBox(height: 18),
-              //! Continue Button.
+              //! Join Button.
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -236,8 +266,18 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                     backgroundColor: joinButtonColor,
                   ),
                   onPressed: () {
-                    if (meetingIDControllar.value.text.length == 14) {
-                      ColoredPrint.warning(meetingIDControllar.value.text.replaceAll(' ', ''));
+                    if (conferenceIDControllar.value.text.length == 14) {
+                      Navigator.of(context).pushNamed(
+                        RoutesNames.videoConferencePage,
+                        arguments: {
+                          "name": name,
+                          "userID": userID,
+                          "imageUrl": imageUrl,
+                          "conferenceID": conferenceIDControllar.value.text.replaceAll(' ', ''),
+                          "isVideoOn": !isVideoOn,
+                          "isAudioOn": !isAudioOn,
+                        },
+                      );
                     } else {}
                   },
                   child: Text(

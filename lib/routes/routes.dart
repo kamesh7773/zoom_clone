@@ -104,6 +104,7 @@ class Routes {
             imageUrl: args["imageUrl"],
             conferenceID: args["conferenceID"],
             isVideoOn: args["isVideoOn"],
+            isAudioOn: args["isAudioOn"],
           ),
         );
 
