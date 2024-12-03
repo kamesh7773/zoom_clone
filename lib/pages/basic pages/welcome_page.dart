@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoom_clone/routes/route_names.dart';
+import '../../routes/route_names.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});

@@ -2,10 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:zoom_clone/routes/route_names.dart';
-import 'package:zoom_clone/routes/routes.dart';
-import 'package:zoom_clone/services/firebase_auth_methods.dart';
-import 'package:zoom_clone/services/firebase_options.dart';
+import 'routes/route_names.dart';
+import 'routes/routes.dart';
+import 'services/firebase_auth_methods.dart';
+import 'services/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

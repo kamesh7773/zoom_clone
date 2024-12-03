@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:zoom_clone/routes/route_names.dart';
-import 'package:zoom_clone/services/firebase_auth_methods.dart';
+import '../../routes/route_names.dart';
+import '../../services/firebase_auth_methods.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -44,6 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
           title: const Text(
             "More",
             style: TextStyle(
+              fontSize: 19,
               color: Colors.white,
               fontFamily: "Lato",
             ),

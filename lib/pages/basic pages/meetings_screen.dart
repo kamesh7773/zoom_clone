@@ -1,11 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
-import 'package:zoom_clone/routes/route_names.dart';
-import 'package:zoom_clone/services/firebase_auth_methods.dart';
-import 'package:zoom_clone/widgets/diolog_box.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../routes/route_names.dart';
 
 class MeetingScreen extends StatefulWidget {
   const MeetingScreen({super.key});
@@ -15,46 +11,26 @@ class MeetingScreen extends StatefulWidget {
 }
 
 class _MeetingScreenState extends State<MeetingScreen> {
-  // Variables related to Firebase instances
-  static final FirebaseAuth _auth = FirebaseAuth.instance;
-  static final FirebaseFirestore _db = FirebaseFirestore.instance;
-
   // variable declaration
-  String? personalMeetingID;
+  late final String personalMeetingID;
 
-  // Method for fetching personal Meeting ID from FireStore.
-  Future<void> getUserPersonalMeetingID() async {
-    try {
-      // fetching current userId info from "users" collection.
-      final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
-      final userData = currentUserInfo.data();
+  // Method for fetching current Provider user Data
+  Future<void> getUserData() async {
+    // creating instace of Shared Preferences.
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      personalMeetingID = userData?["personalMeetingID"];
-    } on FirebaseException catch (error) {
-      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && mounted) {
-        Navigator.pop(context);
-        PopUpWidgets.diologbox(
-          context: context,
-          title: "Network failure",
-          content: "Connection failed. Please check your network connection and try again.",
-        );
-      } else {
-        if (mounted) {
-          Navigator.pop(context);
-          PopUpWidgets.diologbox(
-            context: context,
-            title: "Network Error",
-            content: error.toString(),
-          );
-        }
-      }
-    }
+    personalMeetingID = prefs.getString('personalMeetingID') ?? "";
+  }
+
+  // Method for formating the Personal Meeting ID.
+  String formatString(String input) {
+    return input.replaceAllMapped(RegExp(r'.{1,4}'), (match) => '${match.group(0)} ').trim();
   }
 
   @override
   void initState() {
     super.initState();
-    // getUserPersonalMeetingID();
+    getUserData();
   }
 
   @override
@@ -75,7 +51,72 @@ class _MeetingScreenState extends State<MeetingScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              FirebaseAuthMethods.singOut(context: context);
+              //! Bottom Sheet Widget.
+              showBottomSheet(
+                backgroundColor: const Color.fromARGB(255, 36, 36, 36),
+                context: context,
+                enableDrag: true,
+                builder: (context) {
+                  return Container(
+                    margin: const EdgeInsets.all(8),
+                    width: double.infinity,
+                    height: 250,
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 46, 46, 46),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          16,
+                        ),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Personal meeting ID",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          formatString(personalMeetingID),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 58, 57, 57),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(
+                                16,
+                              ),
+                            ),
+                          ),
+                          child: const Row(
+                            children: [
+                              Text(
+                                "Start meeting",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Icon(Icons.calendar_today)
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  );
+                },
+              );
             },
             icon: const Icon(
               Icons.info_outline,
@@ -95,8 +136,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
                 children: [
                   GestureDetector(
                     onTap: () async {
-                      await getUserPersonalMeetingID();
-                      if (context.mounted && personalMeetingID != null) {
+                      if (context.mounted) {
                         Navigator.of(context).pushNamed(
                           RoutesNames.startMeetingPage,
                           arguments: {

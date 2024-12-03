@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zoom_clone/routes/route_names.dart';
-import 'package:zoom_clone/services/firebase_auth_methods.dart';
+import '../../routes/route_names.dart';
+import '../../services/firebase_auth_methods.dart';
 
 class SignUpPage2 extends StatefulWidget {
   final String birthYear;

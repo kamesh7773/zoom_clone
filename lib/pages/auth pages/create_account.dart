@@ -1,8 +1,8 @@
 import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
-import 'package:zoom_clone/services/firebase_auth_methods.dart';
-import 'package:zoom_clone/widgets/diolog_box.dart';
-import 'package:zoom_clone/utils/internet_checker.dart';
+import '../../services/firebase_auth_methods.dart';
+import '../../widgets/diolog_box.dart';
+import '../../utils/internet_checker.dart';
 
 class CreateAccount extends StatefulWidget {
   final String birthYear;

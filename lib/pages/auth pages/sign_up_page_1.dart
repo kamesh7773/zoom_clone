@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zoom_clone/routes/route_names.dart';
+import '../../routes/route_names.dart';
 
 class SignUpPage1 extends StatefulWidget {
   const SignUpPage1({super.key});

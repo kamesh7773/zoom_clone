@@ -1,18 +1,17 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:colored_print/colored_print.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zoom_clone/routes/route_names.dart';
-import 'package:zoom_clone/services/email_auth_backend.dart';
-import 'package:zoom_clone/widgets/diolog_box.dart';
-import 'package:zoom_clone/utils/internet_checker.dart';
-import 'package:zoom_clone/widgets/progress_indicator.dart';
+import '../routes/route_names.dart';
+import 'email_auth_backend.dart';
+import '../widgets/diolog_box.dart';
+import '../utils/internet_checker.dart';
+import '../widgets/progress_indicator.dart';
 
 class FirebaseAuthMethods {
   // Variables related to Firebase instances

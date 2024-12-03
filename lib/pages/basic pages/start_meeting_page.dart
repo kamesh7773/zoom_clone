@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zoom_clone/routes/route_names.dart';
+import '../../routes/route_names.dart';
 
 class StartMeetingPage extends StatefulWidget {
   final String personalMeetingID;
@@ -82,7 +82,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
               Navigator.of(context).pop();
             },
             child: const Text(
-              "Cencel",
+              "Cancel",
               style: TextStyle(
                 color: Color.fromRGBO(46, 119, 255, 1),
                 fontSize: 17,

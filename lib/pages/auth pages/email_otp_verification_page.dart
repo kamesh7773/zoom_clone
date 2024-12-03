@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pinput/pinput.dart';
-import 'package:zoom_clone/services/firebase_auth_methods.dart';
+import '../../services/firebase_auth_methods.dart';
 
 class OtpVerificationPage extends StatefulWidget {
   final String birthYear;
