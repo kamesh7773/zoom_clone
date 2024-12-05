@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:zoom_clone/routes/route_names.dart';
+import 'package:zoom_clone/services/firebase_firestore_methods.dart';
 
 class MeetingHistroy extends StatefulWidget {
   const MeetingHistroy({super.key});
@@ -50,10 +52,21 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
             ),
           ),
         ),
-        // body: StreamBuilder(
-        //   stream: stream,
-        //   builder: (context, snapshot) {},
-        // ),
+        body: StreamBuilder(
+          stream: FireStoreCurdMethods.readMeetingDetails(),
+          builder: (context, snapshot) {
+
+            // While snapshot is fetching data, show loading indicator
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const LinearProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.grey), // Change the color here
+                backgroundColor: Colors.white, // Optional: Change the background color
+              );
+            }
+
+            //
+          },
+        ),
       ),
     );
   }

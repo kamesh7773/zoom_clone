@@ -105,6 +105,7 @@ class Routes {
             conferenceID: args["conferenceID"],
             isVideoOn: args["isVideoOn"],
             isAudioOn: args["isAudioOn"],
+            isMeetingCreated: args["isMeetingCreated"],
           ),
         );
 

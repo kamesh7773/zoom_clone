@@ -301,6 +301,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                             "conferenceID": conferenceIDControllar.value.text.replaceAll(' ', ''),
                             "isVideoOn": !isVideoOn,
                             "isAudioOn": !isAudioOn,
+                            "isMeetingCreated" : false,
                           },
                         );
                         //! If user is not authenticated then we provide the random UserID and Anonymous Name.

@@ -19,6 +19,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
   late final String name;
   late final String userID;
   late final String imageUrl;
+  late DateTime joinDateTime;
 
   bool isVideoOn = true;
   bool usePersonalID = false;
@@ -208,6 +209,8 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
                         "imageUrl": imageUrl,
                         "conferenceID": widget.personalMeetingID,
                         "isVideoOn": isVideoOn,
+                        "joinDateTime": DateTime.now(),
+                        "isMeetingCreated": true,
                       },
                     );
                   }
@@ -221,6 +224,8 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
                         "imageUrl": imageUrl,
                         "conferenceID": generate12DigitNumber(),
                         "isVideoOn": isVideoOn,
+                        "joinDateTime": DateTime.now(),
+                        "isMeetingCreated": true,
                       },
                     );
                   }
