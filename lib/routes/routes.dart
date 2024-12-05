@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zoom_clone/pages/basic%20pages/main_settings.dart';
+import '../pages/basic%20pages/main_settings.dart';
 import '../pages/auth%20pages/create_account.dart';
 import '../pages/auth%20pages/email_otp_verification_page.dart';
 import '../pages/auth%20pages/forgot_password_page.dart';

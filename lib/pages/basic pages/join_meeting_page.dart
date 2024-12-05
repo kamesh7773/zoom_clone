@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
-import 'package:zoom_clone/services/firebase_auth_methods.dart';
+import '../../services/firebase_auth_methods.dart';
 import '../../routes/route_names.dart';
 
 class JoinMeetingPage extends StatefulWidget {
@@ -130,10 +129,6 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     deviceModelName();
     getUserData();
     isUserAuthenticate();
-
-    ZegoUIKit().getUserJoinStream().listen((userData) {
-      ColoredPrint.warning(userData);
-    });
   }
 
   @override
@@ -301,7 +296,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                             "conferenceID": conferenceIDControllar.value.text.replaceAll(' ', ''),
                             "isVideoOn": !isVideoOn,
                             "isAudioOn": !isAudioOn,
-                            "isMeetingCreated" : false,
+                            "isMeetingCreated": false,
                           },
                         );
                         //! If user is not authenticated then we provide the random UserID and Anonymous Name.

@@ -1,4 +1,3 @@
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import '../../services/firebase_auth_methods.dart';
 import '../../widgets/diolog_box.dart';
@@ -76,7 +75,6 @@ class _CreateAccountState extends State<CreateAccount> {
     if (passwordControllar.value.text.isNotEmpty && !RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text)) {
       setState(() {
         allowConsecutiveWord = true;
-        ColoredPrint.warning("True");
 
         createAccountButtonColor = const Color.fromARGB(255, 53, 52, 52);
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);

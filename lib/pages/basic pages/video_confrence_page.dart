@@ -1,8 +1,7 @@
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
-import 'package:zoom_clone/services/firebase_firestore_methods.dart';
+import '../../services/firebase_firestore_methods.dart';
 
 class VideoConferencePage extends StatefulWidget {
   final String name;
@@ -57,8 +56,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
       if (widget.isMeetingCreated != null) {
         // Loging Meeting Join & Leave Details.
         FireStoreCurdMethods.logMeetingDetails(
-          name: widget.name,
-          conferenceID: widget.conferenceID,
+          imageURL: widget.imageUrl,
           joinTime: conferenceStartTime,
           leaveTime: conferenceEndTime,
           totalMeetingDuration: actualDuration,

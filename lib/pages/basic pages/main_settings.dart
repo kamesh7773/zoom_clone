@@ -174,14 +174,6 @@ class _MainSettingsPageState extends State<MainSettings> {
                                   width: 50,
                                   height: 50,
                                   imageUrl: userData?["imageUrl"],
-                                  placeholder: (context, url) => const SizedBox(
-                                    width: 2,
-                                    height: 2,
-                                    child: CircularProgressIndicator(
-                                      value: 0.1,
-                                      valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                                    ),
-                                  ),
                                   errorWidget: (context, url, error) => const Icon(Icons.error),
                                 ),
                               ),
