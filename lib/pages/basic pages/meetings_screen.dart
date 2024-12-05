@@ -60,7 +60,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
                   return Container(
                     margin: const EdgeInsets.all(8),
                     width: double.infinity,
-                    height: 250,
+                    height: 270,
                     decoration: const BoxDecoration(
                       color: Color.fromARGB(255, 46, 46, 46),
                       borderRadius: BorderRadius.all(
@@ -88,28 +88,112 @@ class _MeetingScreenState extends State<MeetingScreen> {
                             color: Colors.white,
                           ),
                         ),
+                        const SizedBox(height: 8),
+                        //! Start Meeting Saction.
                         Container(
-                          margin: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(12.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
                           decoration: const BoxDecoration(
                             color: Color.fromARGB(255, 58, 57, 57),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(
-                                16,
-                              ),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16),
+                              topRight: Radius.circular(16),
                             ),
                           ),
                           child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 "Start meeting",
                                 style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 22,
+                                  fontSize: 15,
                                   color: Colors.white,
                                 ),
                               ),
-                              Icon(Icons.calendar_today)
+                              Icon(
+                                Icons.calendar_today,
+                                color: Colors.white,
+                              )
                             ],
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                          child: Divider(
+                            height: 0.0,
+                            thickness: 0.3,
+                          ),
+                        ),
+                        //! Send Invitation Saction.
+                        Container(
+                          padding: const EdgeInsets.all(12.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 58, 57, 57),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Send Invitation",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Icon(
+                                Icons.screen_share_outlined,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                          child: Divider(
+                            height: 0.0,
+                            thickness: 0.3,
+                          ),
+                        ),
+                        //! Edit Meeting Saction.
+                        Container(
+                          padding: const EdgeInsets.all(12.0),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 58, 57, 57),
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(16),
+                              bottomRight: Radius.circular(16),
+                            ),
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Edit meeting",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Icon(
+                                Icons.edit_outlined,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text(
+                            "Cancel",
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
                           ),
                         )
                       ],

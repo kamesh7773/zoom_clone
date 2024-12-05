@@ -12,5 +12,6 @@ class RoutesNames {
   static const String joinMeetingPage = "JoinMeetingPage";
   static const String homePage = "HomePage";
   static const String meetingScreen = "MeetingScreen";
-  static const String settingsPage = "SettingsPage";
+  static const String welcomeSettingsPage = "welcomeSettingsPage";
+  static const String mainSettingsPage = "mainSettingsPage";
 }

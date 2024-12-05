@@ -17,7 +17,7 @@ class WelcomePage extends StatelessWidget {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.of(context).pushNamed(RoutesNames.settingsPage);
+            Navigator.of(context).pushNamed(RoutesNames.welcomeSettingsPage);
           },
         ),
       ),

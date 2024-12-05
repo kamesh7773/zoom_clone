@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zoom_clone/pages/basic%20pages/main_settings.dart';
 import '../pages/auth%20pages/create_account.dart';
 import '../pages/auth%20pages/email_otp_verification_page.dart';
 import '../pages/auth%20pages/forgot_password_page.dart';
@@ -6,7 +7,7 @@ import '../pages/auth%20pages/sign_up_page_2.dart';
 import '../pages/basic%20pages/home_page.dart';
 import '../pages/basic%20pages/join_meeting_page.dart';
 import '../pages/basic%20pages/meetings_screen.dart';
-import '../pages/basic%20pages/settings_page.dart';
+import '../pages/basic pages/welcome_settings_page.dart';
 import '../pages/auth%20pages/sign_in_page.dart';
 import '../pages/auth%20pages/sign_up_page_1.dart';
 import '../pages/basic%20pages/splash_page.dart';
@@ -92,7 +93,6 @@ class Routes {
         );
 
       //! Video Conference Page.
-
       case RoutesNames.videoConferencePage:
         // Retriving BirthYear, Email, Fname, Lname and Password.
         final args = settings.arguments as Map<String, dynamic>;
@@ -130,10 +130,17 @@ class Routes {
         return MaterialPageRoute(
           builder: (context) => const MeetingScreen(),
         );
-      //! Settings Page.
-      case RoutesNames.settingsPage:
+
+      //! Welcome Settings Page.
+      case RoutesNames.welcomeSettingsPage:
         return MaterialPageRoute(
-          builder: (context) => const SettingsPage(),
+          builder: (context) => const WelcomeSettingsPage(),
+        );
+
+      //! Main Settings Page.
+      case RoutesNames.mainSettingsPage:
+        return MaterialPageRoute(
+          builder: (context) => const MainSettings(),
         );
 
       default:

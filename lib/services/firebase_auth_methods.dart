@@ -180,6 +180,7 @@ class FirebaseAuthMethods {
             "birthYear": birthYear,
             "name": "$fname $lname",
             "email": email,
+            "imageUrl": "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=",
             "provider": "Email & Password",
             "userID": _auth.currentUser!.uid,
             "personalMeetingID": generate12DigitNumber(),
@@ -194,6 +195,7 @@ class FirebaseAuthMethods {
           await prefs.setString("birthYear", userData!["birthYear"]);
           await prefs.setString("name", userData["name"]);
           await prefs.setString("email", userData["email"]);
+          await prefs.setString("imageUrl", userData["imageUrl"]);
           await prefs.setString("provider", userData["provider"]);
           await prefs.setString("userID", userData["userID"]);
           await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
@@ -1273,5 +1275,12 @@ class FirebaseAuthMethods {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isLogin = prefs.getBool('isLogin') ?? false;
     return isLogin;
+  }
+
+  //! Method for fetching Data.
+  static Future<Map<String, dynamic>?> getUserData() async {
+    final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+    final userData = currentUserInfo.data();
+    return userData;
   }
 }

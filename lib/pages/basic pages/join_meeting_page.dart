@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:colored_print/colored_print.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +7,7 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
+import 'package:zoom_clone/services/firebase_auth_methods.dart';
 import '../../routes/route_names.dart';
 
 class JoinMeetingPage extends StatefulWidget {
@@ -29,6 +31,9 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
   late final String userID;
   late final String imageUrl;
 
+  // Checking if the user is already logged in
+  bool isUserAuthenticated = false;
+
   // key's declaration
   final GlobalKey _formKey = GlobalKey<FormState>();
 
@@ -49,6 +54,23 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
         joinButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
       });
     }
+  }
+
+  // This method checkes weather user is authenticated of not.
+  Future<void> isUserAuthenticate() async {
+    isUserAuthenticated = await FirebaseAuthMethods.isUserLogin();
+  }
+
+  // This method genrate random Meeting ID if user does not use there personal ID.
+  static String generate12DigitNumber() {
+    Random random = Random();
+    String number = '';
+
+    for (int i = 0; i < 12; i++) {
+      number += random.nextInt(10).toString(); // Random digit from 0-9
+    }
+
+    return number;
   }
 
   // -----------------------------------
@@ -107,6 +129,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     conferenceIDControllar.addListener(_formatText);
     deviceModelName();
     getUserData();
+    isUserAuthenticate();
 
     ZegoUIKit().getUserJoinStream().listen((userData) {
       ColoredPrint.warning(userData);
@@ -267,18 +290,34 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                   ),
                   onPressed: () {
                     if (conferenceIDControllar.value.text.length == 14) {
-                      Navigator.of(context).pushNamed(
-                        RoutesNames.videoConferencePage,
-                        arguments: {
-                          "name": name,
-                          "userID": userID,
-                          "imageUrl": imageUrl,
-                          "conferenceID": conferenceIDControllar.value.text.replaceAll(' ', ''),
-                          "isVideoOn": !isVideoOn,
-                          "isAudioOn": !isAudioOn,
-                        },
-                      );
-                    } else {}
+                      //! If user is authenticated then we start video confresce via User Details
+                      if (isUserAuthenticated) {
+                        Navigator.of(context).pushNamed(
+                          RoutesNames.videoConferencePage,
+                          arguments: {
+                            "name": name,
+                            "userID": userID,
+                            "imageUrl": imageUrl,
+                            "conferenceID": conferenceIDControllar.value.text.replaceAll(' ', ''),
+                            "isVideoOn": !isVideoOn,
+                            "isAudioOn": !isAudioOn,
+                          },
+                        );
+                        //! If user is not authenticated then we provide the random UserID and Anonymous Name.
+                      } else {
+                        Navigator.of(context).pushNamed(
+                          RoutesNames.videoConferencePage,
+                          arguments: {
+                            "name": "Anonymous",
+                            "userID": generate12DigitNumber(),
+                            "imageUrl": "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=",
+                            "conferenceID": conferenceIDControllar.value.text.replaceAll(' ', ''),
+                            "isVideoOn": !isVideoOn,
+                            "isAudioOn": !isAudioOn,
+                          },
+                        );
+                      }
+                    }
                   },
                   child: Text(
                     "Join",

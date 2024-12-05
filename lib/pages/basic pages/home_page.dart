@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:zoom_clone/pages/basic%20pages/main_settings.dart';
 import '../basic%20pages/meeting_histroy.dart';
 import '../basic%20pages/contacts_page.dart';
 import '../basic%20pages/meetings_screen.dart';
-import '../basic%20pages/settings_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,7 +21,7 @@ class HomePageState extends State<HomePage> {
     const MeetingScreen(),
     const MeetingHistroy(),
     const ContactsPage(),
-    const SettingsPage(),
+    const MainSettings(),
   ];
 
   // Method for changing screen when user taps on BottomNavigation Icon.
