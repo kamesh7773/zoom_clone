@@ -96,7 +96,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                   int remainingSeconds = seconds % 60; // Modulo to get the remainder
 
                   // Format as "min:sec"
-                  String formattedTime = '${minutes.toString().padLeft(2, '0')} min : ${remainingSeconds.toString().padLeft(2, '0')} sec';
+                  String formattedTime = '${minutes.toString().padLeft(2, '0')}min : ${remainingSeconds.toString().padLeft(2, '0')}sec';
 
                   return Container(
                     margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),

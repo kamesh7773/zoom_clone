@@ -1,3 +1,4 @@
+import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
@@ -46,14 +47,14 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
 
   @override
   void dispose() {
-    super.dispose();
-
+    ColoredPrint.warning("dispose");
     // Calculate the total duration when the video confer
     if (conferenceStartTime != null) {
       final conferenceEndTime = DateTime.now();
       final actualDuration = conferenceEndTime.difference(conferenceStartTime!);
 
       if (widget.isMeetingCreated != null) {
+        ColoredPrint.warning("not null");
         // Loging Meeting Join & Leave Details.
         FireStoreCurdMethods.logMeetingDetails(
           imageURL: widget.imageUrl,
@@ -64,6 +65,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
         );
       }
     }
+    super.dispose();
   }
 
   @override
