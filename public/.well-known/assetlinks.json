@@ -1,0 +1,13 @@
+[
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.example.zoom_clone",
+        "sha256_cert_fingerprints": [
+          "96:87:60:97:B1:BE:50:00:A2:DA:08:6F:BD:0F:B6:A6:84:85:36:C4:F2:D0:94:BB:3C:F5:50:1C:25:E7:13:AE"
+        ]
+      }
+    }
+  ]
+  

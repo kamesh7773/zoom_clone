@@ -136,7 +136,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
               IconButton(
                 onPressed: () async {
                   await Share.share(
-                    "Hi,\nI’ve scheduled a meeting and would love for you to join! Here are the details:\n\nMeeting ID: ${formatString(widget.conferenceID)}\nJoin Link: [Your Meeting URL, if available]\n\nSimply enter the Meeting ID in the app to join. Looking forward to seeing you there!",
+                    "Hi,\nI’ve scheduled a meeting and would love for you to join! Here are the details:\n\nMeeting ID: ${formatString(widget.conferenceID)}\nJoin Link: https://zoom-clone-8db7c.web.app/conferenceID/?code=${widget.conferenceID}\n\nSimply enter the Meeting ID in the app to join. Looking forward to seeing you there!",
                     subject: "Hi i want to share this link",
                   );
                 },
