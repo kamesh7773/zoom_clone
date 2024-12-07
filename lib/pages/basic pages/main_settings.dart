@@ -1113,21 +1113,22 @@ class _MainSettingsPageState extends State<MainSettings> {
                 onTap: () {},
                 child: const Row(
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: 8.0,
-                        left: 30.0,
-                        bottom: 8.0,
-                      ),
-                      child: Text(
-                        "Rate Zoom Workplace in the Google PlayStore",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          top: 8.0,
+                          left: 30.0,
+                          bottom: 8.0,
+                        ),
+                        child: Text(
+                          "Rate Zoom Workplace in the Google PlayStore",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
                     ),
-                    Spacer(flex: 1),
                     Padding(
                       padding: EdgeInsets.only(
                         top: 14.0,
@@ -1156,37 +1157,40 @@ class _MainSettingsPageState extends State<MainSettings> {
                   const Color.fromARGB(255, 46, 46, 46),
                 ),
                 onTap: () {},
-                child: const Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: 8.0,
-                        left: 30.0,
-                        bottom: 8.0,
-                      ),
-                      child: Text(
-                        "Privacy Policy",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                child: const SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: 8.0,
+                          left: 30.0,
+                          bottom: 8.0,
+                        ),
+                        child: Text(
+                          "Privacy Policy",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
-                    ),
-                    Spacer(flex: 1),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        top: 14.0,
-                        right: 30.0,
-                        bottom: 14.0,
+                      Spacer(flex: 1),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: 14.0,
+                          right: 30.0,
+                          bottom: 14.0,
+                        ),
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          textDirection: TextDirection.rtl,
+                          color: Colors.white,
+                          size: 15,
+                        ),
                       ),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        textDirection: TextDirection.rtl,
-                        color: Colors.white,
-                        size: 15,
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               const Divider(
@@ -1240,6 +1244,7 @@ class _MainSettingsPageState extends State<MainSettings> {
                 thickness: 0.3,
                 height: 0,
               ),
+
               //! Community standards.
               InkWell(
                 overlayColor: WidgetStateProperty.all(
@@ -1285,6 +1290,7 @@ class _MainSettingsPageState extends State<MainSettings> {
                 thickness: 0.2,
                 height: 0,
               ),
+
               //! Open source software.
               const Padding(
                 padding: EdgeInsets.only(left: 32.0, top: 16, bottom: 20),

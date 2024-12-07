@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links2/uni_links.dart';
-import 'package:zoom_clone/routes/route_names.dart';
+import '../../routes/route_names.dart';
 import '../basic%20pages/main_settings.dart';
 import '../basic%20pages/meeting_histroy.dart';
 import '../basic%20pages/contacts_page.dart';

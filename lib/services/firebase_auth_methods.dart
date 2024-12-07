@@ -7,11 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../routes/route_names.dart';
-import 'email_auth_backend.dart';
-import '../widgets/diolog_box.dart';
 import '../utils/internet_checker.dart';
+import '../widgets/diolog_box.dart';
 import '../widgets/progress_indicator.dart';
+import 'email_auth_backend.dart';
 
 class FirebaseAuthMethods {
   // Variables related to Firebase instances

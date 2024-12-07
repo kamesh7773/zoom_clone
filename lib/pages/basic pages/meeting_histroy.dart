@@ -1,7 +1,9 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../../routes/route_names.dart';
 import '../../services/firebase_firestore_methods.dart';
 
@@ -110,6 +112,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            //! Profile Image Section
                             ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: CachedNetworkImage(
@@ -120,59 +123,68 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                                 errorWidget: (context, url, error) => const Icon(Icons.error),
                               ),
                             ),
-                            const SizedBox(width: 20),
-                            Column(
-                              children: [
-                                meetingType == "MeetingCreated"
-                                    ? Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Meeting created at : ${DateFormat('hh:mm a').format(joinTime.toDate())}",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                            ),
+
+                            const SizedBox(width: 10),
+                            //! Meeting Logs Text
+                            meetingType == "MeetingCreated"
+                                ? Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        AutoSizeText(
+                                          maxLines: 1,
+                                          "Meeting created at : ${DateFormat('hh:mm a').format(joinTime.toDate())}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
                                           ),
-                                          Text(
-                                            "Meeting end at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                            ),
+                                        ),
+                                        AutoSizeText(
+                                          maxLines: 1,
+                                          "Meeting end at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
                                           ),
-                                          Text(
-                                            "Total Duration : $formattedTime",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                            ),
+                                        ),
+                                        AutoSizeText(
+                                          maxLines: 2,
+                                          "Total Duration : $formattedTime",
+                                          style: const TextStyle(
+                                            color: Colors.white,
                                           ),
-                                        ],
-                                      )
-                                    : Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Meeting join at : ${DateFormat('hh:mm a').format(joinTime.toDate())}",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                            ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        AutoSizeText(
+                                          maxLines: 1,
+                                          "Meeting join at : ${DateFormat('hh:mm a').format(joinTime.toDate())}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
                                           ),
-                                          Text(
-                                            "Meeting end at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                            ),
+                                        ),
+                                        AutoSizeText(
+                                          maxLines: 1,
+                                          "Meeting end at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
+                                          style: const TextStyle(
+                                            color: Colors.white,
                                           ),
-                                          Text(
-                                            "Total Duration : $formattedTime",
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                            ),
+                                        ),
+                                        AutoSizeText(
+                                          maxLines: 2,
+                                          "Total Duration : $formattedTime",
+                                          style: const TextStyle(
+                                            color: Colors.white,
                                           ),
-                                        ],
-                                      ),
-                              ],
-                            ),
-                            const SizedBox(width: 38),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+
+                            //! Delete Icon
                             IconButton(
                               onPressed: () {
                                 FireStoreCurdMethods.deleteMeetingDetails(docID: docID);

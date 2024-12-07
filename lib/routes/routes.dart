@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import '../pages/basic%20pages/main_settings.dart';
+
 import '../pages/auth%20pages/create_account.dart';
 import '../pages/auth%20pages/email_otp_verification_page.dart';
 import '../pages/auth%20pages/forgot_password_page.dart';
-import '../pages/auth%20pages/sign_up_page_2.dart';
-import '../pages/basic%20pages/home_page.dart';
-import '../pages/basic%20pages/join_meeting_page.dart';
-import '../pages/basic%20pages/meetings_screen.dart';
-import '../pages/basic pages/welcome_settings_page.dart';
 import '../pages/auth%20pages/sign_in_page.dart';
 import '../pages/auth%20pages/sign_up_page_1.dart';
+import '../pages/auth%20pages/sign_up_page_2.dart';
+import '../pages/basic pages/welcome_settings_page.dart';
+import '../pages/basic%20pages/home_page.dart';
+import '../pages/basic%20pages/join_meeting_page.dart';
+import '../pages/basic%20pages/main_settings.dart';
+import '../pages/basic%20pages/meetings_screen.dart';
 import '../pages/basic%20pages/splash_page.dart';
 import '../pages/basic%20pages/start_meeting_page.dart';
 import '../pages/basic%20pages/video_confrence_page.dart';
 import '../pages/basic%20pages/welcome_page.dart';
-
 import 'route_names.dart';
 
 class Routes {

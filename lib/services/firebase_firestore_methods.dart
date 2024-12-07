@@ -46,7 +46,7 @@ class FireStoreCurdMethods {
       CollectionReference notes = currentUserID.collection('meetingsDetails');
 
       // Sorting Notes by "timestamp"
-      final notesStream = notes.orderBy("joinTime", descending: false).snapshots();
+      final notesStream = notes.orderBy("joinTime", descending: true).snapshots();
       return notesStream;
     } catch (error) {
       throw error.toString();

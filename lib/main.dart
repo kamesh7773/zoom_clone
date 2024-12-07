@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
 import 'routes/route_names.dart';
 import 'routes/routes.dart';
 import 'services/firebase_auth_methods.dart';

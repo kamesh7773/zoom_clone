@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+
 import '../../services/firebase_auth_methods.dart';
-import '../../widgets/diolog_box.dart';
 import '../../utils/internet_checker.dart';
+import '../../widgets/diolog_box.dart';
 
 class CreateAccount extends StatefulWidget {
   final String birthYear;

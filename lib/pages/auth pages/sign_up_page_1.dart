@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../../routes/route_names.dart';
 
 class SignUpPage1 extends StatefulWidget {
