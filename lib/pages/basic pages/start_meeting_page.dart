@@ -15,7 +15,7 @@ class StartMeetingPage extends StatefulWidget {
 }
 
 class _StartMeetingPageState extends State<StartMeetingPage> {
-  // variable declaration
+  // Variable declaration
   late final String name;
   late final String userID;
   late final String imageUrl;
@@ -24,7 +24,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
   bool isVideoOn = true;
   bool usePersonalID = false;
 
-  // This method genrate random Meeting ID if user does not use there personal ID.
+  // This method generates a random Meeting ID if the user does not use their personal ID
   static String generate12DigitNumber() {
     Random random = Random();
     String number = '';
@@ -36,9 +36,8 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
     return number;
   }
 
-  // Method for fetching current Provider user Data
+  // Method for fetching the current user's data from SharedPreferences
   Future<void> getUserData() async {
-    // creating instace of Shared Preferences.
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     name = prefs.getString('name') ?? "";
@@ -46,7 +45,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
     imageUrl = prefs.getString('imageUrl') ?? "";
   }
 
-  // Method for formating the Personal Meeting ID.
+  // Method for formatting the Personal Meeting ID
   String formatString(String input) {
     return input.replaceAllMapped(RegExp(r'.{1,4}'), (match) => '${match.group(0)} ').trim();
   }
@@ -61,7 +60,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 36, 36, 36),
-      //! AppBar
+      // AppBar
       appBar: AppBar(
         title: const Text(
           "Start a meeting",
@@ -99,7 +98,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 14),
-            //! Audio & Video Button Option's.
+            // Audio & Video Button Options
             const SizedBox(height: 4),
             Container(
               decoration: const BoxDecoration(
@@ -190,7 +189,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
               ),
             ),
             const SizedBox(height: 25),
-            //! Start a meeting Button.
+            // Start a meeting Button
             Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -199,7 +198,7 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
                   backgroundColor: const Color.fromARGB(255, 41, 116, 255),
                 ),
                 onPressed: () {
-                  //! If user select the personal Meeting ID then we pass the FireStore DB Personol ID to Meeting.
+                  // If the user selects the personal Meeting ID, pass the Firestore DB Personal ID to the meeting
                   if (usePersonalID) {
                     Navigator.of(context).pushNamed(
                       RoutesNames.videoConferencePage,
@@ -213,9 +212,8 @@ class _StartMeetingPageState extends State<StartMeetingPage> {
                         "isMeetingCreated": true,
                       },
                     );
-                  }
-                  //! Else we genrate Random Meeeting ID.
-                  else {
+                  } else {
+                    // Else generate a random Meeting ID
                     Navigator.of(context).pushNamed(
                       RoutesNames.videoConferencePage,
                       arguments: {

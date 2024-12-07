@@ -11,18 +11,18 @@ class SignUpPage2 extends StatefulWidget {
 }
 
 class _SignUpPage2State extends State<SignUpPage2> {
-  // variable declaration
+  // Variable declarations
   final GlobalKey _formKey = GlobalKey<FormState>();
   Color signInButtonColor = const Color.fromARGB(255, 53, 52, 52);
   Color signInButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
 
-  // textediting controllar's
-  TextEditingController emailControllar = TextEditingController();
+  // TextEditingController for email input
+  TextEditingController emailController = TextEditingController();
 
-  // called every time when textediting controllar begin used.
-  // Here we also validate the email & password controllar if they get validated then only the sign in method get run.
-  listenPasswordTextEditingControllar() {
-    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailControllar.value.text)) {
+  // This method is called whenever the TextEditingController is used.
+  // It validates the email and updates the sign-in button's appearance based on the validation result.
+  listenEmailTextEditingController() {
+    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailController.value.text)) {
       setState(() {
         signInButtonColor = const Color.fromARGB(255, 41, 116, 255);
         signInButtonTextColor = const Color.fromARGB(255, 255, 255, 255);
@@ -38,8 +38,8 @@ class _SignUpPage2State extends State<SignUpPage2> {
   @override
   void initState() {
     super.initState();
-    // method that listen the Textediting Controllar.
-    emailControllar.addListener(listenPasswordTextEditingControllar);
+    // Add a listener to the TextEditingController to monitor changes.
+    emailController.addListener(listenEmailTextEditingController);
   }
 
   @override
@@ -87,7 +87,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
                 ),
               ),
               const SizedBox(height: 8),
-              //! Email Textediting Controller
+              //! Email TextEditingController
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 43, 42, 42),
@@ -104,7 +104,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
                 ),
                 child: TextFormField(
                   autofocus: true,
-                  controller: emailControllar,
+                  controller: emailController,
                   cursorColor: Colors.lightBlue,
                   style: const TextStyle(color: Colors.white),
                   textAlign: TextAlign.center,
@@ -117,7 +117,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
                 ),
               ),
               const SizedBox(height: 18),
-              //! Sing In Button.
+              //! Sign In Button
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -126,13 +126,13 @@ class _SignUpPage2State extends State<SignUpPage2> {
                     backgroundColor: signInButtonColor,
                   ),
                   onPressed: () {
-                    //! If Email address verified.
-                    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailControllar.value.text)) {
+                    // If the email address is valid, navigate to the next page.
+                    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailController.value.text)) {
                       Navigator.of(context).pushNamed(
                         RoutesNames.createAccount,
                         arguments: {
-                          "birtyYear": widget.birthYear,
-                          "email": emailControllar.value.text,
+                          "birthYear": widget.birthYear,
+                          "email": emailController.value.text,
                         },
                       );
                     }

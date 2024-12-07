@@ -2,22 +2,21 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
-/// Email OTP Auth
+/// Email OTP Authentication
 class EmailOtpAuth {
-  /// veriable's for [EmailOtpAuth]
+  /// Variables for [EmailOtpAuth]
   static String _email = "";
   static String _hash = "";
 
-  /// To send an OTP to a user's email address, use the [sendOTP] method.
-  /// This method takes the recipient's email address as a parameter.
-  /// [email] : The email address to which the OTP will be sent.
+  /// Sends an OTP to the user's email address.
+  /// [email]: The email address to which the OTP will be sent.
   static Future<Map<String, dynamic>> sendOTP({required String email}) async {
     try {
-      // creating url
+      // Creating the URL
       var url = Uri.https(
           "definite-emilee-kamesh-564a9766.koyeb.app", "api/send-otp");
 
-      // sending post request and getting response
+      // Sending a POST request and receiving the response
       var res = await http.Client().post(
         url,
         headers: {"Content-type": "application/json; charset=UTF-8"},
@@ -26,33 +25,31 @@ class EmailOtpAuth {
         }),
       );
 
-      // converting JSON to Map()
+      // Converting JSON to a Map
       Map<String, dynamic> mapData = jsonDecode(res.body);
 
-      // assigning email & hash key
+      // Assigning email and hash key
       _email = email;
       _hash = mapData["data"];
 
+      // Returning the decoded JSON data
       return mapData;
-
-      // returning json Decoded data.
     } catch (error) {
       throw error.toString();
     }
   }
 
-  /// To verify OTP we use the [verifyOtp] method. This method takes the
-  /// recipient's OTP as a parameter.
-  /// [otp] : The OTP that we send via Email Address.
+  /// Verifies the OTP using the [verifyOtp] method.
+  /// [otp]: The OTP sent to the email address.
   static Future<Map<String, dynamic>> verifyOtp({
     required String otp,
   }) async {
     try {
-      // creating url
+      // Creating the URL
       var url = Uri.https(
           "definite-emilee-kamesh-564a9766.koyeb.app", "api/verify-otp");
 
-      // sending post request and getting response
+      // Sending a POST request and receiving the response
       var res = await http.Client().post(
         url,
         headers: {"Content-type": "application/json; charset=UTF-8"},
@@ -63,10 +60,10 @@ class EmailOtpAuth {
         }),
       );
 
-      // converting JSON to Map()
+      // Converting JSON to a Map
       Map<String, dynamic> mapData = jsonDecode(res.body);
 
-      // returning json Decoded data.
+      // Returning the decoded JSON data
       return mapData;
     } catch (error) {
       throw error.toString();

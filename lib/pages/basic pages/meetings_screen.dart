@@ -11,18 +11,17 @@ class MeetingScreen extends StatefulWidget {
 }
 
 class _MeetingScreenState extends State<MeetingScreen> {
-  // variable declaration
+  // Variable declaration
   late final String personalMeetingID;
 
-  // Method for fetching current Provider user Data
+  // Method for fetching the current user's data from SharedPreferences
   Future<void> getUserData() async {
-    // creating instace of Shared Preferences.
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     personalMeetingID = prefs.getString('personalMeetingID') ?? "";
   }
 
-  // Method for formating the Personal Meeting ID.
+  // Method for formatting the Personal Meeting ID
   String formatString(String input) {
     return input.replaceAllMapped(RegExp(r'.{1,4}'), (match) => '${match.group(0)} ').trim();
   }
@@ -51,7 +50,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              //! Bottom Sheet Widget.
+              // Bottom Sheet Widget
               showBottomSheet(
                 backgroundColor: const Color.fromARGB(255, 36, 36, 36),
                 context: context,
@@ -89,7 +88,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
                           ),
                         ),
                         const SizedBox(height: 8),
-                        //! Start Meeting Saction.
+                        // Start Meeting Section
                         Container(
                           padding: const EdgeInsets.all(12.0),
                           margin: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -124,7 +123,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
                             thickness: 0.3,
                           ),
                         ),
-                        //! Send Invitation Saction.
+                        // Send Invitation Section
                         Container(
                           padding: const EdgeInsets.all(12.0),
                           margin: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -155,7 +154,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
                             thickness: 0.3,
                           ),
                         ),
-                        //! Edit Meeting Saction.
+                        // Edit Meeting Section
                         Container(
                           padding: const EdgeInsets.all(12.0),
                           margin: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -215,7 +214,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              //! New Meeting Button.
+              // New Meeting Button
               Column(
                 children: [
                   GestureDetector(
@@ -255,7 +254,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
                   )
                 ],
               ),
-              //! Join Button.
+              // Join Button
               Column(
                 children: [
                   GestureDetector(
@@ -290,7 +289,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
                   )
                 ],
               ),
-              //! Schedule Button.
+              // Schedule Button
               Column(
                 children: [
                   GestureDetector(
@@ -321,7 +320,7 @@ class _MeetingScreenState extends State<MeetingScreen> {
                   )
                 ],
               ),
-              //! Share screen Button.
+              // Share Screen Button
               Column(
                 children: [
                   Container(

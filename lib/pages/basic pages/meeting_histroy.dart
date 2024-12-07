@@ -20,7 +20,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
     return PopScope(
       onPopInvokedWithResult: (value, result) {
         if (!value) {
-          //! On press redirect user to homePage.
+          // On press, redirect the user to the home page
           Navigator.of(context).pushNamedAndRemoveUntil(
             RoutesNames.homePage,
             (Route<dynamic> route) => false,
@@ -29,7 +29,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
       },
       child: Scaffold(
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
-        //! AppBar
+        // AppBar
         appBar: AppBar(
           title: const Text(
             "Meeting history",
@@ -43,8 +43,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
           backgroundColor: const Color.fromARGB(255, 36, 36, 36),
           leading: IconButton(
             onPressed: () {
-              //! On press redirect user to Welcome Page.
-              //! On press redirect user to homePage.
+              // On press, redirect the user to the home page
               Navigator.of(context).pushNamedAndRemoveUntil(
                 RoutesNames.homePage,
                 (Route<dynamic> route) => false,
@@ -66,15 +65,15 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
               );
             }
 
-            // if snapshot has data.
+            // If snapshot has data
             if (snapshot.hasData) {
-              // Storing list of documents from collection
+              // Storing list of documents from the collection
               List meetingDetailsList = snapshot.data!.docs;
 
               return ListView.builder(
                 itemCount: meetingDetailsList.length,
                 itemBuilder: (context, index) {
-                  // Getting individual document from list of documents
+                  // Getting individual document from the list of documents
                   DocumentSnapshot document = meetingDetailsList[index];
 
                   // Getting individual document ID
@@ -83,14 +82,14 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                   // Getting map data of each document
                   Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
-                  // retriving Information.
+                  // Retrieving information
                   String imageURL = data['imageURL'];
                   String meetingType = data['meetingType'];
                   Timestamp joinTime = data['joinTime'];
                   Timestamp leaveTime = data['leaveTime'];
                   int totalDuration = data['totalDuration'];
 
-                  // calculating total meeting duration.
+                  // Calculating total meeting duration
                   int seconds = totalDuration; // Example seconds
 
                   // Calculate minutes and remaining seconds
@@ -112,7 +111,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            //! Profile Image Section
+                            // Profile Image Section
                             ClipRRect(
                               borderRadius: BorderRadius.circular(12),
                               child: CachedNetworkImage(
@@ -125,7 +124,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                             ),
 
                             const SizedBox(width: 10),
-                            //! Meeting Logs Text
+                            // Meeting Logs Text
                             meetingType == "MeetingCreated"
                                 ? Expanded(
                                     child: Column(
@@ -140,7 +139,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                                         ),
                                         AutoSizeText(
                                           maxLines: 1,
-                                          "Meeting end at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
+                                          "Meeting ended at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
                                           style: const TextStyle(
                                             color: Colors.white,
                                           ),
@@ -161,14 +160,14 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                                       children: [
                                         AutoSizeText(
                                           maxLines: 1,
-                                          "Meeting join at : ${DateFormat('hh:mm a').format(joinTime.toDate())}",
+                                          "Meeting joined at : ${DateFormat('hh:mm a').format(joinTime.toDate())}",
                                           style: const TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
                                         AutoSizeText(
                                           maxLines: 1,
-                                          "Meeting end at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
+                                          "Meeting ended at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
                                           style: const TextStyle(
                                             color: Colors.white,
                                           ),
@@ -184,7 +183,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                                     ),
                                   ),
 
-                            //! Delete Icon
+                            // Delete Icon
                             IconButton(
                               onPressed: () {
                                 FireStoreCurdMethods.deleteMeetingDetails(docID: docID);

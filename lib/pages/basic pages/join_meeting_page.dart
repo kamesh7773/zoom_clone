@@ -16,7 +16,7 @@ class JoinMeetingPage extends StatefulWidget {
 }
 
 class _JoinMeetingPageState extends State<JoinMeetingPage> {
-  // variable declaration
+  // Variable declaration
   Color joinButtonColor = const Color.fromARGB(255, 53, 52, 52);
   Color joinButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
   String? modelName;
@@ -24,22 +24,22 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
   bool isAudioOn = false;
   bool isVideoOn = false;
 
-  // varible for user details
+  // Variables for user details
   late final String name;
   late final String userID;
   late final String imageUrl;
 
-  // Checking if the user is already logged in
+  // Check if the user is already logged in
   bool isUserAuthenticated = false;
 
-  // key's declaration
+  // Key declaration
   final GlobalKey _formKey = GlobalKey<FormState>();
 
-  // textediting controllar's
+  // TextEditingController
   TextEditingController conferenceIDControllar = TextEditingController();
 
-  // called every time when textediting controllar begin used.
-  // Here we also validate the birth year textediting controllar for accepting the right birty year.
+  // Called every time the TextEditingController is used
+  // Here we also validate the birth year TextEditingController for accepting the correct birth year
   listenPasswordTextEditingControllar() {
     if (conferenceIDControllar.value.text.length == 14) {
       setState(() {
@@ -54,12 +54,12 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     }
   }
 
-  // This method checkes weather user is authenticated of not.
+  // This method checks whether the user is authenticated or not
   Future<void> isUserAuthenticate() async {
     isUserAuthenticated = await FirebaseAuthMethods.isUserLogin();
   }
 
-  // This method genrate random Meeting ID if user does not use there personal ID.
+  // This method generates a random Meeting ID if the user does not use their personal ID
   static String generate12DigitNumber() {
     Random random = Random();
     String number = '';
@@ -71,9 +71,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     return number;
   }
 
-  // -----------------------------------
-  // Method for formatting conference ID
-  // -----------------------------------
+  // Method for formatting the conference ID
   void _formatText() {
     String text = conferenceIDControllar.text.replaceAll(' ', ''); // Remove existing spaces
     String formatted = '';
@@ -93,9 +91,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     }
   }
 
-  // -------------------------------------------------
-  // Method that retrive the current device model name
-  // -------------------------------------------------
+  // Method that retrieves the current device model name
   Future<void> deviceModelName() async {
     final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
 
@@ -107,11 +103,8 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
     }
   }
 
-  // ----------------------------------------------
-  // Method for fetching current Provider user Data
-  // ----------------------------------------------
+  // Method for fetching the current user's data from SharedPreferences
   Future<void> getUserData() async {
-    // creating instace of Shared Preferences.
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     name = prefs.getString('name') ?? "";
@@ -122,7 +115,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
   @override
   void initState() {
     super.initState();
-    // method that listen the Textediting Controllar.
+    // Method that listens to the TextEditingController
     conferenceIDControllar.addListener(listenPasswordTextEditingControllar);
     conferenceIDControllar.addListener(_formatText);
     deviceModelName();
@@ -134,7 +127,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 36, 36, 36),
-      //! AppBar
+      // AppBar
       appBar: AppBar(
         title: const Text(
           "Join",
@@ -163,7 +156,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 14),
-              //! Meeting ID Textediting Controller
+              // Meeting ID TextEditingController
               Container(
                 decoration: const BoxDecoration(
                   color: Color.fromARGB(255, 41, 41, 41),
@@ -207,7 +200,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                   ),
                 ),
               ),
-              //! Current Device Model & Brand Name.
+              // Current Device Model & Brand Name
               const SizedBox(height: 18),
               Container(
                 decoration: const BoxDecoration(
@@ -230,13 +223,13 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                   style: const TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
-              //! Privacy Policy & Term of Services Section.
+              // Privacy Policy & Terms of Service Section
               const Padding(
                 padding: EdgeInsets.only(left: 14.0, top: 6.0),
                 child: Wrap(
                   children: [
                     Text(
-                      "By clicking 'Join',you agree to our",
+                      "By clicking 'Join', you agree to our",
                       style: TextStyle(
                         color: Color.fromARGB(255, 136, 135, 135),
                         fontSize: 13,
@@ -274,7 +267,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                 ),
               ),
               const SizedBox(height: 18),
-              //! Join Button.
+              // Join Button
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -284,7 +277,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                   ),
                   onPressed: () {
                     if (conferenceIDControllar.value.text.length == 14) {
-                      //! If user is authenticated then we start video confresce via User Details
+                      // If the user is authenticated, start the video conference with user details
                       if (isUserAuthenticated) {
                         Navigator.of(context).pushNamed(
                           RoutesNames.videoConferencePage,
@@ -298,8 +291,8 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                             "isMeetingCreated": false,
                           },
                         );
-                        //! If user is not authenticated then we provide the random UserID and Anonymous Name.
                       } else {
+                        // If the user is not authenticated, provide a random UserID and Anonymous Name
                         Navigator.of(context).pushNamed(
                           RoutesNames.videoConferencePage,
                           arguments: {
@@ -334,7 +327,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
                 ),
               ),
               const SizedBox(height: 60),
-              //! Audio & Video Button Option's.
+              // Audio & Video Button Options
               const Padding(
                 padding: EdgeInsets.only(left: 18.0),
                 child: Text(

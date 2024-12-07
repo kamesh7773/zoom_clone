@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class FireStoreCurdMethods {
-  // Getting FireStore Collection
+  // Reference to the Firestore "users" collection
   static final CollectionReference users = FirebaseFirestore.instance.collection("users");
 
-  //! CREATE: Create a new "Meeting Log details" in FireStore Database inside "users" sub collection named meetingsDetails.
+  //! CREATE: Log new meeting details in the Firestore database under the "meetingsDetails" sub-collection of the current user.
   static Future<void> logMeetingDetails({
     String? imageURL,
     DateTime? joinTime,
@@ -14,10 +14,10 @@ class FireStoreCurdMethods {
     bool? isMeetingCreated,
   }) {
     try {
-      // Reference to the current user's document in the main collection
+      // Reference to the current user's document in the main "users" collection
       DocumentReference currentUserID = users.doc(FirebaseAuth.instance.currentUser!.uid.toString());
 
-      // Creating reference to notes sub-collection inside current user's document
+      // Reference to the "meetingsDetails" sub-collection within the current user's document
       CollectionReference notes = currentUserID.collection('meetingsDetails');
 
       return notes.add(
@@ -34,18 +34,18 @@ class FireStoreCurdMethods {
     }
   }
 
-  //! READ: Get "Meeting Log details" from FireStore form inside "users" sub collection named meetingsDetails.
+  //! READ: Retrieve meeting log details from the "meetingsDetails" sub-collection of the current user in Firestore.
   static Stream<QuerySnapshot> readMeetingDetails() {
     try {
-      // Reference to the current user's document in the main collection
+      // Reference to the current user's document in the main "users" collection
       DocumentReference currentUserID = users.doc(
         FirebaseAuth.instance.currentUser!.uid.toString(),
       );
 
-      // Creating reference to notes sub-collection inside current user's document
+      // Reference to the "meetingsDetails" sub-collection within the current user's document
       CollectionReference notes = currentUserID.collection('meetingsDetails');
 
-      // Sorting Notes by "timestamp"
+      // Stream of notes ordered by "joinTime" in descending order
       final notesStream = notes.orderBy("joinTime", descending: true).snapshots();
       return notesStream;
     } catch (error) {

@@ -20,7 +20,7 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController passwordControllar = TextEditingController();
 
   //? ------------------
-  //? Method for Sing IN
+  //? Method for Sign IN
   //? ------------------
 
   void singIn() {

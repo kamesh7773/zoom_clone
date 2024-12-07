@@ -19,9 +19,9 @@ class FirebaseAuthMethods {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _db = FirebaseFirestore.instance;
 
-  // This method genrate personal Meeting ID for user when they signUp for our application.
-  // This personal meeting id only genrated for first time when appliation is used by user
-  // if user clear the data of application then the application will be genrated au
+  // This method generates a personal meeting ID for the user when they sign up for the application.
+  // This personal meeting ID is generated only the first time the application is used by the user.
+  // If the user clears the application data, a new ID will be generated.
   static String generate12DigitNumber() {
     Random random = Random();
     String number = '';
@@ -37,7 +37,7 @@ class FirebaseAuthMethods {
   // Email Authentication
   // --------------------
 
-  //! Email & Password SignUp Method
+  //! Email & Password Sign-Up Method
   static Future<void> signUpWithEmail({
     required String birthYear,
     required String email,
@@ -47,13 +47,17 @@ class FirebaseAuthMethods {
     required BuildContext context,
   }) async {
     try {
-      // Show Progress Indicator
+      // Show progress indicator
       ProgressIndicators.showProgressIndicator(context);
 
-      // Check if email exists with "Email & Password" provider in users collection
-      QuerySnapshot queryForEmailAndProvider = await _db.collection('users').where("email", isEqualTo: email).where("provider", isEqualTo: "Email & Password").get();
+      // Check if the email exists with the "Email & Password" provider in the users collection
+      QuerySnapshot queryForEmailAndProvider = await _db
+          .collection('users')
+          .where("email", isEqualTo: email)
+          .where("provider", isEqualTo: "Email & Password")
+          .get();
 
-      // If email already exists with Email & Password provider
+      // If the email already exists with the Email & Password provider
       if (queryForEmailAndProvider.docs.isNotEmpty && context.mounted) {
         Navigator.of(context).pop();
         PopUpWidgets.diologbox(
@@ -62,11 +66,11 @@ class FirebaseAuthMethods {
           content: "The email address is already in use by another account.",
         );
       }
-      // If email doesn't exist or uses different provider
+      // If the email doesn't exist or uses a different provider
       else {
         if (context.mounted) {
           try {
-            // Send OTP to user's email address
+            // Send OTP to the user's email address
             await EmailOtpAuth.sendOTP(email: email);
 
             if (context.mounted) {
@@ -81,13 +85,14 @@ class FirebaseAuthMethods {
               PopUpWidgets.diologbox(
                 context: context,
                 title: "Sign up failed",
-                content: "Connection failed. Please check your network connection and try again.",
+                content:
+                    "Connection failed. Please check your network connection and try again.",
               );
             }
-            // If internet is available, redirect to OTP page
+            // If internet is available, redirect to the OTP page
             else if (!isInternet && context.mounted) {
               Navigator.of(context).pushNamed(
-                RoutesNames.otpVarification,
+                RoutesNames.otpVerification,
                 arguments: {
                   "birthYear": birthYear,
                   "email": email,
@@ -98,22 +103,24 @@ class FirebaseAuthMethods {
               );
             }
           }
-          //? Handling E-mail OTP error's
+          //? Handling email OTP errors
           catch (error) {
-            if (error == "ClientException with SocketException: Failed host lookup: 'definite-emilee-kamesh-564a9766.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://definite-emilee-kamesh-564a9766.koyeb.app/api/send-otp") {
+            if (error ==
+                "ClientException with SocketException: Failed host lookup: 'definite-emilee-kamesh-564a9766.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://definite-emilee-kamesh-564a9766.koyeb.app/api/send-otp") {
               if (context.mounted) {
-                // poping out the progress indicator
+                // Popping out the progress indicator
                 Navigator.of(context).pop();
 
                 PopUpWidgets.diologbox(
                   context: context,
                   title: "Network failure",
-                  content: "Connection failed. Please check your network connection and try again.",
+                  content:
+                      "Connection failed. Please check your network connection and try again.",
                 );
               }
             } else {
               if (context.mounted) {
-                // poping out the progress indicator
+                // Popping out the progress indicator
                 Navigator.of(context).pop();
 
                 PopUpWidgets.diologbox(
@@ -127,9 +134,11 @@ class FirebaseAuthMethods {
         }
       }
     }
-    // Handle Firebase Firestore Exceptions.
+    // Handle Firebase Firestore exceptions
     on FirebaseException catch (error) {
-      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+      if (error.message ==
+              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+          context.mounted) {
         Navigator.popUntil(context, ModalRoute.withName("/SignUpPage"));
         PopUpWidgets.diologbox(
           context: context,
@@ -159,7 +168,7 @@ class FirebaseAuthMethods {
     required emailOTP,
     required BuildContext context,
   }) async {
-    // Try and Catch block for Email OTP Auth API.
+    // Try and catch block for Email OTP Auth API
     try {
       ProgressIndicators.showProgressIndicator(context);
 
@@ -168,7 +177,7 @@ class FirebaseAuthMethods {
 
       // If OTP verification is successful, create user account and store data
       if (res["message"] == "OTP Verified") {
-        // Try and Catch Block for Firebase Email Sign Up Auth.
+        // Try and catch block for Firebase Email Sign-Up Auth
         try {
           // Create user account in Firebase Auth
           await _auth.createUserWithEmailAndPassword(
@@ -181,14 +190,18 @@ class FirebaseAuthMethods {
             "birthYear": birthYear,
             "name": "$fname $lname",
             "email": email,
-            "imageUrl": "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=",
+            "imageUrl":
+                "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=",
             "provider": "Email & Password",
             "userID": _auth.currentUser!.uid,
             "personalMeetingID": generate12DigitNumber(),
           });
 
           // Fetch current user info from Firestore
-          final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+          final currentUserInfo = await _db
+              .collection("users")
+              .doc(_auth.currentUser!.uid)
+              .get();
           final userData = currentUserInfo.data();
 
           // Store user data in SharedPreferences
@@ -199,7 +212,8 @@ class FirebaseAuthMethods {
           await prefs.setString("imageUrl", userData["imageUrl"]);
           await prefs.setString("provider", userData["provider"]);
           await prefs.setString("userID", userData["userID"]);
-          await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+          await prefs.setString(
+              "personalMeetingID", userData["personalMeetingID"]);
 
           // Set login status
           await prefs.setBool('isLogin', true);
@@ -215,12 +229,15 @@ class FirebaseAuthMethods {
         }
         // Handle Firebase Auth exceptions during account creation
         on FirebaseAuthException catch (error) {
-          if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+          if (error.message ==
+                  "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+              context.mounted) {
             Navigator.of(context).pop();
             PopUpWidgets.diologbox(
               context: context,
               title: "Sign up failed",
-              content: "Connection failed. Please check your network connection and try again.",
+              content:
+                  "Connection failed. Please check your network connection and try again.",
             );
           } else {
             if (context.mounted) {
@@ -238,7 +255,8 @@ class FirebaseAuthMethods {
         PopUpWidgets.diologbox(
           context: context,
           title: "Invalid OTP",
-          content: "It seems like the OTP is incorrect. Please try again or resend the OTP.",
+          content:
+              "It seems like the OTP is incorrect. Please try again or resend the OTP.",
         );
       } else if (res["data"] == "OTP Expired" && context.mounted) {
         Navigator.of(context).pop();
@@ -251,13 +269,15 @@ class FirebaseAuthMethods {
     }
     // Handle OTP verification errors
     catch (error) {
-      if (error == "ClientException with SocketException: Failed host lookup: 'definite-emilee-kamesh-564a9766.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://definite-emilee-kamesh-564a9766.koyeb.app/api/verify-otp") {
+      if (error ==
+          "ClientException with SocketException: Failed host lookup: 'definite-emilee-kamesh-564a9766.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://definite-emilee-kamesh-564a9766.koyeb.app/api/verify-otp") {
         if (context.mounted) {
           Navigator.pop(context);
           PopUpWidgets.diologbox(
             context: context,
             title: "Sign up failed",
-            content: "Connection failed. Please check your network connection and try again.",
+            content:
+                "Connection failed. Please check your network connection and try again.",
           );
         }
       } else {
@@ -273,39 +293,43 @@ class FirebaseAuthMethods {
     }
   }
 
-  //! Resend OTP on Email Method
-  static Future<void> resentEmailOTP({required email, required BuildContext context}) async {
+  //! Resend OTP to Email Method
+  static Future<void> resentEmailOTP(
+      {required email, required BuildContext context}) async {
     try {
-      // Showing the progress Indicator
+      // Show the progress indicator
       ProgressIndicators.showProgressIndicator(context);
       await EmailOtpAuth.sendOTP(email: email);
-      // Poping of the Progress Indicator
+      // Pop the progress indicator
       if (context.mounted) {
         Navigator.pop(context);
 
         PopUpWidgets.diologbox(
           context: context,
           title: "OTP sent",
-          content: "Your OTP has been successfully sent to your registered email address. Kindly check your Gmail inbox",
+          content:
+              "Your OTP has been successfully sent to your registered email address. Please check your inbox.",
         );
       }
     }
-    //? Handling E-mail OTP error's
+    //? Handling email OTP errors
     catch (error) {
-      if (error == "ClientException with SocketException: Failed host lookup: 'definite-emilee-kamesh-564a9766.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://definite-emilee-kamesh-564a9766.koyeb.app/api/send-otp") {
+      if (error ==
+          "ClientException with SocketException: Failed host lookup: 'definite-emilee-kamesh-564a9766.koyeb.app' (OS Error: No address associated with hostname, errno = 7), uri=https://definite-emilee-kamesh-564a9766.koyeb.app/api/send-otp") {
         if (context.mounted) {
-          // poping out the progress indicator
+          // Pop the progress indicator
           Navigator.of(context).pop();
 
           PopUpWidgets.diologbox(
             context: context,
             title: "Network failure",
-            content: "Connection failed. Please check your network connection and try again.",
+            content:
+                "Connection failed. Please check your network connection and try again.",
           );
         }
       } else {
         if (context.mounted) {
-          // poping out the progress indicator
+          // Pop the progress indicator
           Navigator.of(context).pop();
         }
       }
@@ -319,34 +343,35 @@ class FirebaseAuthMethods {
     required BuildContext context,
   }) async {
     try {
-      // showing CircularProgressIndicator
+      // Show CircularProgressIndicator
       ProgressIndicators.showProgressIndicator(context);
 
-      // Method for sing in user with email & password
+      // Method for signing in the user with email & password
       await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // fetching current userId info from "users" collection.
-      final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+      // Fetch current userId info from the "users" collection
+      final currentUserInfo =
+          await _db.collection("users").doc(_auth.currentUser!.uid).get();
 
       final userData = currentUserInfo.data();
 
-      // creating instace of Shared Preferences.
+      // Create an instance of Shared Preferences
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      // writing current User info data to SharedPreferences.
+      // Write current user info data to SharedPreferences
       await prefs.setString("birthYear", userData!["birthYear"]);
       await prefs.setString("name", userData["name"]);
       await prefs.setString("email", userData["email"]);
       await prefs.setString("provider", userData["provider"]);
       await prefs.setString("userID", userData["userID"]);
 
-      // setting isLogin to "true"
+      // Set isLogin to "true"
       await prefs.setBool('isLogin', true);
 
-      // After login successfully redirecting user to HomePage
+      // After successful login, redirect the user to the HomePage
       if (context.mounted) {
         Navigator.pop(context);
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -355,21 +380,27 @@ class FirebaseAuthMethods {
         );
       }
     }
-    // Handling Login auth Exceptions
+    // Handle login auth exceptions
     on FirebaseAuthException catch (error) {
-      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+      if (error.message ==
+              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+          context.mounted) {
         Navigator.pop(context);
         PopUpWidgets.diologbox(
           context: context,
           title: "Sign up failed",
-          content: "Connection failed. Please check your network connection and try again.",
+          content:
+              "Connection failed. Please check your network connection and try again.",
         );
-      } else if (error.message == "The supplied auth credential is incorrect, malformed or has expired." && context.mounted) {
+      } else if (error.message ==
+              "The supplied auth credential is incorrect, malformed or has expired." &&
+          context.mounted) {
         Navigator.pop(context);
         PopUpWidgets.diologbox(
           context: context,
           title: "Invalid credentials",
-          content: "Your entered email and password are Invalid. Please check your email & password and try again.",
+          content:
+              "Your entered email and password are invalid. Please check your email & password and try again.",
         );
       } else {
         if (context.mounted) {
@@ -384,26 +415,30 @@ class FirebaseAuthMethods {
     }
   }
 
-  //! Email & Password ForgorPassword/Reset Method
+  //! Email & Password Forgot Password/Reset Method
   static Future<bool> forgotEmailPassword({
     required String email,
     required BuildContext context,
   }) async {
-    // variable declartion
+    // Variable declaration
     late bool associatedEmail;
     try {
-      // showing Progress Indigator
+      // Show Progress Indicator
       ProgressIndicators.showProgressIndicator(context);
-      //* 1st We check if the entered email address is already present & its provider is "Email & Password" in the "users" collection by querying FireStore's "users" Collection.
-      // searching for Email Address & "Email & Password" provider in "users" collection at once
-      QuerySnapshot queryForEmailAndProvider = await _db.collection('users').where("email", isEqualTo: email).where("provider", isEqualTo: "Email & Password").get();
+      //* First, we check if the entered email address is already present & its provider is "Email & Password" in the "users" collection by querying Firestore's "users" Collection.
+      // Search for Email Address & "Email & Password" provider in the "users" collection at once
+      QuerySnapshot queryForEmailAndProvider = await _db
+          .collection('users')
+          .where("email", isEqualTo: email)
+          .where("provider", isEqualTo: "Email & Password")
+          .get();
 
-      // if the entered Email address already present in "users" collection and Provider is "Email & Password"
-      // it's means that user is entered corrent email address it's mean we can send that Forgot password link to user Email Address.
+      // If the entered Email address is already present in the "users" collection and the Provider is "Email & Password"
+      // it means that the user has entered the correct email address, and we can send the Forgot password link to the user's Email Address.
       if (queryForEmailAndProvider.docs.isNotEmpty && context.mounted) {
-        // Method for sending forgot password link to user
+        // Method for sending forgot password link to the user
         await _auth.sendPasswordResetEmail(email: email);
-        // Poping of the Progress Indicator
+        // Pop the Progress Indicator
         if (context.mounted) {
           Navigator.pop(context);
         }
@@ -412,43 +447,50 @@ class FirebaseAuthMethods {
           PopUpWidgets.diologbox(
             context: context,
             title: "Email Sent",
-            content: "Check your email for the password reset link and follow the steps to reset your password.",
+            content:
+                "Check your email for the password reset link and follow the steps to reset your password.",
           );
         }
 
         associatedEmail = true;
       }
-      // if the entered Email address is not present in "users" collection or Entered email Provider is not "Email & Password" is present in "users" collection
-      // that means user entered Email does not have associat account in Firebase realted to "Email & Password" Provider.
+      // If the entered Email address is not present in the "users" collection or the entered email Provider is not "Email & Password" in the "users" collection
+      // that means the user entered an Email that does not have an associated account in Firebase related to the "Email & Password" Provider.
       else {
         if (context.mounted) {
-          // Poping of the Progress Indicator
+          // Pop the Progress Indicator
           Navigator.of(context).pop();
 
           PopUpWidgets.diologbox(
             context: context,
             title: "Email not found",
-            content: "There is no associated account found with entered Email.",
+            content: "There is no associated account found with the entered Email.",
           );
         }
         associatedEmail = false;
       }
     }
-    // Handling forgot password auth Exceptions
+    // Handle forgot password auth exceptions
     on FirebaseAuthException catch (error) {
-      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+      if (error.message ==
+              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+          context.mounted) {
         Navigator.pop(context);
         PopUpWidgets.diologbox(
           context: context,
           title: "Network failure",
-          content: "Connection failed. Please check your network connection and try again.",
+          content:
+              "Connection failed. Please check your network connection and try again.",
         );
-      } else if (error.message == "The supplied auth credential is incorrect, malformed or has expired." && context.mounted) {
+      } else if (error.message ==
+              "The supplied auth credential is incorrect, malformed or has expired." &&
+          context.mounted) {
         Navigator.pop(context);
         PopUpWidgets.diologbox(
           context: context,
           title: "Invalid email",
-          content: "Your entered email is Invalid. Please check your email and try again.",
+          content:
+              "Your entered email is invalid. Please check your email and try again.",
         );
       } else {
         if (context.mounted) {
@@ -462,42 +504,43 @@ class FirebaseAuthMethods {
       }
     }
 
-    // returning email value
+    // Return email value
     return associatedEmail;
   }
 
   // --------------------------------------
-  // Method related Google Auth (OAuth 2.0)
+  // Methods related to Google Auth (OAuth 2.0)
   // --------------------------------------
 
-  //! Method for Google SingIn/SignUp (For Google We don't have two method for signIn/signUp)
+  //! Method for Google Sign-In/Sign-Up (For Google, we don't have separate methods for signIn/signUp)
   static Future<void> signInWithGoogle({required BuildContext context}) async {
     try {
       //? ------------------------
       //? Google Auth code for Web
       //? ------------------------
-      // (For runing Google Auth on Web Browser We need add the Web Clint ID (Web Clint ID is avaible on Google Clound Console
-      //  Index.html file ex : <meta name="google-signin-client_id" content="152173321595-lb4qla2alg7q3010hrip1p1i1ok997n9.apps.googleusercontent.com.apps.googleusercontent.com"> )
-      //  Google Auth Only run on specific "Port 5000" for runing application ex : "flutter run -d edge --web-hostname localhost --web-port 5000"
+      // (For running Google Auth on a Web Browser, we need to add the Web Client ID (Web Client ID is available on Google Cloud Console
+      //  Index.html file example: <meta name="google-signin-client_id" content="152173321595-lb4qla2alg7q3010hrip1p1i1ok997n9.apps.googleusercontent.com.apps.googleusercontent.com"> )
+      //  Google Auth only runs on specific "Port 5000" for running the application example: "flutter run -d edge --web-hostname localhost --web-port 5000"
       if (kIsWeb) {
-        //* 1st create a googleProvider instance with the help of the GoogleAuthProvider class constructor.
+        //* First, create a googleProvider instance with the help of the GoogleAuthProvider class constructor.
         GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
-        //* 2nd Provider needs some kind of user Google account info for the sign-in process.
-        //*     There are multiple providers are there in the google office website you can check them out.
+        //* Second, the provider needs some kind of user Google account info for the sign-in process.
+        //*     There are multiple providers available on the Google official website you can check them out.
         googleProvider.addScope("email");
 
-        //* 3rd this code pop the google signIn/signUp interface/UI like showing google id that is logged in user's browser
-        final UserCredential userCredential = await _auth.signInWithPopup(googleProvider);
+        //* Third, this code pops the Google signIn/signUp interface/UI like showing Google ID that is logged in user's browser
+        final UserCredential userCredential =
+            await _auth.signInWithPopup(googleProvider);
 
         if (context.mounted) {
           ProgressIndicators.showProgressIndicator(context);
         }
 
-        //* 4th storing user info inside the FireStore "users" collection.
+        //* Fourth, store user info inside the Firestore "users" collection.
         // ? Try & catch block for storing user info at Firestore in "users" collections
         try {
-          // creating "users" collection so we can store user specific user data
+          // Create "users" collection so we can store user-specific user data
           await _db.collection("users").doc(_auth.currentUser!.uid).set({
             "name": userCredential.additionalUserInfo!.profile!["name"],
             "email": userCredential.additionalUserInfo!.profile!["email"],
@@ -511,31 +554,38 @@ class FirebaseAuthMethods {
             debugPrint("User data not saved!");
           });
 
-          // fetching current userId info from "users" collection.
-          final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+          // Fetch current userId info from "users" collection
+          final currentUserInfo = await _db
+              .collection("users")
+              .doc(_auth.currentUser!.uid)
+              .get();
 
           final userData = currentUserInfo.data();
 
-          // creating instace of Shared Preferences.
+          // Create an instance of Shared Preferences
           final SharedPreferences prefs = await SharedPreferences.getInstance();
           await prefs.setString("name", userData!["name"]);
           await prefs.setString("email", userData["email"]);
           await prefs.setString("imageUrl", userData["imageUrl"]);
           await prefs.setString("provider", userData["provider"]);
           await prefs.setString("userID", userData["userID"]);
-          await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+          await prefs.setString(
+              "personalMeetingID", userData["personalMeetingID"]);
 
-          //* 6th setting isLogin to "true"
+          //* Sixth, set isLogin to "true"
           await prefs.setBool('isLogin', true);
         }
 
-        //? Handling Excetion for Storing user info at FireStore DB.
+        //? Handle exceptions for storing user info at Firestore DB
         on FirebaseAuthException catch (error) {
-          if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+          if (error.message ==
+                  "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+              context.mounted) {
             PopUpWidgets.diologbox(
               context: context,
               title: "Network failure",
-              content: "Connection failed. Please check your network connection and try again.",
+              content:
+                  "Connection failed. Please check your network connection and try again.",
             );
           } else {
             if (context.mounted) {
@@ -548,7 +598,7 @@ class FirebaseAuthMethods {
           }
         }
 
-        //* 7th After succresfully SingIn redirecting user to HomePage
+        //* Seventh, after successfully signing in, redirect the user to the HomePage
         if (context.mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).pushNamedAndRemoveUntil(
@@ -557,9 +607,9 @@ class FirebaseAuthMethods {
           );
         }
 
-        // if "userCredential.additionalUserInfo!.isNewUser" is "isNewUser" it's mean user account is not presented on our firebase signin
-        // console it mean's user is being SingIn/SingUp with Google for fisrt time so we can store the information in fireStore "users" collection.
-        // This code used to detected when user login with Google Provider for first time and we can run some kind of logic on in.
+        // If "userCredential.additionalUserInfo!.isNewUser" is "isNewUser" it means the user account is not present on our Firebase sign-in
+        // console it means the user is being signed in/signed up with Google for the first time so we can store the information in Firestore "users" collection.
+        // This code is used to detect when a user logs in with Google Provider for the first time and we can run some kind of logic on it.
 
         // if (userCredential.additionalUserInfo!.isNewUser) {}
       }
@@ -567,55 +617,60 @@ class FirebaseAuthMethods {
       //? Google Auth code for Android/IOS
       //? --------------------------------
       else {
-        //* 1st this code pop the google signIn/signUp interface/UI like showing google id that is loged in user's devices
+        //* First, this code pops the Google signIn/signUp interface/UI like showing Google ID that is logged in user's devices
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
         if (context.mounted) {
           ProgressIndicators.showProgressIndicator(context);
         }
 
-        //! if user Click on the back button while Google OAUth Popup is showing or he dismis the Google OAuth Pop By clicking anywhere on the screen then this under code\
-        //! will pop-out the Progress Indicator.
+        //! If the user clicks on the back button while the Google OAuth Popup is showing or dismisses the Google OAuth Pop by clicking anywhere on the screen then this code
+        //! will pop out the Progress Indicator.
         if (googleUser == null && context.mounted) {
           Navigator.of(context).pop();
         }
 
-        //! if User Does Nothngs and continues to Google O Auth Sign In then this under code will executed.
+        //! If the user does nothing and continues to Google OAuth Sign In then this code will be executed.
         else {
-          //* 2nd When user clicks on the Pop Google Account then this code retirve the GoogleSignInTokenData (accesToken/IdToken)
-          final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+          //* Second, when the user clicks on the Pop Google Account then this code retrieves the GoogleSignInTokenData (accessToken/IdToken)
+          final GoogleSignInAuthentication? googleAuth =
+              await googleUser?.authentication;
 
-          // if accessToken or idToken null the return nothing. ( accessToken get null when user dismis the Google account Pop Menu)
+          // If accessToken or idToken is null then return nothing. (accessToken gets null when the user dismisses the Google account Pop Menu)
           if (googleAuth?.accessToken == null && googleAuth?.idToken == null) {
             return;
           }
-          // if accessToken and idToken is not null only then we process to login
+          // If accessToken and idToken are not null only then we process to login
           else {
-            //* 3rd In upper code (2nd code ) we are ritrieving the "GoogleSignInTokenData" Instance (googleAuth) now with the help googleAuth instance we gonna
-            //* retrive the "accessToken" and idToken
+            //* Third, in the upper code (second code) we are retrieving the "GoogleSignInTokenData" Instance (googleAuth) now with the help of googleAuth instance we gonna
+            //* retrieve the "accessToken" and idToken
             final credential = GoogleAuthProvider.credential(
               accessToken: googleAuth?.accessToken,
               idToken: googleAuth?.idToken,
             );
 
-            //* 4th This code help user to singIn/SingUp the user with Google Account.
-            // when user click on the Popup google id's then this code will return all the User google account information
-            // (Info like : Google account user name, user IMG, user email is verfied etc)
-            UserCredential userCredential = await _auth.signInWithCredential(credential);
+            //* Fourth, this code helps the user to sign in/sign up with a Google Account.
+            // When the user clicks on the Popup Google ID's then this code will return all the User Google account information
+            // (Info like: Google account user name, user IMG, user email is verified, etc.)
+            UserCredential userCredential =
+                await _auth.signInWithCredential(credential);
 
-            //* 5th stroing user info inside the FireStore "users" collection.
+            //* Fifth, store user info inside the Firestore "users" collection.
             // ? Try & catch block for storing user info at Firestore in "users" collections
             try {
-              // Checking weather user is already SignUp or not
-              var signUpStatus = await FirebaseAuthMethods.isSignUpforFirstTime();
+              // Check whether the user is already signed up or not
+              var signUpStatus =
+                  await FirebaseAuthMethods.isSignUpforFirstTime();
 
-              // if user is contining with Google Sign up then only we create personalMeetingID (Sign UP Condiation)
+              // If the user is continuing with Google Sign up then only we create personalMeetingID (Sign UP Condition)
               if (signUpStatus.signUpWithGoogle) {
-                // creating "users" collection so we can store user specific user data
+                // Create "users" collection so we can store user-specific user data
                 await _db.collection("users").doc(_auth.currentUser!.uid).set({
                   "name": userCredential.additionalUserInfo!.profile!["name"],
-                  "email": userCredential.additionalUserInfo!.profile!["email"],
-                  "imageUrl": userCredential.additionalUserInfo!.profile!["picture"],
+                  "email":
+                      userCredential.additionalUserInfo!.profile!["email"],
+                  "imageUrl":
+                      userCredential.additionalUserInfo!.profile!["picture"],
                   "provider": "Google",
                   "userID": _auth.currentUser!.uid,
                   "personalMeetingID": generate12DigitNumber(),
@@ -625,29 +680,34 @@ class FirebaseAuthMethods {
                   debugPrint("User data not saved!");
                 });
 
-                // fetching current userId info from "users" collection.
-                final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+                // Fetch current userId info from "users" collection
+                final currentUserInfo = await _db
+                    .collection("users")
+                    .doc(_auth.currentUser!.uid)
+                    .get();
 
                 final userData = currentUserInfo.data();
 
-                // creating instace of Shared Preferences.
-                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                // Create an instance of Shared Preferences
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
 
-                //* 6th writing current User info data to SharedPreferences.
+                //* Sixth, write current User info data to SharedPreferences
                 await prefs.setString("name", userData!["name"]);
                 await prefs.setString("email", userData["email"]);
                 await prefs.setString("imageUrl", userData["imageUrl"]);
                 await prefs.setString("provider", userData["provider"]);
                 await prefs.setString("userID", userData["userID"]);
-                await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+                await prefs.setString(
+                    "personalMeetingID", userData["personalMeetingID"]);
 
-                //* 7th setting isLogin to "true"
+                //* Seventh, set isLogin to "true"
                 await prefs.setBool('isLogin', true);
 
-                //* 8th After succresfully SignIn/SignUp we set the isSignUpforFirstTime shared prefernce value to true.
+                //* Eighth, after successfully signing in/signing up we set the isSignUpforFirstTime shared preference value to true.
                 await prefs.setBool('signUpWithGoogle', false);
 
-                //* 9th After succresfully SignIn/SignUp redirecting user to HomePage
+                //* Ninth, after successfully signing in/signing up redirect the user to the HomePage
                 if (context.mounted) {
                   Navigator.of(context).pop();
                   Navigator.of(context).pushNamedAndRemoveUntil(
@@ -656,18 +716,23 @@ class FirebaseAuthMethods {
                   );
                 }
               }
-              // if user is sign in Google then we will not create personalMeetingID (Sign In Condition)
+              // If the user is signing in with Google then we will not create personalMeetingID (Sign In Condition)
               else {
-                // fetching current userId info from "users" collection.
-                final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+                // Fetch current userId info from "users" collection
+                final currentUserInfo = await _db
+                    .collection("users")
+                    .doc(_auth.currentUser!.uid)
+                    .get();
 
                 final userData = currentUserInfo.data();
 
-                // creating "users" collection so we can store user specific user data
+                // Create "users" collection so we can store user-specific user data
                 await _db.collection("users").doc(_auth.currentUser!.uid).set({
                   "name": userCredential.additionalUserInfo!.profile!["name"],
-                  "email": userCredential.additionalUserInfo!.profile!["email"],
-                  "imageUrl": userCredential.additionalUserInfo!.profile!["picture"],
+                  "email":
+                      userCredential.additionalUserInfo!.profile!["email"],
+                  "imageUrl":
+                      userCredential.additionalUserInfo!.profile!["picture"],
                   "provider": "Google",
                   "userID": _auth.currentUser!.uid,
                   "personalMeetingID": userData!["personalMeetingID"],
@@ -677,21 +742,23 @@ class FirebaseAuthMethods {
                   debugPrint("User data not saved!");
                 });
 
-                // creating instace of Shared Preferences.
-                final SharedPreferences prefs = await SharedPreferences.getInstance();
+                // Create an instance of Shared Preferences
+                final SharedPreferences prefs =
+                    await SharedPreferences.getInstance();
 
-                //* 6th writing current User info data to SharedPreferences.
+                //* Sixth, write current User info data to SharedPreferences
                 await prefs.setString("name", userData["name"]);
                 await prefs.setString("email", userData["email"]);
                 await prefs.setString("imageUrl", userData["imageUrl"]);
                 await prefs.setString("provider", userData["provider"]);
                 await prefs.setString("userID", userData["userID"]);
-                await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+                await prefs.setString(
+                    "personalMeetingID", userData["personalMeetingID"]);
 
-                //* 7th setting isLogin to "true"
+                //* Seventh, set isLogin to "true"
                 await prefs.setBool('isLogin', true);
 
-                //* 9th After succresfully SignIn/SignUp redirecting user to HomePage
+                //* Ninth, after successfully signing in/signing up redirect the user to the HomePage
                 if (context.mounted) {
                   Navigator.of(context).pop();
                   Navigator.of(context).pushNamedAndRemoveUntil(
@@ -702,13 +769,16 @@ class FirebaseAuthMethods {
               }
             }
 
-            //? Handling Excetion for Storing user info at FireStore DB.
+            //? Handle exceptions for storing user info at Firestore DB
             on FirebaseAuthException catch (error) {
-              if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+              if (error.message ==
+                      "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+                  context.mounted) {
                 PopUpWidgets.diologbox(
                   context: context,
                   title: "Network failure",
-                  content: "Connection failed. Please check your network connection and try again.",
+                  content:
+                      "Connection failed. Please check your network connection and try again.",
                 );
               } else {
                 if (context.mounted) {
@@ -721,23 +791,26 @@ class FirebaseAuthMethods {
               }
             }
 
-            //? if "userCredential.additionalUserInfo!.isNewUser" is "isNewUser" it's mean user account is not presented on our firebase signin
-            //? console it mean's user is being SingIn/SingUp with Google for fisrt time so we can store the information in fireStore "users" collection.
-            //? This code used to detected when user login with Google Provider for first time and we can run some kind of logic on in.
+            //? If "userCredential.additionalUserInfo!.isNewUser" is "isNewUser" it means the user account is not present on our Firebase sign-in
+            //? console it means the user is being signed in/signed up with Google for the first time so we can store the information in Firestore "users" collection.
+            //? This code is used to detect when a user logs in with Google Provider for the first time and we can run some kind of logic on it.
 
             // if (userCredential.additionalUserInfo!.isNewUser) {}
           }
         }
       }
     }
-    //? Handling Error Related Google SignIn/SignUp.
+    //? Handle errors related to Google SignIn/SignUp
     on FirebaseAuthException catch (error) {
-      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+      if (error.message ==
+              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+          context.mounted) {
         Navigator.pop(context);
         PopUpWidgets.diologbox(
           context: context,
           title: "Network failure",
-          content: "Connection failed. Please check your network connection and try again.",
+          content:
+              "Connection failed. Please check your network connection and try again.",
         );
       } else {
         if (context.mounted) {
@@ -753,54 +826,59 @@ class FirebaseAuthMethods {
   }
 
   // ----------------------------
-  // Method related FaceBook Auth
+  // Methods related to Facebook Auth
   // ----------------------------
 
-  //! Method for Facebook SingIn/SignUp
-  static Future<void> signInwithFacebook({required BuildContext context}) async {
+  //! Method for Facebook Sign-In/Sign-Up
+  static Future<void> signInwithFacebook(
+      {required BuildContext context}) async {
     try {
-      // Showing Progress Indicator.
+      // Show Progress Indicator
       if (context.mounted) {
         ProgressIndicators.showProgressIndicator(context);
       }
 
-      //* 1st this code pop the Facebook signIn/signUp page in browser On Android
-      //* and if we are web app then open Pop-Up Facebook signIn/signUp interface/UI In web browser
+      //* First, this code pops the Facebook signIn/signUp page in the browser on Android
+      //* and if we are a web app then open Pop-Up Facebook signIn/signUp interface/UI in the web browser
       final LoginResult loginResult = await FacebookAuth.instance.login();
 
-      //! if user Click on the back button while FackBook AUth Browser Popup is showing or he dismis the FaceBook Auth Browser PopUp By clicking anywhere on the screen then this under code
-      //! will pop-out the Progress Indicator.
+      //! If the user clicks on the back button while the Facebook Auth Browser Popup is showing or dismisses the Facebook Auth Browser PopUp by clicking anywhere on the screen then this code
+      //! will pop out the Progress Indicator.
       if (loginResult.accessToken == null && context.mounted) {
         Navigator.of(context).pop();
       }
 
-      //! if User Does Nothngs and continues to Facebook Auth browser Sign In then this under code will executed.
+      //! If the user does nothing and continues to Facebook Auth browser Sign In then this code will be executed.
       else {
-        //* 2nd When user get login after entering their login password then this code retirve the FacebookTokenData.
-        final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
+        //* Second, when the user gets login after entering their login password then this code retrieves the FacebookTokenData.
+        final OAuthCredential facebookAuthCredential =
+            FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
-        // if accessToken or idToken null the return nothing.
+        // If accessToken or idToken is null then return nothing.
         if (loginResult.accessToken == null) {
           return;
         }
-        // if accessToken and idToken is not null only then we process to login
+        // If accessToken and idToken are not null only then we process to login
         else {
-          //* 3rd this method singIn the user with credetial
-          final UserCredential userCredentail = await _auth.signInWithCredential(facebookAuthCredential);
+          //* Third, this method signs in the user with credentials
+          final UserCredential userCredentail =
+              await _auth.signInWithCredential(facebookAuthCredential);
 
-          //* 4th stroing user info inside the FireStore "users" collection.
+          //* Fourth, store user info inside the Firestore "users" collection.
           // ? Try & catch block for storing user info at Firestore in "users" collections
           try {
-            // Checking weather user is already SignUp or not
-            var signUpStatus = await FirebaseAuthMethods.isSignUpforFirstTime();
+            // Check whether the user is already signed up or not
+            var signUpStatus =
+                await FirebaseAuthMethods.isSignUpforFirstTime();
 
-            // if user is contining with Faceboook Sign then only we create personalMeetingID (Sign UP Condiation)
+            // If the user is continuing with Facebook Sign up then only we create personalMeetingID (Sign UP Condition)
             if (signUpStatus.signUpWithFacebook) {
-              // creating "users" collection so we can store user specific user data
+              // Create "users" collection so we can store user-specific user data
               await _db.collection("users").doc(_auth.currentUser!.uid).set({
                 "name": userCredentail.additionalUserInfo!.profile!["name"],
                 "email": userCredentail.additionalUserInfo!.profile!["email"],
-                "imageUrl": userCredentail.additionalUserInfo!.profile!["picture"]["data"]["url"],
+                "imageUrl": userCredentail.additionalUserInfo!
+                    .profile!["picture"]["data"]["url"],
                 "provider": "Facebook",
                 "userID": _auth.currentUser!.uid,
                 "personalMeetingID": generate12DigitNumber(),
@@ -810,29 +888,34 @@ class FirebaseAuthMethods {
                 debugPrint("User data not saved!");
               });
 
-              // fetching current userId info from "users" collection.
-              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+              // Fetch current userId info from "users" collection
+              final currentUserInfo = await _db
+                  .collection("users")
+                  .doc(_auth.currentUser!.uid)
+                  .get();
 
               final userData = currentUserInfo.data();
 
-              // creating instace of Shared Preferences.
-              final SharedPreferences prefs = await SharedPreferences.getInstance();
+              // Create an instance of Shared Preferences
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
 
-              //* 5th writing current User info data to SharedPreferences.
+              //* Fifth, write current User info data to SharedPreferences
               await prefs.setString("name", userData!["name"]);
               await prefs.setString("email", userData["email"]);
               await prefs.setString("imageUrl", userData["imageUrl"]);
               await prefs.setString("provider", userData["provider"]);
               await prefs.setString("userID", userData["userID"]);
-              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+              await prefs.setString(
+                  "personalMeetingID", userData["personalMeetingID"]);
 
-              //* 6th setting isLogin to "true"
+              //* Sixth, set isLogin to "true"
               await prefs.setBool('isLogin', true);
 
-              //* 7th After succresfully SignIn/SignUp we set the isSignUpforFirstTime shared prefernce value to true.
+              //* Seventh, after successfully signing in/signing up we set the isSignUpforFirstTime shared preference value to true.
               await prefs.setBool('signUpWithFacebook', false);
 
-              //* 8th After succresfully SingIn redirecting user to HomePage
+              //* Eighth, after successfully signing in redirect the user to the HomePage
               if (context.mounted) {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -841,18 +924,22 @@ class FirebaseAuthMethods {
                 );
               }
             }
-            // if user is sign in Google then we will not create personalMeetingID (Sign In Condition)
+            // If the user is signing in with Google then we will not create personalMeetingID (Sign In Condition)
             else {
-              // fetching current userId info from "users" collection.
-              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+              // Fetch current userId info from "users" collection
+              final currentUserInfo = await _db
+                  .collection("users")
+                  .doc(_auth.currentUser!.uid)
+                  .get();
 
               final userData = currentUserInfo.data();
 
-              // creating "users" collection so we can store user specific user data
+              // Create "users" collection so we can store user-specific user data
               await _db.collection("users").doc(_auth.currentUser!.uid).set({
                 "name": userCredentail.additionalUserInfo!.profile!["name"],
                 "email": userCredentail.additionalUserInfo!.profile!["email"],
-                "imageUrl": userCredentail.additionalUserInfo!.profile!["picture"]["data"]["url"],
+                "imageUrl": userCredentail.additionalUserInfo!
+                    .profile!["picture"]["data"]["url"],
                 "provider": "Facebook",
                 "userID": _auth.currentUser!.uid,
                 "personalMeetingID": userData!["personalMeetingID"],
@@ -862,21 +949,23 @@ class FirebaseAuthMethods {
                 debugPrint("User data not saved!");
               });
 
-              // creating instace of Shared Preferences.
-              final SharedPreferences prefs = await SharedPreferences.getInstance();
+              // Create an instance of Shared Preferences
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
 
-              //* 6th writing current User info data to SharedPreferences.
+              //* Sixth, write current User info data to SharedPreferences
               await prefs.setString("name", userData["name"]);
               await prefs.setString("email", userData["email"]);
               await prefs.setString("imageUrl", userData["imageUrl"]);
               await prefs.setString("provider", userData["provider"]);
               await prefs.setString("userID", userData["userID"]);
-              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+              await prefs.setString(
+                  "personalMeetingID", userData["personalMeetingID"]);
 
-              //* 7th setting isLogin to "true"
+              //* Seventh, set isLogin to "true"
               await prefs.setBool('isLogin', true);
 
-              //* 8th After succresfully SignIn/SignUp redirecting user to HomePage
+              //* Eighth, after successfully signing in/signing up redirect the user to the HomePage
               if (context.mounted) {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -887,13 +976,16 @@ class FirebaseAuthMethods {
             }
           }
 
-          //? Handling Excetion for Storing user info at FireStore DB.
+          //? Handle exceptions for storing user info at Firestore DB
           on FirebaseAuthException catch (error) {
-            if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+            if (error.message ==
+                    "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+                context.mounted) {
               PopUpWidgets.diologbox(
                 context: context,
                 title: "Network failure",
-                content: "Connection failed. Please check your network connection and try again.",
+                content:
+                    "Connection failed. Please check your network connection and try again.",
               );
             } else {
               if (context.mounted) {
@@ -909,15 +1001,20 @@ class FirebaseAuthMethods {
       }
     }
 
-    //? Handling Error Related Facebook SignIn/SignUp.
+    //? Handle errors related to Facebook SignIn/SignUp
     on FirebaseAuthException catch (error) {
-      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+      if (error.message ==
+              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+          context.mounted) {
         PopUpWidgets.diologbox(
           context: context,
           title: "Network failure",
-          content: "Connection failed. Please check your network connection and try again.",
+          content:
+              "Connection failed. Please check your network connection and try again.",
         );
-      } else if (error.message == "[firebase_auth/account-exists-with-different-credential] An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address." && context.mounted) {
+      } else if (error.message ==
+              "[firebase_auth/account-exists-with-different-credential] An account already exists with the same email address but different sign-in credentials. Sign in using a provider associated with this email address." &&
+          context.mounted) {
         PopUpWidgets.diologbox(
           context: context,
           title: "Email already used",
@@ -936,34 +1033,37 @@ class FirebaseAuthMethods {
   }
 
   // ---------------------------
-  // Method related Twitter Auth
+  // Methods related to Twitter Auth
   // ---------------------------
 
-  //! Method for Twitter SingIn/SignUp
-  static Future<void> singInwithTwitter({required BuildContext context}) async {
+  //! Method for Twitter Sign-In/Sign-Up
+  static Future<void> singInwithTwitter(
+      {required BuildContext context}) async {
     try {
       //? --------------------------
       //? Twitter Auth code for Web
       //? --------------------------
       if (kIsWeb) {
-        //* 1st creating twitterProvider instance with help of TwitterAuthProvider class construtor
+        //* First, create a twitterProvider instance with the help of the TwitterAuthProvider class constructor
         TwitterAuthProvider twitterProvider = TwitterAuthProvider();
 
-        //* 2nd this code pop the Twitter signIn/signUp interface/UI in user's browser
-        final UserCredential userCredential = await FirebaseAuth.instance.signInWithPopup(twitterProvider);
+        //* Second, this code pops the Twitter signIn/signUp interface/UI in the user's browser
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithPopup(twitterProvider);
 
         if (context.mounted) {
           ProgressIndicators.showProgressIndicator(context);
         }
 
-        //* 3rd stroing user info inside the FireStore "users" collection.
+        //* Third, store user info inside the Firestore "users" collection.
         // ? Try & catch block for storing user info at Firestore in "users" collections
         try {
-          // creating "users" collection so we can store user specific user data
+          // Create "users" collection so we can store user-specific user data
           await _db.collection("users").doc(_auth.currentUser!.uid).set({
             "name": userCredential.additionalUserInfo!.profile!["name"],
             "email": userCredential.additionalUserInfo!.profile!["email"],
-            "imageUrl": userCredential.additionalUserInfo!.profile!["profile_image_url_https"],
+            "imageUrl": userCredential
+                .additionalUserInfo!.profile!["profile_image_url_https"],
             "provider": "Twitter",
             "userID": _auth.currentUser!.uid,
             "personalMeetingID": generate12DigitNumber(),
@@ -973,33 +1073,41 @@ class FirebaseAuthMethods {
             debugPrint("User data not saved!");
           });
 
-          // fetching current userId info from "users" collection.
-          final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+          // Fetch current userId info from "users" collection
+          final currentUserInfo = await _db
+              .collection("users")
+              .doc(_auth.currentUser!.uid)
+              .get();
 
           final userData = currentUserInfo.data();
 
-          // creating instace of Shared Preferences.
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          // Create an instance of Shared Preferences
+          final SharedPreferences prefs =
+              await SharedPreferences.getInstance();
 
-          //* 4th writing current User info data to SharedPreferences.
+          //* Fourth, write current User info data to SharedPreferences
           await prefs.setString("name", userData!["name"]);
           await prefs.setString("email", userData["email"]);
           await prefs.setString("imageUrl", userData["imageUrl"]);
           await prefs.setString("provider", userData["provider"]);
           await prefs.setString("userID", userData["userID"]);
-          await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+          await prefs.setString(
+              "personalMeetingID", userData["personalMeetingID"]);
 
-          //* 5th setting isLogin to "true"
+          //* Fifth, set isLogin to "true"
           await prefs.setBool('isLogin', true);
         }
 
-        //? Handling Excetion for Storing user info at FireStore DB.
+        //? Handle exceptions for storing user info at Firestore DB
         on FirebaseAuthException catch (error) {
-          if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+          if (error.message ==
+                  "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+              context.mounted) {
             PopUpWidgets.diologbox(
               context: context,
               title: "Network failure",
-              content: "Connection failed. Please check your network connection and try again.",
+              content:
+                  "Connection failed. Please check your network connection and try again.",
             );
           } else {
             if (context.mounted) {
@@ -1012,7 +1120,7 @@ class FirebaseAuthMethods {
           }
         }
 
-        //* 6th After succresfully SingIn redirecting user to HomePage
+        //* Sixth, after successfully signing in redirect the user to the HomePage
         if (context.mounted) {
           Navigator.of(context).pop();
           Navigator.of(context).pushNamedAndRemoveUntil(
@@ -1025,37 +1133,40 @@ class FirebaseAuthMethods {
       //? Twitter Auth code for Android/IOS
       //? ---------------------------------
       else {
-        //* 1st creating twitterProvider instance with help of TwitterAuthProvider class construtor
+        //* First, create a twitterProvider instance with the help of the TwitterAuthProvider class constructor
         TwitterAuthProvider twitterProvider = TwitterAuthProvider();
 
-        // Showing Progress Indicator.
+        // Showing Progress Indicator
         if (context.mounted) {
           ProgressIndicators.showProgressIndicator(context);
         }
 
-        //* 2nd this code pop the Twitter signIn/signUp interface/UI in user's browser
-        final UserCredential userCredential = await FirebaseAuth.instance.signInWithProvider(twitterProvider);
+        //* Second, this code pops the Twitter signIn/signUp interface/UI in the user's browser
+        final UserCredential userCredential =
+            await FirebaseAuth.instance.signInWithProvider(twitterProvider);
 
-        //! if user Click on the back button while Twitter OAUth Popup is showing or he dismis the Twitter OAuth Pop By clicking anywhere on the screen then this under code
-        //! will pop-out the Progress Indicator.
+        //! If the user clicks on the back button while the Twitter OAuth Popup is showing or dismisses the Twitter OAuth Pop by clicking anywhere on the screen then this code
+        //! will pop out the Progress Indicator.
         if (userCredential.additionalUserInfo == null && context.mounted) {
           Navigator.of(context).pop();
         }
 
-        //! if User Does Nothngs and continues to Twitter O Auth Sign In then this under code will executed.
+        //! If the user does nothing and continues to Twitter OAuth Sign In then this code will be executed.
         else {
-          //* 3rd stroing user info inside the FireStore "users" collection.
+          //* Third, store user info inside the Firestore "users" collection.
           // ? Try & catch block for storing user info at Firestore in "users" collections
           try {
-            // Checking weather user is already SignUp or not
-            var signUpStatus = await FirebaseAuthMethods.isSignUpforFirstTime();
+            // Check whether the user is already signed up or not
+            var signUpStatus =
+                await FirebaseAuthMethods.isSignUpforFirstTime();
 
             if (signUpStatus.signUpWithTwitter) {
-              // creating "users" collection so we can store user specific user data
+              // Create "users" collection so we can store user-specific user data
               await _db.collection("users").doc(_auth.currentUser!.uid).set({
                 "name": userCredential.additionalUserInfo!.profile!["name"],
                 "email": userCredential.additionalUserInfo!.profile!["email"],
-                "imageUrl": userCredential.additionalUserInfo!.profile!["profile_image_url_https"],
+                "imageUrl": userCredential
+                    .additionalUserInfo!.profile!["profile_image_url_https"],
                 "provider": "Twitter",
                 "userID": _auth.currentUser!.uid,
                 "personalMeetingID": generate12DigitNumber(),
@@ -1065,29 +1176,34 @@ class FirebaseAuthMethods {
                 debugPrint("User data not saved!");
               });
 
-              // fetching current userId info from "users" collection.
-              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+              // Fetch current userId info from "users" collection
+              final currentUserInfo = await _db
+                  .collection("users")
+                  .doc(_auth.currentUser!.uid)
+                  .get();
 
               final userData = currentUserInfo.data();
 
-              // creating instace of Shared Preferences.
-              final SharedPreferences prefs = await SharedPreferences.getInstance();
+              // Create an instance of Shared Preferences
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
 
-              //* 4th writing current User info data to SharedPreferences.
+              //* Fourth, write current User info data to SharedPreferences
               await prefs.setString("name", userData!["name"]);
               await prefs.setString("email", userData["email"]);
               await prefs.setString("imageUrl", userData["imageUrl"]);
               await prefs.setString("provider", userData["provider"]);
               await prefs.setString("userID", userData["userID"]);
-              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+              await prefs.setString(
+                  "personalMeetingID", userData["personalMeetingID"]);
 
-              //* 5th setting isLogin to "true"
+              //* Fifth, set isLogin to "true"
               await prefs.setBool('isLogin', true);
 
-              //* 6th After succresfully SignIn/SignUp we set the isSignUpforFirstTime shared prefernce value to true.
+              //* Sixth, after successfully signing in/signing up we set the isSignUpforFirstTime shared preference value to true.
               await prefs.setBool('signUpWithTwitter', false);
 
-              //* 7th After succresfully SingIn redirecting user to HomePage
+              //* Seventh, after successfully signing in redirect the user to the HomePage
               if (context.mounted) {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -1096,18 +1212,22 @@ class FirebaseAuthMethods {
                 );
               }
             }
-            // if user is sign in Google then we will not create personalMeetingID (Sign In Condition)
+            // If the user is signing in with Google then we will not create personalMeetingID (Sign In Condition)
             else {
-              // fetching current userId info from "users" collection.
-              final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+              // Fetch current userId info from "users" collection
+              final currentUserInfo = await _db
+                  .collection("users")
+                  .doc(_auth.currentUser!.uid)
+                  .get();
 
               final userData = currentUserInfo.data();
 
-              // creating "users" collection so we can store user specific user data
+              // Create "users" collection so we can store user-specific user data
               await _db.collection("users").doc(_auth.currentUser!.uid).set({
                 "name": userCredential.additionalUserInfo!.profile!["name"],
                 "email": userCredential.additionalUserInfo!.profile!["email"],
-                "imageUrl": userCredential.additionalUserInfo!.profile!["profile_image_url_https"],
+                "imageUrl": userCredential
+                    .additionalUserInfo!.profile!["profile_image_url_https"],
                 "provider": "Twitter",
                 "userID": _auth.currentUser!.uid,
                 "personalMeetingID": userData!["personalMeetingID"],
@@ -1117,21 +1237,23 @@ class FirebaseAuthMethods {
                 debugPrint("User data not saved!");
               });
 
-              // creating instace of Shared Preferences.
-              final SharedPreferences prefs = await SharedPreferences.getInstance();
+              // Create an instance of Shared Preferences
+              final SharedPreferences prefs =
+                  await SharedPreferences.getInstance();
 
-              //* 4th writing current User info data to SharedPreferences.
+              //* Fourth, write current User info data to SharedPreferences
               await prefs.setString("name", userData["name"]);
               await prefs.setString("email", userData["email"]);
               await prefs.setString("imageUrl", userData["imageUrl"]);
               await prefs.setString("provider", userData["provider"]);
               await prefs.setString("userID", userData["userID"]);
-              await prefs.setString("personalMeetingID", userData["personalMeetingID"]);
+              await prefs.setString(
+                  "personalMeetingID", userData["personalMeetingID"]);
 
-              //* 5th setting isLogin to "true"
+              //* Fifth, set isLogin to "true"
               await prefs.setBool('isLogin', true);
 
-              //* 6th After succresfully SingIn redirecting user to HomePage
+              //* Sixth, after successfully signing in redirect the user to the HomePage
               if (context.mounted) {
                 Navigator.of(context).pop();
                 Navigator.of(context).pushNamedAndRemoveUntil(
@@ -1142,13 +1264,16 @@ class FirebaseAuthMethods {
             }
           }
 
-          //? Handling Excetion for Storing user info at FireStore DB.
+          //? Handle exceptions for storing user info at Firestore DB
           on FirebaseAuthException catch (error) {
-            if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+            if (error.message ==
+                    "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+                context.mounted) {
               PopUpWidgets.diologbox(
                 context: context,
                 title: "Network failure",
-                content: "Connection failed. Please check your network connection and try again.",
+                content:
+                    "Connection failed. Please check your network connection and try again.",
               );
             } else {
               if (context.mounted) {
@@ -1163,14 +1288,17 @@ class FirebaseAuthMethods {
         }
       }
     }
-    //? Handling Error Related Google SignIn/SignUp.
+    //? Handle errors related to Google SignIn/SignUp
     on FirebaseAuthException catch (error) {
-      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+      if (error.message ==
+              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+          context.mounted) {
         Navigator.of(context).pop();
         PopUpWidgets.diologbox(
           context: context,
           title: "Network failure",
-          content: "Connection failed. Please check your network connection and try again.",
+          content:
+              "Connection failed. Please check your network connection and try again.",
         );
       }
       if (error.message == "An internal error has occurred." && context.mounted) {
@@ -1194,13 +1322,13 @@ class FirebaseAuthMethods {
   }
 
   // ------------------------------------
-  // Method related Firebase Auth SingOut
+  // Methods related to Firebase Auth SignOut
   // ------------------------------------
 
-  //! Method for SingOut Firebase Provider auth account
+  //! Method for SignOut Firebase Provider auth account
   static Future<void> singOut({required BuildContext context}) async {
     try {
-      // Remove the entry's of Shared Preferences data.
+      // Remove the entries of Shared Preferences data
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.remove('birthYear');
       prefs.remove('name');
@@ -1209,33 +1337,36 @@ class FirebaseAuthMethods {
       prefs.remove('provider');
       prefs.remove('userID');
 
-      // seting isLogin to false.
+      // Set isLogin to false
       await prefs.setBool('isLogin', false);
 
-      // SingOut code for Google SingIn/SingUp
+      // SignOut code for Google SignIn/SignUp
       if (await GoogleSignIn().isSignedIn()) {
-        // Sign out the user from google account
+        // Sign out the user from Google account
         GoogleSignIn().signOut();
       }
 
-      // This method SignOut user from all firebase auth Provider's
+      // This method signs out the user from all Firebase auth Providers
       await _auth.signOut();
 
-      // Redirecting user to Welcome Page.
+      // Redirecting user to Welcome Page
       if (context.mounted) {
         Navigator.of(context).pushNamed(
           RoutesNames.welcomePage,
         );
       }
     }
-    //? Handling Error Related Google SignIn/SignUp.
+    //? Handle errors related to Google SignIn/SignUp
     on FirebaseAuthException catch (error) {
-      if (error.message == "A network error (such as timeout, interrupted connection or unreachable host) has occurred." && context.mounted) {
+      if (error.message ==
+              "A network error (such as timeout, interrupted connection or unreachable host) has occurred." &&
+          context.mounted) {
         Navigator.of(context).pop();
         PopUpWidgets.diologbox(
           context: context,
           title: "Sign up failed",
-          content: "Connection failed. Please check your network connection and try again.",
+          content:
+              "Connection failed. Please check your network connection and try again.",
         );
       } else {
         if (context.mounted) {
@@ -1251,10 +1382,10 @@ class FirebaseAuthMethods {
   }
 
   // -----------------------------------------------
-  // Methods for checking app is open for first time
+  // Methods for checking if the app is opened for the first time
   // -----------------------------------------------
 
-  //! Here we retrieve the details whether the application is opened for the first time or not.
+  //! Here we retrieve the details of whether the application is opened for the first time or not.
   static Future<({bool signUpWithGoogle, bool signUpWithFacebook, bool signUpWithTwitter})> isSignUpforFirstTime() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -1268,10 +1399,10 @@ class FirebaseAuthMethods {
   }
 
   // -----------------------------------------
-  // Method Retrive User Authentication Status
+  // Method to Retrieve User Authentication Status
   // -----------------------------------------
 
-  //! Method that check user is login or Not with any Provider.
+  //! Method that checks if the user is logged in or not with any Provider.
   static Future<bool> isUserLogin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isLogin = prefs.getBool('isLogin') ?? false;
@@ -1280,7 +1411,8 @@ class FirebaseAuthMethods {
 
   //! Method for fetching Data.
   static Future<Map<String, dynamic>?> getUserData() async {
-    final currentUserInfo = await _db.collection("users").doc(_auth.currentUser!.uid).get();
+    final currentUserInfo =
+        await _db.collection("users").doc(_auth.currentUser!.uid).get();
     final userData = currentUserInfo.data();
     return userData;
   }

@@ -27,7 +27,7 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
         backgroundColor: const Color.fromARGB(255, 36, 36, 36),
         leading: IconButton(
           onPressed: () {
-            //! On press redirect user to Welcome Page.
+            //! Redirects the user to the Welcome Page when pressed.
             Navigator.of(context).pop();
           },
           icon: const Icon(
@@ -40,7 +40,7 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            //! Settings Heading.
+            //! Settings Heading
             Container(
               padding: const EdgeInsets.only(
                 top: 20.0,
@@ -70,12 +70,14 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
                 ),
               ),
             ),
-            //! Meetings Button.
+            //! Meetings Button
             InkWell(
               overlayColor: WidgetStateProperty.all(
                 const Color.fromARGB(255, 46, 46, 46),
               ),
-              onTap: () {},
+              onTap: () {
+                //! Action to be performed when the Meetings button is tapped.
+              },
               child: const Row(
                 children: [
                   Padding(
@@ -121,12 +123,14 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
                 ],
               ),
             ),
-            //! Genral Settings Button.
+            //! General Settings Button
             InkWell(
               overlayColor: WidgetStateProperty.all(
                 const Color.fromARGB(255, 46, 46, 46),
               ),
-              onTap: () {},
+              onTap: () {
+                //! Action to be performed when the General button is tapped.
+              },
               child: const Row(
                 children: [
                   Padding(
@@ -172,12 +176,14 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
                 ],
               ),
             ),
-            //! Accessibility Button.
+            //! Accessibility Button
             InkWell(
               overlayColor: WidgetStateProperty.all(
                 const Color.fromARGB(255, 46, 46, 46),
               ),
-              onTap: () {},
+              onTap: () {
+                //! Action to be performed when the Accessibility button is tapped.
+              },
               child: const Row(
                 children: [
                   Padding(
@@ -224,12 +230,14 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
               ),
             ),
             const SizedBox(height: 40),
-            //! Version Section.
+            //! Version Section
             InkWell(
               overlayColor: WidgetStateProperty.all(
                 const Color.fromARGB(255, 46, 46, 46),
               ),
-              onTap: () {},
+              onTap: () {
+                //! Action to be performed when the Version section is tapped.
+              },
               child: const Row(
                 children: [
                   Padding(
@@ -283,12 +291,14 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
               thickness: 0.14,
               height: 0,
             ),
-            //! Tell others about zoom.
+            //! Tell Others About Zoom
             InkWell(
               overlayColor: WidgetStateProperty.all(
                 const Color.fromARGB(255, 46, 46, 46),
               ),
-              onTap: () {},
+              onTap: () {
+                //! Action to be performed when the Tell Others About Zoom section is tapped.
+              },
               child: const Row(
                 children: [
                   Padding(
@@ -333,7 +343,9 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
               overlayColor: WidgetStateProperty.all(
                 const Color.fromARGB(255, 46, 46, 46),
               ),
-              onTap: () {},
+              onTap: () {
+                //! Action to be performed when the Rate Zoom Workplace section is tapped.
+              },
               child: const Row(
                 children: [
                   Padding(
@@ -373,12 +385,14 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
               thickness: 0.2,
               height: 0,
             ),
-            //! Privacy Policy.
+            //! Privacy Policy
             InkWell(
               overlayColor: WidgetStateProperty.all(
                 const Color.fromARGB(255, 46, 46, 46),
               ),
-              onTap: () {},
+              onTap: () {
+                //! Action to be performed when the Privacy Policy section is tapped.
+              },
               child: const Row(
                 children: [
                   Padding(
@@ -418,12 +432,14 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
               thickness: 0.3,
               height: 0,
             ),
-            //! Term of Service.
+            //! Terms of Service
             InkWell(
               overlayColor: WidgetStateProperty.all(
                 const Color.fromARGB(255, 46, 46, 46),
               ),
-              onTap: () {},
+              onTap: () {
+                //! Action to be performed when the Terms of Service section is tapped.
+              },
               child: const Row(
                 children: [
                   Padding(
@@ -463,12 +479,14 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
               thickness: 0.3,
               height: 0,
             ),
-            //! Community standards.
+            //! Community Standards
             InkWell(
               overlayColor: WidgetStateProperty.all(
                 const Color.fromARGB(255, 46, 46, 46),
               ),
-              onTap: () {},
+              onTap: () {
+                //! Action to be performed when the Community Standards section is tapped.
+              },
               child: const Row(
                 children: [
                   Padding(
@@ -508,7 +526,7 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
               thickness: 0.2,
               height: 0,
             ),
-            //! Open source software.
+            //! Open Source Software
             const Padding(
               padding: EdgeInsets.only(left: 32.0, top: 16, bottom: 10),
               child: Row(

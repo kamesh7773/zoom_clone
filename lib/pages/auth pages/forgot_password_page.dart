@@ -10,13 +10,13 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  // variable declaration
+  // Variable declaration
   final GlobalKey _formKey = GlobalKey<FormState>();
   Color sendButtonColor = const Color.fromARGB(255, 53, 52, 52);
   Color sendButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
 
-  // textediting controllar's
-  TextEditingController emailControllar = TextEditingController();
+  // TextEditingController for email input
+  TextEditingController emailController = TextEditingController();
 
   //? --------------------------
   //? Method for forgot Password
@@ -24,15 +24,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   // Method for sending the reset password link to user's when they forgot there password.
   void forgotPassword() {
     FirebaseAuthMethods.forgotEmailPassword(
-      email: emailControllar.value.text.trim(),
+      email: emailController.value.text.trim(),
       context: context,
     );
   }
 
-  // called every time when textediting controllar begin used.
-  // Here we also validate the birth year textediting controllar for accepting the right birty year.
-  listenPasswordTextEditingControllar() {
-    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailControllar.value.text) && emailControllar.value.text.isNotEmpty) {
+  // Method to listen to changes in the email input field
+  // Updates the button color based on email validity
+  void listenEmailTextEditingController() {
+    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailController.value.text) && emailController.value.text.isNotEmpty) {
       setState(() {
         sendButtonColor = const Color.fromARGB(255, 41, 116, 255);
         sendButtonTextColor = const Color.fromARGB(255, 255, 255, 255);
@@ -48,15 +48,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   void initState() {
     super.initState();
-    // method that listen the Textediting Controllar.
-    emailControllar.addListener(listenPasswordTextEditingControllar);
+    // Add a listener to the email input field
+    emailController.addListener(listenEmailTextEditingController);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 36, 36, 36),
-      //! AppBar
+      // AppBar
       appBar: AppBar(
         title: const Text(
           "Forgot password",
@@ -112,7 +112,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   ),
                 ),
                 child: TextFormField(
-                  controller: emailControllar,
+                  controller: emailController,
                   cursorColor: Colors.lightBlue,
                   style: const TextStyle(color: Colors.white),
                   textAlign: TextAlign.center,
@@ -130,7 +130,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 child: Padding(
                   padding: EdgeInsets.all(6),
                   child: Text(
-                    "To reset your password, please enter your email address.\nYou many need to check your spam folder or unblock no-reply@zoom.us.",
+                    "To reset your password, please enter your email address.\nYou may need to check your spam folder or unblock no-reply@zoom.us.",
                     style: TextStyle(
                       fontSize: 13.5,
                       color: Color.fromARGB(255, 141, 141, 141),
@@ -148,7 +148,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     backgroundColor: sendButtonColor,
                   ),
                   onPressed: () {
-                    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailControllar.value.text)) {
+                    if (RegExp(r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$').hasMatch(emailController.value.text)) {
                       forgotPassword();
                     }
                   },

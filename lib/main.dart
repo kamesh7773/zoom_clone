@@ -11,10 +11,10 @@ import 'services/firebase_options.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Firebase Initlization.
+  // Initialize Firebase.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  // Important code for Facebook sign-in/sign-up for Flutter web apps only
+  // Initialize Facebook sign-in/sign-up for Flutter web apps only.
   if (kIsWeb) {
     await FacebookAuth.i.webAndDesktopInitialize(
       appId: "448008428320311",
@@ -24,7 +24,7 @@ void main() async {
     );
   }
 
-  // Checking if the user is already logged in
+  // Check if the user is already logged in.
   bool isUserAuthenticated = await FirebaseAuthMethods.isUserLogin();
 
   runApp(MyApp(
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Zoom Clone',
       initialRoute: isUserAuthenticated ? RoutesNames.homePage : RoutesNames.welcomePage,
-      onGenerateRoute: Routes.genrateRoute,
+      onGenerateRoute: Routes.generateRoute,
     );
   }
 }

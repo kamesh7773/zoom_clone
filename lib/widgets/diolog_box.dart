@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PopUpWidgets {
+  // Displays a dialog box with the specified title and content
   static void diologbox({
     required BuildContext context,
     required String title,

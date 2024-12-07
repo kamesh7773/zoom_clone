@@ -29,12 +29,12 @@ class VideoConferencePage extends StatefulWidget {
 }
 
 class _VideoConferencePageState extends State<VideoConferencePage> {
-  // varible declaration.
+  // Variable declaration
   DateTime? joinDateTime;
   DateTime? conferenceStartTime;
   Duration totalDuration = Duration.zero;
 
-  // Method for formating the Personal Meeting ID.
+  // Method for formatting the Personal Meeting ID
   String formatString(String input) {
     return input.replaceAllMapped(RegExp(r'.{1,4}'), (match) => '${match.group(0)} ').trim();
   }
@@ -48,14 +48,14 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
   @override
   void dispose() {
     ColoredPrint.warning("dispose");
-    // Calculate the total duration when the video confer
+    // Calculate the total duration when the video conference ends
     if (conferenceStartTime != null) {
       final conferenceEndTime = DateTime.now();
       final actualDuration = conferenceEndTime.difference(conferenceStartTime!);
 
       if (widget.isMeetingCreated != null) {
         ColoredPrint.warning("not null");
-        // Loging Meeting Join & Leave Details.
+        // Log meeting join & leave details
         FireStoreCurdMethods.logMeetingDetails(
           imageURL: widget.imageUrl,
           joinTime: conferenceStartTime,
@@ -81,7 +81,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
           turnOnCameraWhenJoining: widget.isVideoOn,
           turnOnMicrophoneWhenJoining: widget.isAudioOn == null ? true : widget.isAudioOn!,
           useFrontFacingCamera: true,
-          //! This is Avatar image of User Profile.
+          // This is the avatar image of the user profile
           avatarBuilder: (BuildContext context, Size size, ZegoUIKitUser? user, Map extraInfo) {
             return user != null
                 ? Container(
@@ -102,14 +102,14 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
             canSync: true,
           ),
 
-          //! Modify your custom configurations here.
+          // Modify your custom configurations here
           leaveConfirmDialogInfo: ZegoLeaveConfirmDialogInfo(
             title: "Leave the conference",
-            message: "Are you sure to leave the conference?",
+            message: "Are you sure you want to leave the conference?",
             cancelButtonName: "Cancel",
             confirmButtonName: "Confirm",
           ),
-          //! Top Appbar UI custmization.
+          // Top AppBar UI customization
           topMenuBarConfig: ZegoTopMenuBarConfig(
             title: "Meeting",
             hideByClick: true,
@@ -122,12 +122,12 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
             ],
           ),
         )
-          //! Zego UI Custmization Options for Bottom Navigation Button.
+          // Zego UI Customization Options for Bottom Navigation Button
           ..layout = ZegoLayout.gallery(
             addBorderRadiusAndSpacingBetweenView: true,
             showScreenSharingFullscreenModeToggleButtonRules: ZegoShowFullscreenModeToggleButtonRules.alwaysShow,
             showNewScreenSharingViewInFullscreenMode: true,
-          ) // Set the layout to gallery mode. and configure the [showNewScreenSharingViewInFullscreenMode] and [showScreenSharingFullscreenModeToggleButtonRules].
+          ) // Set the layout to gallery mode and configure the [showNewScreenSharingViewInFullscreenMode] and [showScreenSharingFullscreenModeToggleButtonRules]
           ..bottomMenuBarConfig = ZegoBottomMenuBarConfig(
             hideByClick: true,
             hideAutomatically: false,
@@ -137,7 +137,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
                 onPressed: () async {
                   await Share.share(
                     "Hi,\nI’ve scheduled a meeting and would love for you to join! Here are the details:\n\nMeeting ID: ${formatString(widget.conferenceID)}\n\nJoin Link: https://zoom-clone-8db7c.web.app/conferenceID/?code=${widget.conferenceID}\n\nSimply enter the Meeting ID in the app to join. Looking forward to seeing you there!",
-                    subject: "Hi i want to share this link",
+                    subject: "Hi, I want to share this link",
                   );
                 },
                 color: Colors.white,
@@ -153,7 +153,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
             ],
           )),
         events: ZegoUIKitPrebuiltVideoConferenceEvents(
-          //! here we are calulating the totel time of Video Confrence.
+          // Here we are calculating the total time of the video conference
           duration: ZegoVideoConferenceDurationEvents(
             onUpdated: (Duration duration) {
               // Record start time when duration begins

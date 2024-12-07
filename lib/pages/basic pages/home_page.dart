@@ -18,19 +18,18 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  // varible declaration.
+  // Variable declarations
   int _page = 0;
 
   late final String name;
   late final String userID;
   late final String imageUrl;
 
-  // declaring StreamSubscription for listening the deeplinks (When user enter the app via deeplinks)
+  // StreamSubscription for listening to deep links (when the user enters the app via deep links)
   StreamSubscription? _sub;
 
-  // Method for fetching current Provider user Data
+  // Method for fetching the current user's data from SharedPreferences
   Future<void> getUserData() async {
-    // creating instace of Shared Preferences.
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     name = prefs.getString('name') ?? "";
@@ -38,15 +37,13 @@ class HomePageState extends State<HomePage> {
     imageUrl = prefs.getString('imageUrl') ?? "";
   }
 
-  // Method that listen for deeplinks.
+  // Method to listen for deep links
   void _initDeepLinkListener() {
-    // listening the deeplink URI.
     _sub = uriLinkStream.listen((Uri? uri) {
-      // if URI is not null then..
       if (uri != null) {
-        // retriving the conferenceID
+        // Retrieve the conference ID
         String? conferenceID = uri.queryParameters['code'];
-        // if conferenceID is not null then we redirect the "User" to "videoConferencePage".
+        // If conferenceID is not null, redirect the user to the video conference page
         if (conferenceID != null && mounted) {
           Navigator.of(context).pushNamed(
             RoutesNames.videoConferencePage,
@@ -80,7 +77,7 @@ class HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  // List of Page for bottom Navigator Bar
+  // List of pages for the bottom navigation bar
   List<Widget> pages = [
     const MeetingScreen(),
     const MeetingHistroy(),
@@ -88,7 +85,7 @@ class HomePageState extends State<HomePage> {
     const MainSettings(),
   ];
 
-  // Method for changing screen when user taps on BottomNavigation Icon.
+  // Method for changing the screen when the user taps on a bottom navigation icon
   void onPagedChanged(int page) {
     setState(() {
       _page = page;
@@ -100,7 +97,7 @@ class HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: pages[_page],
-      //! Bottem Navigation Bar.
+      // Bottom Navigation Bar
       bottomNavigationBar: Theme(
         data: ThemeData(
           splashColor: const Color.fromARGB(255, 32, 32, 32),
@@ -119,7 +116,7 @@ class HomePageState extends State<HomePage> {
           onTap: onPagedChanged,
           currentIndex: _page,
           items: const [
-            //! Meetings.
+            // Meetings
             BottomNavigationBarItem(
               icon: FaIcon(
                 FontAwesomeIcons.video,
@@ -127,8 +124,7 @@ class HomePageState extends State<HomePage> {
               ),
               label: "Meetings",
             ),
-
-            //! Chat.
+            // Meeting History
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.history,
@@ -136,8 +132,7 @@ class HomePageState extends State<HomePage> {
               ),
               label: "Meeting History",
             ),
-
-            //! Contancts
+            // Contacts
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.person,
@@ -145,8 +140,7 @@ class HomePageState extends State<HomePage> {
               ),
               label: "Contact",
             ),
-
-            //! Settings.
+            // Settings
             BottomNavigationBarItem(
               icon: Icon(
                 Icons.settings,

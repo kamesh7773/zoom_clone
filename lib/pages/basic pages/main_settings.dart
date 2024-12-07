@@ -12,7 +12,7 @@ class MainSettings extends StatefulWidget {
 }
 
 class _MainSettingsPageState extends State<MainSettings> {
-  //! This method mask/hide  the user Email
+  //! This method masks/hides the user's email
   String maskEmail(String email) {
     if (!email.contains('@')) return email; // Return as is if not a valid email
 
@@ -35,7 +35,7 @@ class _MainSettingsPageState extends State<MainSettings> {
       canPop: false,
       onPopInvokedWithResult: (value, result) {
         if (!value) {
-          //! On press redirect user to homePage.
+          //! Redirects the user to the home page when pressed.
           Navigator.of(context).pushNamedAndRemoveUntil(
             RoutesNames.homePage,
             (Route<dynamic> route) => false,

@@ -11,18 +11,18 @@ class SignUpPage1 extends StatefulWidget {
 }
 
 class _SignUpPageState1 extends State<SignUpPage1> {
-  // variable declaration
+  // Variable declarations
   final GlobalKey _formKey = GlobalKey<FormState>();
   Color continueButtonColor = const Color.fromARGB(255, 53, 52, 52);
   Color continueButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
 
-  // textediting controllar's
-  TextEditingController birthYearControllar = TextEditingController();
+  // TextEditingController for birth year input
+  TextEditingController birthYearController = TextEditingController();
 
-  // called every time when textediting controllar begin used.
-  // Here we also validate the birth year textediting controllar for accepting the right birty year.
-  listenPasswordTextEditingControllar() {
-    if (RegExp(r'^(19[0-9]{2}|20[0-9]{2}|21[0-9]{2})$').hasMatch(birthYearControllar.value.text) && birthYearControllar.value.text.isNotEmpty) {
+  // This method is called whenever the TextEditingController is used.
+  // It validates the birth year and updates the continue button's appearance based on the validation result.
+  listenBirthYearTextEditingController() {
+    if (RegExp(r'^(19[0-9]{2}|20[0-9]{2}|21[0-9]{2})$').hasMatch(birthYearController.value.text) && birthYearController.value.text.isNotEmpty) {
       setState(() {
         continueButtonColor = const Color.fromARGB(255, 41, 116, 255);
         continueButtonTextColor = const Color.fromARGB(255, 255, 255, 255);
@@ -38,8 +38,8 @@ class _SignUpPageState1 extends State<SignUpPage1> {
   @override
   void initState() {
     super.initState();
-    // method that listen the Textediting Controllar.
-    birthYearControllar.addListener(listenPasswordTextEditingControllar);
+    // Add a listener to the TextEditingController to monitor changes.
+    birthYearController.addListener(listenBirthYearTextEditingController);
   }
 
   @override
@@ -47,7 +47,7 @@ class _SignUpPageState1 extends State<SignUpPage1> {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (value, result) {
-        //! On press redirect user to Welcome Page.
+        // Redirect the user to the Welcome Page when the back button is pressed.
         if (!value) {
           Navigator.of(context).pushNamedAndRemoveUntil(
             RoutesNames.welcomePage,
@@ -101,7 +101,7 @@ class _SignUpPageState1 extends State<SignUpPage1> {
                   ),
                 ),
                 const SizedBox(height: 8),
-                //! Birth year Textediting Controller
+                //! Birth Year TextEditingController
                 Container(
                   decoration: const BoxDecoration(
                     color: Color.fromARGB(255, 36, 36, 36),
@@ -118,7 +118,7 @@ class _SignUpPageState1 extends State<SignUpPage1> {
                   ),
                   child: TextFormField(
                     autofocus: true,
-                    controller: birthYearControllar,
+                    controller: birthYearController,
                     keyboardType: TextInputType.number,
                     cursorColor: Colors.lightBlue,
                     style: const TextStyle(color: Colors.white),
@@ -149,7 +149,7 @@ class _SignUpPageState1 extends State<SignUpPage1> {
                   ),
                 ),
                 const SizedBox(height: 18),
-                //! Sing In Button.
+                //! Continue Button
                 Center(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -158,15 +158,11 @@ class _SignUpPageState1 extends State<SignUpPage1> {
                       backgroundColor: continueButtonColor,
                     ),
                     onPressed: () {
-                      // If birth year is not validated.
-                      if (!RegExp(r'^(19[0-9]{2}|20[0-9]{2}|21[0-9]{2})$').hasMatch(birthYearControllar.value.text) && birthYearControllar.value.text.isNotEmpty) {
-                      }
-                      // If it is got validated.
-                      else {
+                      // If the birth year is valid, navigate to the next page.
+                      if (RegExp(r'^(19[0-9]{2}|20[0-9]{2}|21[0-9]{2})$').hasMatch(birthYearController.value.text) && birthYearController.value.text.isNotEmpty) {
                         Navigator.of(context).pushNamed(
                           RoutesNames.signUpPage_2,
-                          //! passing the BirthYear to SignUp 2 Page.
-                          arguments: birthYearControllar.value.text,
+                          arguments: birthYearController.value.text,
                         );
                       }
                     },

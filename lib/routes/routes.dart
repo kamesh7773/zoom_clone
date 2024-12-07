@@ -18,7 +18,7 @@ import '../pages/basic%20pages/welcome_page.dart';
 import 'route_names.dart';
 
 class Routes {
-  static Route<dynamic> genrateRoute(RouteSettings settings) {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       //! Splash Screen Page.
       case RoutesNames.splashPage:
@@ -38,19 +38,19 @@ class Routes {
           builder: (context) => const JoinMeetingPage(),
         );
 
-      //! SignIn Page.
+      //! Sign-In Page.
       case RoutesNames.signInPage:
         return MaterialPageRoute(
           builder: (context) => const SignInPage(),
         );
 
-      //! SignUp Page 1.
+      //! Sign-Up Page 1.
       case RoutesNames.signUpPage_1:
         return MaterialPageRoute(
           builder: (context) => const SignUpPage1(),
         );
 
-      //! SignUp Page 2.
+      //! Sign-Up Page 2.
       case RoutesNames.signUpPage_2:
         // Retriving the BirthYear.
         final birthyear = settings.arguments as String;
@@ -72,7 +72,7 @@ class Routes {
         );
 
       //! Email OTP varification page.
-      case RoutesNames.otpVarification:
+      case RoutesNames.otpVerification:
         // Retriving BirthYear, Email, Fname, Lname and Password.
         final args = settings.arguments as Map<String, dynamic>;
 

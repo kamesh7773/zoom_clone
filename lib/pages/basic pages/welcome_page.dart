@@ -14,10 +14,10 @@ class WelcomePage extends StatefulWidget {
 }
 
 class _WelcomePageState extends State<WelcomePage> {
-  // declaring StreamSubscription for listening the deeplinks (When user enter the app via deeplinks)
+  // Declaring StreamSubscription for listening to deep links (when the user enters the app via deep links)
   StreamSubscription? _sub;
 
-  // This method genrate random Meeting ID if user does not use there personal ID.
+  // This method generates a random Meeting ID if the user does not use their personal ID
   static String generate12DigitNumber() {
     Random random = Random();
     String number = '';
@@ -29,15 +29,13 @@ class _WelcomePageState extends State<WelcomePage> {
     return number;
   }
 
-  // Method that listen for deeplinks.
+  // Method to listen for deep links
   void _initDeepLinkListener() {
-    // listening the deeplink URI.
     _sub = uriLinkStream.listen((Uri? uri) {
-      // if URI is not null then..
       if (uri != null) {
-        // retriving the conferenceID
+        // Retrieve the conference ID
         String? conferenceID = uri.queryParameters['code'];
-        // if conferenceID is not null then we redirect the "User" to "videoConferencePage".
+        // If conferenceID is not null, redirect the user to the video conference page
         if (conferenceID != null && mounted) {
           Navigator.of(context).pushNamed(
             RoutesNames.videoConferencePage,

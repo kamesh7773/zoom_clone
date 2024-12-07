@@ -18,24 +18,24 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  // variable declaration
+  // Variable declarations
   final GlobalKey _formKey = GlobalKey<FormState>();
   Color createAccountButtonColor = const Color.fromARGB(255, 53, 52, 52);
   Color createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
   bool viewPassword = false;
 
-  // varible for password validation UI.
-  bool allowConsecutiveWord = false;
-  bool isEightChartors = false;
-  bool atLeastOneNumber = false;
-  bool atLeastOneLowercase = false;
-  bool atLeastOneUppercase = false;
-  bool isPasswordVerified = false;
+  // Variables for password validation UI
+  bool allowConsecutiveWord = false; // Indicates if consecutive words are allowed
+  bool isEightCharacters = false; // Checks if the password has at least 8 characters
+  bool atLeastOneNumber = false; // Checks if the password contains at least one number
+  bool atLeastOneLowercase = false; // Checks if the password contains at least one lowercase letter
+  bool atLeastOneUppercase = false; // Checks if the password contains at least one uppercase letter
+  bool isPasswordVerified = false; // Indicates if the password meets all criteria
 
-  // textediting controllar's
-  TextEditingController firstNameControllar = TextEditingController();
-  TextEditingController lastNameControllar = TextEditingController();
-  TextEditingController passwordControllar = TextEditingController();
+  // Text editing controllers
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   //? -----------------------
   //? Method for Email SignUp
@@ -45,17 +45,18 @@ class _CreateAccountState extends State<CreateAccount> {
     FirebaseAuthMethods.signUpWithEmail(
       birthYear: widget.birthYear,
       email: widget.email,
-      fname: firstNameControllar.value.text.trim(),
-      lname: lastNameControllar.value.text.trim(),
-      password: passwordControllar.value.text.trim(),
+      fname: firstNameController.value.text.trim(),
+      lname: lastNameController.value.text.trim(),
+      password: passwordController.value.text.trim(),
       context: context,
     );
   }
 
-  // called every time when textediting controllar begin used and validate the entered password by user.
+  // Validates the password every time a text editing controller is used
   void passwordValidator() {
-    // if password texteding controllar is empty or validation for checking Consecutive/repeted Words are being used or not.
-    if (firstNameControllar.value.text.isEmpty && lastNameControllar.value.text.isEmpty && passwordControllar.value.text.isEmpty && RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text)) {
+    // Check if the first name, last name, and password fields are empty or if the password contains consecutive/repeated characters
+    if (firstNameController.value.text.isEmpty && lastNameController.value.text.isEmpty && passwordController.value.text.isEmpty && 
+        RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordController.value.text)) {
       setState(() {
         allowConsecutiveWord = false;
         isPasswordVerified = false;
@@ -64,7 +65,7 @@ class _CreateAccountState extends State<CreateAccount> {
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
       });
     }
-    if (RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text)) {
+    if (RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordController.value.text)) {
       setState(() {
         allowConsecutiveWord = false;
         isPasswordVerified = false;
@@ -73,7 +74,7 @@ class _CreateAccountState extends State<CreateAccount> {
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
       });
     }
-    if (passwordControllar.value.text.isNotEmpty && !RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text)) {
+    if (passwordController.value.text.isNotEmpty && !RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordController.value.text)) {
       setState(() {
         allowConsecutiveWord = true;
 
@@ -83,18 +84,18 @@ class _CreateAccountState extends State<CreateAccount> {
     }
 
     // validating atleast 8 chartors.
-    if (!RegExp(r'^.{8,}$').hasMatch(passwordControllar.value.text)) {
+    if (!RegExp(r'^.{8,}$').hasMatch(passwordController.value.text)) {
       setState(() {
-        isEightChartors = false;
+        isEightCharacters = false;
         isPasswordVerified = false;
 
         createAccountButtonColor = const Color.fromARGB(255, 53, 52, 52);
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
       });
     }
-    if (RegExp(r'^.{8,}$').hasMatch(passwordControllar.value.text)) {
+    if (RegExp(r'^.{8,}$').hasMatch(passwordController.value.text)) {
       setState(() {
-        isEightChartors = true;
+        isEightCharacters = true;
 
         createAccountButtonColor = const Color.fromARGB(255, 53, 52, 52);
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
@@ -102,7 +103,7 @@ class _CreateAccountState extends State<CreateAccount> {
     }
 
     // validating at lest 1 number in password.
-    if (!RegExp(r'.*\d+.*').hasMatch(passwordControllar.value.text)) {
+    if (!RegExp(r'.*\d+.*').hasMatch(passwordController.value.text)) {
       setState(() {
         atLeastOneNumber = false;
         isPasswordVerified = false;
@@ -111,7 +112,7 @@ class _CreateAccountState extends State<CreateAccount> {
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
       });
     }
-    if (RegExp(r'.*\d+.*').hasMatch(passwordControllar.value.text)) {
+    if (RegExp(r'.*\d+.*').hasMatch(passwordController.value.text)) {
       setState(() {
         atLeastOneNumber = true;
 
@@ -121,7 +122,7 @@ class _CreateAccountState extends State<CreateAccount> {
     }
 
     // validating at lest 1 lowercase in password.
-    if (!RegExp(r'.*[a-z]+.*').hasMatch(passwordControllar.value.text)) {
+    if (!RegExp(r'.*[a-z]+.*').hasMatch(passwordController.value.text)) {
       setState(() {
         atLeastOneLowercase = false;
         isPasswordVerified = false;
@@ -130,7 +131,7 @@ class _CreateAccountState extends State<CreateAccount> {
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
       });
     }
-    if (RegExp(r'.*[a-z]+.*').hasMatch(passwordControllar.value.text)) {
+    if (RegExp(r'.*[a-z]+.*').hasMatch(passwordController.value.text)) {
       setState(() {
         atLeastOneLowercase = true;
 
@@ -140,7 +141,7 @@ class _CreateAccountState extends State<CreateAccount> {
     }
 
     // validating at lest 1 uppercase in password.
-    if (!RegExp(r'.*[A-Z]+.*').hasMatch(passwordControllar.value.text)) {
+    if (!RegExp(r'.*[A-Z]+.*').hasMatch(passwordController.value.text)) {
       setState(() {
         atLeastOneUppercase = false;
         isPasswordVerified = false;
@@ -149,7 +150,7 @@ class _CreateAccountState extends State<CreateAccount> {
         createAccountButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
       });
     }
-    if (RegExp(r'.*[A-Z]+.*').hasMatch(passwordControllar.value.text)) {
+    if (RegExp(r'.*[A-Z]+.*').hasMatch(passwordController.value.text)) {
       setState(() {
         atLeastOneUppercase = true;
 
@@ -158,11 +159,16 @@ class _CreateAccountState extends State<CreateAccount> {
       });
     }
 
-    // when all condition where not applied then..
-    if (firstNameControllar.value.text.isNotEmpty && lastNameControllar.value.text.isNotEmpty && passwordControllar.value.text.isNotEmpty && !RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordControllar.value.text) && RegExp(r'^.{8,}$').hasMatch(passwordControllar.value.text) && RegExp(r'.*\d+.*').hasMatch(passwordControllar.value.text) && RegExp(r'.*[a-z]+.*').hasMatch(passwordControllar.value.text) && RegExp(r'.*[A-Z]+.*').hasMatch(passwordControllar.value.text)) {
+    // When all conditions are met
+    if (firstNameController.value.text.isNotEmpty && lastNameController.value.text.isNotEmpty && passwordController.value.text.isNotEmpty && 
+        !RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordController.value.text) && 
+        RegExp(r'^.{8,}$').hasMatch(passwordController.value.text) && 
+        RegExp(r'.*\d+.*').hasMatch(passwordController.value.text) && 
+        RegExp(r'.*[a-z]+.*').hasMatch(passwordController.value.text) && 
+        RegExp(r'.*[A-Z]+.*').hasMatch(passwordController.value.text)) {
       setState(() {
         allowConsecutiveWord = true;
-        isEightChartors = true;
+        isEightCharacters = true;
         atLeastOneNumber = true;
         atLeastOneLowercase = true;
         atLeastOneUppercase = true;
@@ -178,9 +184,9 @@ class _CreateAccountState extends State<CreateAccount> {
   void initState() {
     super.initState();
     // method that listen the Textediting Controllar's.
-    firstNameControllar.addListener(passwordValidator);
-    lastNameControllar.addListener(passwordValidator);
-    passwordControllar.addListener(passwordValidator);
+    firstNameController.addListener(passwordValidator);
+    lastNameController.addListener(passwordValidator);
+    passwordController.addListener(passwordValidator);
   }
 
   @override
@@ -247,7 +253,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     //! First Name Textediting Controller
                     TextFormField(
                       autofocus: true,
-                      controller: firstNameControllar,
+                      controller: firstNameController,
                       cursorColor: Colors.lightBlue,
                       style: const TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
@@ -260,7 +266,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     ),
                     //! Last Name Textediting Controller
                     TextFormField(
-                      controller: lastNameControllar,
+                      controller: lastNameController,
                       cursorColor: Colors.lightBlue,
                       style: const TextStyle(color: Colors.white),
                       textAlign: TextAlign.center,
@@ -275,7 +281,7 @@ class _CreateAccountState extends State<CreateAccount> {
                     Stack(
                       children: [
                         TextFormField(
-                          controller: passwordControllar,
+                          controller: passwordController,
                           cursorColor: Colors.lightBlue,
                           style: const TextStyle(color: Colors.white),
                           textAlign: TextAlign.center,
@@ -317,7 +323,7 @@ class _CreateAccountState extends State<CreateAccount> {
               ),
               const SizedBox(height: 20),
               // if password feild is empty then return this under widget.
-              passwordControllar.value.text.isEmpty
+              passwordController.value.text.isEmpty
                   ? const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -416,7 +422,7 @@ class _CreateAccountState extends State<CreateAccount> {
                               //! 8 characters.
                               Row(
                                 children: [
-                                  isEightChartors
+                                  isEightCharacters
                                       ? const Icon(
                                           Icons.verified,
                                           size: 15,
@@ -569,7 +575,7 @@ class _CreateAccountState extends State<CreateAccount> {
                   ),
                   onPressed: () async {
                     // First we check the Validation (if validation approved then..)
-                    if (isPasswordVerified && firstNameControllar.value.text.isNotEmpty && lastNameControllar.value.text.isNotEmpty) {
+                    if (isPasswordVerified && firstNameController.value.text.isNotEmpty && lastNameController.value.text.isNotEmpty) {
                       // Check internet connection before proceeding
                       bool isInternet = await InternetChecker.checkInternet();
 

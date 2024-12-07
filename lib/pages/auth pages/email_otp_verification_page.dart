@@ -26,11 +26,11 @@ class OtpVerificationPage extends StatefulWidget {
 }
 
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
-  // varible declaration.
+  // Variable declaration.
   Color resentButtonColor = const Color.fromRGBO(46, 119, 255, 1);
-  TextEditingController pinputControllar = TextEditingController();
+  TextEditingController pinputController = TextEditingController();
 
-  // varibles for OTP Timer.
+  // Variables for OTP Timer.
   bool resentButton = true;
   int minutes = 0;
   int seconds = 0;
@@ -56,18 +56,15 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
     });
   }
 
-  // Method to reset the Timer and Buttons to default when user clicks back button
-  // This handles cases where the user accidentally presses the back button
+  // Method to reset the timer and buttons to default when the user clicks the back button.
+  // This handles cases where the user accidentally presses the back button.
   void resetTimerAndBtn() {
     timer!.cancel();
     resentButton = false;
     duration = Duration(seconds: 120 + incrementSecond);
   }
 
-  //? ---------------------
-  //? Method for Verify OTP
-  //? ---------------------
-
+  // Method to verify the OTP.
   void verifyOTP() {
     FirebaseAuthMethods.verifyEmailOTP(
       birthYear: widget.birthYear,
@@ -75,20 +72,18 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
       fname: widget.fname,
       lname: widget.lname,
       password: widget.password,
-      emailOTP: pinputControllar.value.text,
+      emailOTP: pinputController.value.text,
       context: context,
     );
   }
 
-  //? ---------------------
-  //? Method for Resent OTP
-  //? ---------------------
-
+  // Method to resend the OTP.
   void resentOTP() {
-    // Restart the timer and disable the OTP resend button
+    // Restart the timer and disable the OTP resend button.
     startTimer();
     resentButton = false;
 
+    // Uncomment the following lines to enable OTP resend functionality.
     // FirebaseAuthMethods.resentEmailOTP(
     //   email: widget.email,
     //   context: context,
@@ -97,11 +92,11 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
 
   @override
   Widget build(BuildContext context) {
-    int initialMintues = incrementSecond ~/ 60;
-    int initialSecond = incrementSecond % 60;
+    int initialMinutes = incrementSecond ~/ 60;
+    int initialSeconds = incrementSecond % 60;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 36, 36, 36),
-      //! AppBar
+      // AppBar
       appBar: AppBar(
         title: const Text(
           "Verification",
@@ -138,7 +133,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
             const Padding(
               padding: EdgeInsets.all(8.0),
               child: Text(
-                "Please enter the verification code send to your email address kameshsinghaaa64@gmail.com",
+                "Please enter the verification code sent to your email address.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey,
@@ -147,10 +142,10 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               ),
             ),
             const SizedBox(height: 26),
-            //! Pinput Widget.
+            // Pinput Widget.
             Pinput(
               autofocus: true,
-              controller: pinputControllar,
+              controller: pinputController,
               length: 6,
               keyboardType: TextInputType.number,
               onCompleted: (value) {
@@ -192,7 +187,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
             ),
             const SizedBox(height: 40),
             Text(
-              resentButton ? "${initialMintues.toString().padLeft(2, '0')} : ${initialSecond.toString().padLeft(2, '0')}" : "${minutes.toString().padLeft(2, '0')} : ${seconds.toString().padLeft(2, '0')}",
+              resentButton ? "${initialMinutes.toString().padLeft(2, '0')} : ${initialSeconds.toString().padLeft(2, '0')}" : "${minutes.toString().padLeft(2, '0')} : ${seconds.toString().padLeft(2, '0')}",
               style: const TextStyle(
                 color: Colors.white,
               ),
@@ -202,7 +197,7 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  "Did not get the code?",
+                  "Didn't receive the code?",
                   style: TextStyle(
                     color: Colors.white,
                   ),
