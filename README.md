@@ -1,4 +1,11 @@
 
+# Project Title
+
+A brief description of what this project does and who it's for
+
+
+
+
 # 📹 Zoom Clone Application
 
 A **video conferencing application** built with the Flutter framework, designed for seamless and feature-rich online meetings. Powered by **Firebase** and utilizing the `zego_uikit_prebuilt_video_conference` package, this app ensures robust functionality and an intuitive user experience.
@@ -77,13 +84,13 @@ A **video conferencing application** built with the Flutter framework, designed 
 
 ## 📸 Screenshots
 
-| Home Page | Login page | Sing Up Page |
+| Welcome Page | Home page | Join Meeting Page |
 |-----------------|-----------|-----------|
-| ![Home Page]() | ![Login page]() | ![Sing Up Page]() |
+| ![Welcome Page](https://github.com/kamesh7773/zoom_clone/blob/main/readme%20assets/welcome_page.png?raw=true) | ![Home Page](https://github.com/kamesh7773/zoom_clone/blob/main/readme%20assets/home_page.png?raw=true) | ![Settings Page](https://github.com/kamesh7773/zoom_clone/blob/main/readme%20assets/settings_page.png?raw=true) |
 
-| Login & Sign up | Selectable Notes | Modes (Light & Dark) |
+| Sign up | Create Meeting Demo | Join Meeting Demo |
 |-----------------|-----------|-----------|
-| ![Login & Sign up]() | ![Multiple Selectable Notes]() | ![Trash Page]() |
+| ![Sign Up Page](https://github.com/kamesh7773/zoom_clone/blob/main/readme%20assets/SignUp.gif?raw=true) | ![Create Meeting Demo](https://github.com/kamesh7773/zoom_clone/blob/main/readme%20assets/CreateMeeting.gif?raw=true) | ![Join Meeting Demo](https://github.com/kamesh7773/zoom_clone/blob/main/readme%20assets/JoinMeeting.gif?raw=true) |
 
 
 
