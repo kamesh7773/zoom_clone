@@ -1,4 +1,3 @@
-import 'package:colored_print/colored_print.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zego_uikit_prebuilt_video_conference/zego_uikit_prebuilt_video_conference.dart';
@@ -30,8 +29,8 @@ class VideoConferencePage extends StatefulWidget {
 
 class _VideoConferencePageState extends State<VideoConferencePage> {
   // Variable declaration
-  DateTime? joinDateTime;
-  DateTime? conferenceStartTime;
+  DateTime? conferencejoinDateTime;
+  DateTime? conferenceendDateTime;
   Duration totalDuration = Duration.zero;
 
   // Method for formatting the Personal Meeting ID
@@ -41,30 +40,26 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
 
   @override
   void initState() {
-    joinDateTime = DateTime.now();
+    conferencejoinDateTime = DateTime.now();
     super.initState();
   }
 
   @override
   void dispose() {
-    ColoredPrint.warning("dispose");
-    // Calculate the total duration when the video conference ends
-    if (conferenceStartTime != null) {
-      final conferenceEndTime = DateTime.now();
-      final actualDuration = conferenceEndTime.difference(conferenceStartTime!);
+    conferenceendDateTime = DateTime.now();
+    totalDuration = conferenceendDateTime!.difference(conferencejoinDateTime!);
 
-      if (widget.isMeetingCreated != null) {
-        ColoredPrint.warning("not null");
-        // Log meeting join & leave details
-        FireStoreCurdMethods.logMeetingDetails(
-          imageURL: widget.imageUrl,
-          joinTime: conferenceStartTime,
-          leaveTime: conferenceEndTime,
-          totalMeetingDuration: actualDuration,
-          isMeetingCreated: widget.isMeetingCreated,
-        );
-      }
+    if (widget.isMeetingCreated != null) {
+      // Log meeting join & leave details
+      FireStoreCurdMethods.logMeetingDetails(
+        imageURL: widget.imageUrl,
+        joinTime: conferencejoinDateTime,
+        leaveTime: conferenceendDateTime,
+        totalMeetingDuration: totalDuration,
+        isMeetingCreated: widget.isMeetingCreated,
+      );
     }
+
     super.dispose();
   }
 
@@ -97,10 +92,6 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
           onLeaveConfirmation: (context) async {
             return true;
           },
-          duration: ZegoVideoConferenceDurationConfig(
-            isVisible: true,
-            canSync: true,
-          ),
 
           // Modify your custom configurations here
           leaveConfirmDialogInfo: ZegoLeaveConfirmDialogInfo(
@@ -152,20 +143,6 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
               ZegoMenuBarButtonName.switchAudioOutputButton,
             ],
           )),
-        events: ZegoUIKitPrebuiltVideoConferenceEvents(
-          // Here we are calculating the total time of the video conference
-          duration: ZegoVideoConferenceDurationEvents(
-            onUpdated: (Duration duration) {
-              // Record start time when duration begins
-              if (conferenceStartTime == null && duration.inSeconds > 0) {
-                conferenceStartTime = DateTime.now();
-              }
-
-              // Continuously update total duration
-              totalDuration = duration;
-            },
-          ),
-        ),
       ),
     );
   }

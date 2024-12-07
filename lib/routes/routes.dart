@@ -66,7 +66,7 @@ class Routes {
 
         return MaterialPageRoute(
           builder: (context) => CreateAccount(
-            birthYear: args["birtyYear"],
+            birthYear: args["birthYear"],
             email: args["email"],
           ),
         );
