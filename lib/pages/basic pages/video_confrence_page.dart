@@ -49,8 +49,8 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
     conferenceendDateTime = DateTime.now();
     totalDuration = conferenceendDateTime!.difference(conferencejoinDateTime!);
 
+    // If meeting is join or created by authenticated user only in that case we Log meeting join & leave details to Firestore.
     if (widget.isMeetingCreated != null) {
-      // Log meeting join & leave details
       FireStoreCurdMethods.logMeetingDetails(
         imageURL: widget.imageUrl,
         joinTime: conferencejoinDateTime,
@@ -59,7 +59,7 @@ class _VideoConferencePageState extends State<VideoConferencePage> {
         isMeetingCreated: widget.isMeetingCreated,
       );
     }
-
+    
     super.dispose();
   }
 
