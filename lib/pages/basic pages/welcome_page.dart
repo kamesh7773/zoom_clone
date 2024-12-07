@@ -1,8 +1,73 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:uni_links2/uni_links.dart';
 import '../../routes/route_names.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({super.key});
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage> {
+  // declaring StreamSubscription for listening the deeplinks (When user enter the app via deeplinks)
+  StreamSubscription? _sub;
+
+  // This method genrate random Meeting ID if user does not use there personal ID.
+  static String generate12DigitNumber() {
+    Random random = Random();
+    String number = '';
+
+    for (int i = 0; i < 12; i++) {
+      number += random.nextInt(10).toString(); // Random digit from 0-9
+    }
+
+    return number;
+  }
+
+  // Method that listen for deeplinks.
+  void _initDeepLinkListener() {
+    // listening the deeplink URI.
+    _sub = uriLinkStream.listen((Uri? uri) {
+      // if URI is not null then..
+      if (uri != null) {
+        // retriving the conferenceID
+        String? conferenceID = uri.queryParameters['code'];
+        // if conferenceID is not null then we redirect the "User" to "videoConferencePage".
+        if (conferenceID != null && mounted) {
+          Navigator.of(context).pushNamed(
+            RoutesNames.videoConferencePage,
+            arguments: {
+              "name": "Anonymous",
+              "userID": generate12DigitNumber(),
+              "imageUrl": "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o=",
+              "conferenceID": conferenceID,
+              "isVideoOn": true,
+              "isAudioOn": true,
+              "joinDateTime": DateTime.now(),
+            },
+          );
+        }
+      }
+    }, onError: (err) {
+      throw err.toString();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initDeepLinkListener();
+  }
+
+  @override
+  void dispose() {
+    _sub?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

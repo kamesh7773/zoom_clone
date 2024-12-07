@@ -1,13 +1,13 @@
 [
-    {
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "com.example.zoom_clone",
-        "sha256_cert_fingerprints": [
-          "96:87:60:97:B1:BE:50:00:A2:DA:08:6F:BD:0F:B6:A6:84:85:36:C4:F2:D0:94:BB:3C:F5:50:1C:25:E7:13:AE"
-        ]
-      }
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.example.zoom_clone",
+      "sha256_cert_fingerprints": [
+        "96:87:60:97:B1:BE:50:00:A2:DA:08:6F:BD:0F:B6:A6:84:85:36:C4:F2:D0:94:BB:3C:F5:50:1C:25:E7:13:AE",
+        "B0:2A:34:4A:AB:E8:05:9E:E8:B7:8C:A0:76:C0:83:2E:64:3E:B3:1E:0E:3E:CA:2E:E8:15:2B:8F:CE:E7:1C:D7"
+      ]
     }
-  ]
-  
+  }
+]
