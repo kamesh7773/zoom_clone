@@ -1,11 +1,4 @@
 
-# Project Title
-
-A brief description of what this project does and who it's for
-
-
-
-
 # 📹 Zoom Clone Application
 
 A **video conferencing application** built with the Flutter framework, designed for seamless and feature-rich online meetings. Powered by **Firebase** and utilizing the `zego_uikit_prebuilt_video_conference` package, this app ensures robust functionality and an intuitive user experience.

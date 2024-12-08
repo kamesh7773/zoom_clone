@@ -52,9 +52,8 @@ dependencies:
   share_plus: ^10.1.2
   cached_network_image: ^3.4.1
   intl: ^0.20.1
-  uni_links2: ^0.6.0+2
+  app_links: ^6.3.2
   auto_size_text: ^3.0.0
-  colored_print: ^1.0.0
  
 dev_dependencies:
   flutter_test:

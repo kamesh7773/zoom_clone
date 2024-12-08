@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
-import 'package:uni_links2/uni_links.dart';
 
 import '../../routes/route_names.dart';
 
@@ -16,6 +16,8 @@ class WelcomePage extends StatefulWidget {
 class _WelcomePageState extends State<WelcomePage> {
   // Declaring StreamSubscription for listening to deep links (when the user enters the app via deep links)
   StreamSubscription? _sub;
+  // Creating AppLink class Object.
+  final AppLinks appLinks = AppLinks();
 
   // This method generates a random Meeting ID if the user does not use their personal ID
   static String generate12DigitNumber() {
@@ -31,7 +33,7 @@ class _WelcomePageState extends State<WelcomePage> {
 
   // Method to listen for deep links
   void _initDeepLinkListener() {
-    _sub = uriLinkStream.listen((Uri? uri) {
+    _sub = appLinks.uriLinkStream.listen((Uri? uri) {
       if (uri != null) {
         // Retrieve the conference ID
         String? conferenceID = uri.queryParameters['code'];
