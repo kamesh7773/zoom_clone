@@ -17,7 +17,7 @@ class _SignUpPageState1 extends State<SignUpPage1> {
   Color continueButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
 
   // TextEditingController for birth year input
-  TextEditingController birthYearController = TextEditingController();
+  late TextEditingController birthYearController;
 
   // This method is called whenever the TextEditingController is used.
   // It validates the birth year and updates the continue button's appearance based on the validation result.
@@ -38,8 +38,15 @@ class _SignUpPageState1 extends State<SignUpPage1> {
   @override
   void initState() {
     super.initState();
+    birthYearController = TextEditingController();
     // Add a listener to the TextEditingController to monitor changes.
     birthYearController.addListener(listenBirthYearTextEditingController);
+  }
+
+  @override
+  void dispose() {
+    birthYearController.dispose();
+    super.dispose();
   }
 
   @override

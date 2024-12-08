@@ -17,7 +17,7 @@ class _SignUpPage2State extends State<SignUpPage2> {
   Color signInButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
 
   // TextEditingController for email input
-  TextEditingController emailController = TextEditingController();
+  late TextEditingController emailController;
 
   // This method is called whenever the TextEditingController is used.
   // It validates the email and updates the sign-in button's appearance based on the validation result.
@@ -37,9 +37,16 @@ class _SignUpPage2State extends State<SignUpPage2> {
 
   @override
   void initState() {
+    emailController = TextEditingController();
     super.initState();
     // Add a listener to the TextEditingController to monitor changes.
     emailController.addListener(listenEmailTextEditingController);
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
   }
 
   @override

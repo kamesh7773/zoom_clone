@@ -36,7 +36,7 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
   final GlobalKey _formKey = GlobalKey<FormState>();
 
   // TextEditingController
-  TextEditingController conferenceIDControllar = TextEditingController();
+  late TextEditingController conferenceIDControllar;
 
   // Called every time the TextEditingController is used
   // Here we also validate the birth year TextEditingController for accepting the correct birth year
@@ -115,12 +115,19 @@ class _JoinMeetingPageState extends State<JoinMeetingPage> {
   @override
   void initState() {
     super.initState();
+    conferenceIDControllar = TextEditingController();
     // Method that listens to the TextEditingController
     conferenceIDControllar.addListener(listenPasswordTextEditingControllar);
     conferenceIDControllar.addListener(_formatText);
     deviceModelName();
     getUserData();
     isUserAuthenticate();
+  }
+
+  @override
+  void dispose() {
+    conferenceIDControllar.dispose();
+    super.dispose();
   }
 
   @override

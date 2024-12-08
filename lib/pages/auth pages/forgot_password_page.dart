@@ -16,7 +16,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Color sendButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
 
   // TextEditingController for email input
-  TextEditingController emailController = TextEditingController();
+  late TextEditingController emailController;
 
   //? --------------------------
   //? Method for forgot Password
@@ -48,8 +48,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   void initState() {
     super.initState();
+    emailController = TextEditingController();
     // Add a listener to the email input field
     emailController.addListener(listenEmailTextEditingController);
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
   }
 
   @override

@@ -16,8 +16,8 @@ class _SignInPageState extends State<SignInPage> {
   Color signInButtonTextColor = const Color.fromARGB(255, 124, 123, 123);
 
   // textediting controllar's
-  TextEditingController emailControllar = TextEditingController();
-  TextEditingController passwordControllar = TextEditingController();
+  late TextEditingController emailControllar;
+  late TextEditingController passwordControllar;
 
   //? ------------------
   //? Method for Sign IN
@@ -50,9 +50,18 @@ class _SignInPageState extends State<SignInPage> {
   @override
   void initState() {
     super.initState();
+    emailControllar = TextEditingController();
+    passwordControllar = TextEditingController();
     // method that listen the Textediting Controllar.
     emailControllar.addListener(listenPasswordTextEditingControllar);
     passwordControllar.addListener(listenPasswordTextEditingControllar);
+  }
+
+  @override
+  void dispose() {
+    emailControllar.dispose();
+    passwordControllar.dispose();
+    super.dispose();
   }
 
   @override

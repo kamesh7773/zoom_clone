@@ -33,9 +33,9 @@ class _CreateAccountState extends State<CreateAccount> {
   bool isPasswordVerified = false; // Indicates if the password meets all criteria
 
   // Text editing controllers
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController passwordController;
 
   //? -----------------------
   //? Method for Email SignUp
@@ -55,8 +55,7 @@ class _CreateAccountState extends State<CreateAccount> {
   // Validates the password every time a text editing controller is used
   void passwordValidator() {
     // Check if the first name, last name, and password fields are empty or if the password contains consecutive/repeated characters
-    if (firstNameController.value.text.isEmpty && lastNameController.value.text.isEmpty && passwordController.value.text.isEmpty && 
-        RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordController.value.text)) {
+    if (firstNameController.value.text.isEmpty && lastNameController.value.text.isEmpty && passwordController.value.text.isEmpty && RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordController.value.text)) {
       setState(() {
         allowConsecutiveWord = false;
         isPasswordVerified = false;
@@ -160,12 +159,7 @@ class _CreateAccountState extends State<CreateAccount> {
     }
 
     // When all conditions are met
-    if (firstNameController.value.text.isNotEmpty && lastNameController.value.text.isNotEmpty && passwordController.value.text.isNotEmpty && 
-        !RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordController.value.text) && 
-        RegExp(r'^.{8,}$').hasMatch(passwordController.value.text) && 
-        RegExp(r'.*\d+.*').hasMatch(passwordController.value.text) && 
-        RegExp(r'.*[a-z]+.*').hasMatch(passwordController.value.text) && 
-        RegExp(r'.*[A-Z]+.*').hasMatch(passwordController.value.text)) {
+    if (firstNameController.value.text.isNotEmpty && lastNameController.value.text.isNotEmpty && passwordController.value.text.isNotEmpty && !RegExp(r'(?:\d{4,}|([a-zA-Z])\1{3,}|0123|1234|2345|3456|4567|5678|6789|7890|0987|9876|8765|7654|6543|5432|4321|abcd|qwert|qwer|bcde|cdef|defg|efgh|fghi|ghij|ijkl|jklm|klmn|lmno|mnop|nopq|opqr|pqrs|qrst|rstu|stuv|tuvw|uvwx|vwxy|wxyz|aaaa|bbbb|cccc|dddd)').hasMatch(passwordController.value.text) && RegExp(r'^.{8,}$').hasMatch(passwordController.value.text) && RegExp(r'.*\d+.*').hasMatch(passwordController.value.text) && RegExp(r'.*[a-z]+.*').hasMatch(passwordController.value.text) && RegExp(r'.*[A-Z]+.*').hasMatch(passwordController.value.text)) {
       setState(() {
         allowConsecutiveWord = true;
         isEightCharacters = true;
@@ -183,10 +177,21 @@ class _CreateAccountState extends State<CreateAccount> {
   @override
   void initState() {
     super.initState();
+    firstNameController = TextEditingController();
+    lastNameController = TextEditingController();
+    passwordController = TextEditingController();
     // method that listen the Textediting Controllar's.
     firstNameController.addListener(passwordValidator);
     lastNameController.addListener(passwordValidator);
     passwordController.addListener(passwordValidator);
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override

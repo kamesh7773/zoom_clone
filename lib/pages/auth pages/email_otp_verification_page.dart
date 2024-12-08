@@ -28,7 +28,7 @@ class OtpVerificationPage extends StatefulWidget {
 class _OtpVerificationPageState extends State<OtpVerificationPage> {
   // Variable declaration.
   Color resentButtonColor = const Color.fromRGBO(46, 119, 255, 1);
-  TextEditingController pinputController = TextEditingController();
+  late TextEditingController pinputController;
 
   // Variables for OTP Timer.
   bool resentButton = true;
@@ -88,6 +88,18 @@ class _OtpVerificationPageState extends State<OtpVerificationPage> {
     //   email: widget.email,
     //   context: context,
     // );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    pinputController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    pinputController.dispose();
+    super.dispose();
   }
 
   @override
