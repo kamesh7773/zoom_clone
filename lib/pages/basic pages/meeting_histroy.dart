@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -131,21 +130,21 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        AutoSizeText(
+                                        Text(
                                           maxLines: 1,
                                           "Meeting created at : ${DateFormat('hh:mm a').format(joinTime.toDate())}",
                                           style: const TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
-                                        AutoSizeText(
+                                        Text(
                                           maxLines: 1,
                                           "Meeting ended at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
                                           style: const TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
-                                        AutoSizeText(
+                                        Text(
                                           maxLines: 2,
                                           "Total Duration : $formattedTime",
                                           style: const TextStyle(
@@ -159,21 +158,21 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        AutoSizeText(
+                                        Text(
                                           maxLines: 1,
                                           "Meeting joined at : ${DateFormat('hh:mm a').format(joinTime.toDate())}",
                                           style: const TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
-                                        AutoSizeText(
+                                        Text(
                                           maxLines: 1,
                                           "Meeting ended at : ${DateFormat('hh:mm a').format(leaveTime.toDate())}",
                                           style: const TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
-                                        AutoSizeText(
+                                        Text(
                                           maxLines: 2,
                                           "Total Duration : $formattedTime",
                                           style: const TextStyle(

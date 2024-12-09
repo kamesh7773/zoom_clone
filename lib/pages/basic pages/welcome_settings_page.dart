@@ -348,21 +348,22 @@ class _WelcomeSettingsPageState extends State<WelcomeSettingsPage> {
               },
               child: const Row(
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 8.0,
-                      left: 20.0,
-                      bottom: 8.0,
-                    ),
-                    child: Text(
-                      "Rate Zoom Workplace in the Google PlayStore",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: 8.0,
+                        left: 20.0,
+                        bottom: 8.0,
+                      ),
+                      child: Text(
+                        "Rate Zoom Workplace in the Google PlayStore",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
-                  Spacer(flex: 1),
                   Padding(
                     padding: EdgeInsets.only(
                       top: 14.0,
