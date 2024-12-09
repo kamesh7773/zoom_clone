@@ -180,84 +180,87 @@ class _MainSettingsPageState extends State<MainSettings> {
                               const SizedBox(width: 14),
                               //! Name and BASIC  ||  Provider logo and Gmail
                               Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          userData?["name"],
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 8),
-                                        const Text(
-                                          "BASIC",
-                                          style: TextStyle(
-                                            color: Color.fromRGBO(55, 125, 255, 1),
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Row(
-                                      children: [
-                                        //! If provider is "Google" then..
-                                        if (userData?["provider"] == "Google")
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(12),
-                                            child: Image.asset(
-                                              width: 16,
-                                              height: 16,
-                                              "assets/images/google.png",
-                                            ),
-                                          ),
-                                        //! If provider is "Facebook" then..
-                                        if (userData?["provider"] == "Facebook")
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(12),
-                                            child: Image.asset(
-                                              width: 16,
-                                              height: 16,
-                                              "assets/images/facebook.png",
-                                            ),
-                                          ),
-                                        //! If provider is "Twitter" then..
-                                        if (userData?["provider"] == "Twitter")
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(12),
-                                            child: Image.asset(
-                                              width: 16,
-                                              height: 16,
-                                              "assets/images/x.png",
-                                            ),
-                                          ),
-                                        //! If provider is "Email & Password" then..
-                                        if (userData?["provider"] == "Email & Password")
-                                          ClipRRect(
-                                            borderRadius: BorderRadius.circular(12),
-                                            child: Image.asset(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            userData?["name"],
+                                            style: const TextStyle(
                                               color: Colors.white,
-                                              width: 16,
-                                              height: 16,
-                                              "assets/images/Email.png",
+                                              fontSize: 16,
                                             ),
                                           ),
-                                        const SizedBox(width: 4),
-                                        if (RenderObject.debugCheckingIntrinsics) const SizedBox(width: 10),
-                                        Text(
-                                          maskEmail(userData?["email"]),
-                                          style: const TextStyle(
-                                            color: Color.fromARGB(255, 147, 137, 137),
+                                          const SizedBox(width: 8),
+                                          const Text(
+                                            "BASIC",
+                                            style: TextStyle(
+                                              color: Color.fromRGBO(55, 125, 255, 1),
+                                              fontSize: 14,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                        ],
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          //! If provider is "Google" then..
+                                          if (userData?["provider"] == "Google")
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(12),
+                                              child: Image.asset(
+                                                width: 16,
+                                                height: 16,
+                                                "assets/images/google.png",
+                                              ),
+                                            ),
+                                          //! If provider is "Facebook" then..
+                                          if (userData?["provider"] == "Facebook")
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(12),
+                                              child: Image.asset(
+                                                width: 16,
+                                                height: 16,
+                                                "assets/images/facebook.png",
+                                              ),
+                                            ),
+                                          //! If provider is "Twitter" then..
+                                          if (userData?["provider"] == "Twitter")
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(12),
+                                              child: Image.asset(
+                                                width: 16,
+                                                height: 16,
+                                                "assets/images/x.png",
+                                              ),
+                                            ),
+                                          //! If provider is "Email & Password" then..
+                                          if (userData?["provider"] == "Email & Password")
+                                            ClipRRect(
+                                              borderRadius: BorderRadius.circular(12),
+                                              child: Image.asset(
+                                                color: Colors.white,
+                                                width: 16,
+                                                height: 16,
+                                                "assets/images/Email.png",
+                                              ),
+                                            ),
+                                          const SizedBox(width: 4),
+                                          if (RenderObject.debugCheckingIntrinsics) const SizedBox(width: 10),
+                                          Text(
+                                            maskEmail(userData?["email"]),
+                                            style: const TextStyle(
+                                              color: Color.fromARGB(255, 147, 137, 137),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                               //! QR CODE Image
