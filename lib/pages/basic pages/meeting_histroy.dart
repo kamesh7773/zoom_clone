@@ -18,6 +18,7 @@ class _MeetingHistroyState extends State<MeetingHistroy> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
+      canPop: false,
       onPopInvokedWithResult: (value, result) {
         if (!value) {
           // On press, redirect the user to the home page
