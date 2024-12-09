@@ -66,9 +66,6 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  // Method for showing bottom sheet
-  void showBottomSheet(BuildContext context) {}
-
   @override
   void initState() {
     super.initState();
